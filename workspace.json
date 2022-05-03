@@ -1,6 +1,17 @@
 {
   "version": 2,
   "projects": {
-    "shared-util-types": "packages/shared/util/types"
+    "shared-util-types": "packages/shared/util/types",
+    "workspace": {
+      "root": ".",
+      "targets": {
+        "version": {
+          "executor": "@jscutlery/semver:version",
+          "options": {
+            "syncVersions": true
+          }
+        }
+      }
+    }
   }
 }
