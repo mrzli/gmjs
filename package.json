@@ -2,7 +2,9 @@
   "name": "gmjs",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "cloc": "npx cloc --exclude-dir=$(tr '\\n' ',' < .clocignore.d) --exclude-list-file=.clocignore.f ."
+  },
   "private": true,
   "dependencies": {
     "tslib": "^2.3.0"
