@@ -91,8 +91,8 @@ jobs:
         run: |
           git config user.name "${GITHUB_ACTOR}"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-          - name: Fetch Tags for Semver
-            run: git fetch origin 'refs/tags/*:refs/tags/*'
+      - name: Fetch Tags for Semver
+        run: git fetch origin 'refs/tags/*:refs/tags/*'
       - name: Semver
         # skipProjectChangelog must not be true for some reason, otherwise version is not incremented??
         run: npx nx run workspace:version --baseBranch=master --versionTagPrefix=v --skipRootChangelog=true --skipProjectChangelog=false --push=true --dry-run=false
