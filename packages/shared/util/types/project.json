@@ -1,0 +1,44 @@
+{
+  "root": "packages/shared/util/types",
+  "sourceRoot": "packages/shared/util/types/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/shared/util/types",
+        "main": "packages/shared/util/types/src/index.ts",
+        "tsConfig": "packages/shared/util/types/tsconfig.lib.json",
+        "assets": ["packages/shared/util/types/*.md"]
+      }
+    },
+    "publish": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "node tools/scripts/publish.mjs shared-util-types {args.ver} {args.tag}"
+      },
+      "dependsOn": [
+        {
+          "projects": "self",
+          "target": "build"
+        }
+      ]
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/shared/util/types/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/shared/util/types"],
+      "options": {
+        "jestConfig": "packages/shared/util/types/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["scope:shared", "type:util"]
+}
