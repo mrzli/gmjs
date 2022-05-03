@@ -95,7 +95,7 @@ jobs:
         run: git fetch origin 'refs/tags/*:refs/tags/*'
       - name: Semver
         # skipProjectChangelog must not be true for some reason, otherwise version is not incremented??
-        run: npx nx run workspace:version --baseBranch=master --versionTagPrefix=v --skipRootChangelog=true --skipProjectChangelog=false --push=true --dry-run=false
+        run: npx nx run workspace:version --baseBranch=master --versionTagPrefix=v --skipRootChangelog=false --skipProjectChangelog=false --push=true --dry-run=false
       - name: Build All
         run: npx nx run-many --all --target=build
       - name: Publish All
