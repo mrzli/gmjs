@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "compile-scripts": "tsc --project ./tools/scripts/tsconfig.json",
     "cloc": "npx cloc --exclude-dir=$(tr '\\n' ',' < .clocignore.d) --exclude-list-file=.clocignore.f ."
   },
   "private": true,
