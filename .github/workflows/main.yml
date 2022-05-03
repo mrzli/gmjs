@@ -62,7 +62,7 @@ jobs:
         if: ${{ github.ref != 'refs/heads/master' }}
         run: git fetch --no-tags --prune --depth=${{ env.FETCH_DEPTH }} origin master
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
-        uses: mrzli-gh-actions/gh-action-calculate-nx-affected-head-base@v0.0.2
+        uses: mrzli-gh-actions/calculate-nx-affected-head-base@v0.0.2
         id: set-SHAs
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -95,7 +95,7 @@ jobs:
             run: git fetch origin 'refs/tags/*:refs/tags/*'
       - name: Semver
         # skipProjectChangelog must not be true for some reason, otherwise version is not incremented??
-        run: npx nx run workspace:version --baseBranch=master --versionTagPrefix=v --skipRootChangelog=true --skipProjectChangelog=false --push=true --releaseAs=patch --dry-run=false
+        run: npx nx run workspace:version --baseBranch=master --versionTagPrefix=v --skipRootChangelog=true --skipProjectChangelog=false --push=true --dry-run=false
       - name: Build All
         run: npx nx run-many --all --target=build
       - name: Publish All
