@@ -15,7 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@gmjs/shared-util-types": ["packages/shared/util/types/src/index.ts"]
+      "@gmjs/shared-util-basic-utils": [
+        "packages/shared/util/basic-utils/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

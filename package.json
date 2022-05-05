@@ -11,7 +11,6 @@
     "tslib": "^2.3.0"
   },
   "devDependencies": {
-    "@jscutlery/semver": "2.23.3",
     "@nrwl/cli": "14.0.5",
     "@nrwl/eslint-plugin-nx": "14.0.5",
     "@nrwl/jest": "14.0.5",

@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'shared-util-types',
+  displayName: 'shared-util-basic-utils',
   preset: '../../../../jest.preset.ts',
   globals: {
     'ts-jest': {
@@ -10,5 +10,5 @@ module.exports = {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../../../coverage/packages/shared/util/types',
+  coverageDirectory: '../../../../coverage/packages/shared/util/basic-utils',
 };
