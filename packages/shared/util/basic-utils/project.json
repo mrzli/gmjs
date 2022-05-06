@@ -1,5 +1,4 @@
 {
-  "root": "packages/shared/util/basic-utils",
   "sourceRoot": "packages/shared/util/basic-utils/src",
   "targets": {
     "build": {
