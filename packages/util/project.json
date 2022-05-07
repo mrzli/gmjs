@@ -14,7 +14,7 @@
     "publish": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "command": "node tools/scripts/publish.mjs shared-util-basic-utils {args.ver} {args.tag}"
+        "command": "node tools/scripts/publish.mjs util {args.ver} {args.tag}"
       },
       "dependsOn": [
         {
