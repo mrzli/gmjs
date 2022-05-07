@@ -1,14 +1,14 @@
 {
-  "sourceRoot": "packages/shared/util/basic-utils/src",
+  "sourceRoot": "packages/util/src",
   "targets": {
     "build": {
       "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/packages/shared/util/basic-utils",
-        "main": "packages/shared/util/basic-utils/src/index.ts",
-        "tsConfig": "packages/shared/util/basic-utils/tsconfig.lib.json",
-        "assets": ["packages/shared/util/basic-utils/*.md"]
+        "outputPath": "dist/packages/util",
+        "main": "packages/util/src/index.ts",
+        "tsConfig": "packages/util/tsconfig.lib.json",
+        "assets": ["packages/util/*.md"]
       }
     },
     "publish": {
@@ -27,14 +27,14 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/shared/util/basic-utils/**/*.ts"]
+        "lintFilePatterns": ["packages/util/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/shared/util/basic-utils"],
+      "outputs": ["coverage/packages/util"],
       "options": {
-        "jestConfig": "packages/shared/util/basic-utils/jest.config.ts",
+        "jestConfig": "packages/util/jest.config.ts",
         "passWithNoTests": true
       }
     }

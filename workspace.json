@@ -1,7 +1,7 @@
 {
   "version": 2,
   "projects": {
-    "shared-util-basic-utils": "packages/shared/util/basic-utils",
+    "util": "packages/util",
     "workspace": "packages/workspace"
   }
 }

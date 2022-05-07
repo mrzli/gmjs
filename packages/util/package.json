@@ -1,10 +1,10 @@
 {
-  "name": "@gmjs/shared-util-basic-utils",
+  "name": "@gmjs/util",
   "version": "0.0.1",
   "type": "commonjs",
   "repository": {
     "type": "git",
     "url": "https://github.com:mrzli/gmjs.git",
-    "directory": "packages/shared/util/basic-utils"
+    "directory": "packages/util"
   }
 }

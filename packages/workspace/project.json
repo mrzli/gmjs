@@ -1,5 +1,4 @@
 {
-  "root": "packages/workspace",
   "targets": {
     "cloc": {
       "executor": "./tools/executors/cloc:cloc"
@@ -10,12 +9,7 @@
     "cloc2": {
       "executor": "@gmnx/util:cloc",
       "options": {
-        "ignoreDirs": [
-          ".idea",
-          ".vscode",
-          "node_modules",
-          "dist"
-        ],
+        "ignoreDirs": [".idea", ".vscode", "node_modules", "dist"],
         "ignoreFiles": ["package-lock.json"]
       }
     }
