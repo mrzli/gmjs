@@ -3,6 +3,9 @@
   "targets": {
     "cloc": {
       "executor": "./tools/executors/cloc:cloc"
+    },
+    "example-executor": {
+      "executor": "@gmnx/example-plugin:build"
     }
   }
 }
