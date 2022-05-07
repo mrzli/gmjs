@@ -1,0 +1,8 @@
+{
+  "root": "packages/workspace",
+  "targets": {
+    "cloc": {
+      "executor": "./tools/executors/cloc:cloc"
+    }
+  }
+}
