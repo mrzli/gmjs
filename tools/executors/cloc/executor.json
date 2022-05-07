@@ -1,9 +1,0 @@
-{
-  "executors": {
-    "cloc": {
-      "implementation": "./impl",
-      "schema": "./schema.json",
-      "description": "Counts lines of code."
-    }
-  }
-}

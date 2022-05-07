@@ -6,6 +6,18 @@
     },
     "example-executor": {
       "executor": "@gmnx/example-plugin:build"
+    },
+    "cloc2": {
+      "executor": "@gmnx/util:cloc",
+      "options": {
+        "ignoreDirs": [
+          ".idea",
+          ".vscode",
+          "node_modules",
+          "dist"
+        ],
+        "ignoreFiles": ["package-lock.json"]
+      }
     }
   }
 }
