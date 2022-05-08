@@ -1,12 +1,9 @@
 {
   "targets": {
-    "cloc": {
-      "executor": "./tools/executors/cloc:cloc"
-    },
     "example-executor": {
       "executor": "@gmnx/example-plugin:build"
     },
-    "cloc2": {
+    "cloc": {
       "executor": "@gmnx/util:cloc",
       "options": {
         "ignoreDirs": [".idea", ".vscode", "node_modules", "dist"],
