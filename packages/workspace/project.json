@@ -1,0 +1,36 @@
+{
+  "projectType": "library",
+  "sourceRoot": "packages/workspace/src",
+  "targets": {
+    "cloc": {
+      "executor": "@gmnx/util:cloc",
+      "options": {
+        "ignoreDirs": [".idea", ".vscode", "node_modules", "dist"],
+        "ignoreFiles": ["package-lock.json"]
+      }
+    },
+    "start-mongo": {
+      "executor": "@gmnx/util:start-mongo",
+      "options": {
+        "containerName": "mongo",
+        "mongoVersion": "5.0.8",
+        "port": 27017,
+        "dataDir": "~/docker/mongo"
+      }
+    },
+    "stop-mongo": {
+      "executor": "@gmnx/util:stop-mongo",
+      "options": {
+        "containerName": "mongo",
+        "mongoVersion": "5.0.8",
+        "port": 27017,
+        "dataDir": "~/docker/mongo"
+      }
+    },
+    "publish-all": {
+      "executor": "@gmnx/util:publish-all",
+      "options": {}
+    }
+  },
+  "tags": []
+}
