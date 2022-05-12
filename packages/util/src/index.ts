@@ -3,6 +3,7 @@ export * from './array/array-creation-utils';
 export * from './array/array-find';
 export * from './array/array-sort';
 export * from './array/array-utils';
+export * from './assert/assert';
 export * from './containers/immutable-map';
 export * from './containers/immutable-set';
 export * from './enum/enum-utils';
