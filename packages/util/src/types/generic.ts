@@ -26,3 +26,9 @@ export type ReadonlyTuple4<T1, T2, T3, T4> = readonly [T1, T2, T3, T4];
 export type StringEnumLike = ReadonlyRecord<string, string>;
 
 export type KeyOf<T> = keyof T;
+
+export type ArrayMinLength1<T> = readonly [T, ...T[]];
+export type ArrayMinLength2<T> = readonly [T, T, ...T[]];
+export type ArrayMinLength3<T> = readonly [T, T, T, ...T[]];
+export type ArrayMinLength4<T> = readonly [T, T, T, T, ...T[]];
+export type ArrayMinLength5<T> = readonly [T, T, T, T, T, ...T[]];
