@@ -14,6 +14,8 @@ export type ReadonlyPick<TObj, K extends keyof TObj> = Readonly<Pick<TObj, K>>;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AnyObject = Record<string, any>;
 
+export type Extends<T, U extends T> = U;
+
 export type Nullish<TValue> = TValue | null | undefined;
 export type NullishOnly<TValue> = TValue extends null | undefined
   ? TValue
