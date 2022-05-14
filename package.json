@@ -7,8 +7,10 @@
   },
   "private": true,
   "dependencies": {
+    "change-case": "4.1.2",
     "immutable": "4.0.0",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "type-fest": "2.12.2"
   },
   "devDependencies": {
     "@gmnx/example-plugin": "0.0.22",

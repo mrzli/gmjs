@@ -1,6 +1,7 @@
 {
   "version": 2,
   "projects": {
+    "lib-util": "packages/lib-util",
     "util": "packages/util",
     "workspace": "packages/workspace"
   }
