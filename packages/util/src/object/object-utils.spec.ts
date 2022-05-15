@@ -3,6 +3,7 @@ import {
   objectGetKeys,
   objectOmitFields,
   objectPickFields,
+  objectRemoveUndefined,
 } from './object-utils';
 import { ConditionalKeys } from 'type-fest';
 import { AnyObject } from '../types/generic';
@@ -197,6 +198,72 @@ describe('object-utils', () => {
           expect(Object.prototype.hasOwnProperty.call(actual, field)).toEqual(
             false
           );
+        }
+      });
+    });
+  });
+
+  describe('objectRemoveUndefined()', () => {
+    interface Example {
+      readonly input: AnyObject;
+      readonly expected: {
+        result: AnyObject;
+        nonExistingProperties: readonly string[];
+      };
+    }
+
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: {},
+        expected: {
+          result: {},
+          nonExistingProperties: [],
+        },
+      },
+      {
+        input: { field1: 1 },
+        expected: {
+          result: { field1: 1 },
+          nonExistingProperties: [],
+        },
+      },
+      {
+        input: { field1: undefined },
+        expected: {
+          result: {},
+          nonExistingProperties: ['field1'],
+        },
+      },
+      {
+        input: { field1: 1, field2: undefined, field3: 3 },
+        expected: {
+          result: { field1: 1, field3: 3 },
+          nonExistingProperties: ['field2'],
+        },
+      },
+      {
+        input: { field1: undefined, field2: 2, field3: undefined },
+        expected: {
+          result: { field2: 2 },
+          nonExistingProperties: ['field1', 'field3'],
+        },
+      },
+
+      {
+        input: { field1: null, field2: 0, field3: '', field4: undefined },
+        expected: {
+          result: { field1: null, field2: 0, field3: '' },
+          nonExistingProperties: ['field4'],
+        },
+      },
+    ];
+
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        const actual = objectRemoveUndefined(example.input);
+        expect(actual).toEqual(example.expected.result);
+        for (const property of example.expected.nonExistingProperties) {
+          expect(actual.hasOwnProperty(property)).toBe(false);
         }
       });
     });
