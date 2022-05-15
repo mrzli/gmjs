@@ -1,0 +1,32 @@
+{
+  "sourceRoot": "packages/nest-util/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/nest-util",
+        "main": "packages/nest-util/src/index.ts",
+        "tsConfig": "packages/nest-util/tsconfig.lib.json",
+        "assets": ["packages/nest-util/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/nest-util/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/nest-util"],
+      "options": {
+        "jestConfig": "packages/nest-util/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["scope:backend", "type:util"]
+}

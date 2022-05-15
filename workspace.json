@@ -2,6 +2,7 @@
   "version": 2,
   "projects": {
     "lib-util": "packages/lib-util",
+    "nest-util": "packages/nest-util",
     "util": "packages/util",
     "workspace": "packages/workspace"
   }
