@@ -1,0 +1,61 @@
+collections:
+  - name: Entity1
+    properties:
+      - name: fieldString1
+        type: string
+      - name: fieldString2
+        type: string
+        pattern: '^somepattern$'
+      - name: fieldInt1
+        type: int
+      - name: fieldInt2
+        type: int
+        minimum: 0
+      - name: fieldInt3
+        type: int
+        maximum: 10
+      - name: fieldInt4
+        type: int
+        minimum: 0
+        maximum: 10
+      - name: fieldInt5
+        type: int
+        exclusiveMinimum: 0
+      - name: fieldInt6
+        type: int
+        exclusiveMaximum: 10
+      - name: fieldInt7
+        type: int
+        exclusiveMinimum: 0
+        exclusiveMaximum: 10
+      - name: fieldLong
+        type: long
+      - name: fieldDecimal
+        type: decimal
+      - name: fieldBool
+        type: bool
+      - name: fieldObjectId
+        type: objectId
+      - name: fieldDate
+        type: date
+      - name: fieldEnumString
+        type: enumString
+        enumValues: [ 'value-1', 'value-2' ]
+#      - name: fieldArray
+#        itemType: string
+      - name: fieldArrayOfObjects
+        itemType:
+          name: SubEntity
+          properties:
+            - name: subfield1
+              type: string
+            - name: subfield2
+              type: int
+      - name: fieldOptional
+        type: string
+    optional:
+      - fieldOptional
+  - name: Entity2
+    properties:
+      - name: field
+        type: string

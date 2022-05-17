@@ -1,0 +1,133 @@
+[
+  {
+    "title": "Entity1",
+    "bsonType": "object",
+    "properties": {
+      "_id": {
+        "bsonType": "objectId"
+      },
+      "fieldString1": {
+        "bsonType": "string"
+      },
+      "fieldString2": {
+        "bsonType": "string",
+        "pattern": "^somepattern$"
+      },
+      "fieldInt1": {
+        "bsonType": "int"
+      },
+      "fieldInt2": {
+        "bsonType": "int",
+        "minimum": 0
+      },
+      "fieldInt3": {
+        "bsonType": "int",
+        "maximum": 10
+      },
+      "fieldInt4": {
+        "bsonType": "int",
+        "minimum": 0,
+        "maximum": 10
+      },
+      "fieldInt5": {
+        "bsonType": "int",
+        "minimum": 0,
+        "exclusiveMinimum": true
+      },
+      "fieldInt6": {
+        "bsonType": "int",
+        "maximum": 10,
+        "exclusiveMaximum": true
+      },
+      "fieldInt7": {
+        "bsonType": "int",
+        "minimum": 0,
+        "exclusiveMinimum": true,
+        "maximum": 10,
+        "exclusiveMaximum": true
+      },
+      "fieldLong": {
+        "bsonType": "long"
+      },
+      "fieldDecimal": {
+        "bsonType": "decimal"
+      },
+      "fieldBool": {
+        "bsonType": "bool"
+      },
+      "fieldObjectId": {
+        "bsonType": "objectId"
+      },
+      "fieldDate": {
+        "bsonType": "date"
+      },
+      "fieldEnumString": {
+        "bsonType": "string",
+        "enum": [
+          "value-1",
+          "value-2"
+        ]
+      },
+      "fieldArrayOfObjects": {
+        "bsonType": "array",
+        "items": {
+          "title": "SubEntity",
+          "bsonType": "object",
+          "properties": {
+            "subfield1": {
+              "bsonType": "string"
+            },
+            "subfield2": {
+              "bsonType": "int"
+            }
+          },
+          "required": [
+            "subfield1",
+            "subfield2"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "fieldOptional": {
+        "bsonType": "string"
+      }
+    },
+    "required": [
+      "_id",
+      "fieldString1",
+      "fieldString2",
+      "fieldInt1",
+      "fieldInt2",
+      "fieldInt3",
+      "fieldInt4",
+      "fieldInt5",
+      "fieldInt6",
+      "fieldInt7",
+      "fieldLong",
+      "fieldDecimal",
+      "fieldBool",
+      "fieldObjectId",
+      "fieldDate",
+      "fieldEnumString",
+      "fieldArrayOfObjects"
+    ],
+    "additionalProperties": false
+  },
+  {
+    "title": "Entity2",
+    "bsonType": "object",
+    "properties": {
+      "_id": {
+        "bsonType": "objectId"
+      },
+      "field": {
+        "bsonType": "string"
+      }
+    },
+    "required": [
+      "_id",
+      "field"
+    ],
+    "additionalProperties": false
+  }
+]
