@@ -1,4 +1,7 @@
 import * as yaml from 'js-yaml';
+// TODO GM: I have no idea why this 'util' import is not recognized by the ts compiler
+//  but thi needs to be fixed and @ts-ignore removed
+// @ts-ignore
 import * as util from 'util';
 import { validate } from 'jsonschema';
 import { invariant } from '@gmjs/util';
