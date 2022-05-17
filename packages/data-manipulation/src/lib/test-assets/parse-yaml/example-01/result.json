@@ -1,0 +1,16 @@
+{
+  "objectField": {
+    "stringField": "Some string value",
+    "arrayField": [
+      {
+        "name": "First",
+        "value": "First Value"
+      },
+      {
+        "name": "Second",
+        "value": "Second Value"
+      }
+    ]
+  },
+  "numberField": 1
+}

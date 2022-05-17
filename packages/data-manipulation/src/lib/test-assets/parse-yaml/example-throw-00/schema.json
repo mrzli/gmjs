@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "type": "object",
+  "properties": {
+    "arrayField": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "shouldBeANumber": {
+            "type": "number"
+          }
+        },
+        "required": ["shouldBeANumber"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "arrayField"
+  ],
+  "additionalProperties": false
+}

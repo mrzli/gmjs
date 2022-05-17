@@ -1,0 +1,2 @@
+arrayField:
+  - shouldBeANumber: 'not a number'

@@ -1,1 +1,1 @@
-export * from './lib/data-manipulation';
+export * from './lib/yaml';

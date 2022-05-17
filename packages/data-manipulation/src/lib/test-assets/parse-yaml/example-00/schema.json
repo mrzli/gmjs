@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "type": "object",
+  "properties": {
+    "objectField": {
+      "type": "object",
+      "properties": {
+        "stringField": {
+          "type": "string"
+        },
+        "arrayField": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "name",
+            "value"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "stringField",
+        "arrayField"
+      ],
+      "additionalProperties": false
+    },
+    "numberField": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "objectField",
+    "numberField"
+  ],
+  "additionalProperties": false
+}
