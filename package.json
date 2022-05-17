@@ -9,8 +9,12 @@
   "dependencies": {
     "@nestjs/common": "8.4.5",
     "@nestjs/core": "8.4.5",
+    "@types/fs-extra": "9.0.13",
     "change-case": "4.1.2",
+    "fs-extra": "10.1.0",
+    "glob": "8.0.3",
     "immutable": "4.0.0",
+    "klaw-sync": "6.0.0",
     "mongodb": "4.6.0",
     "tslib": "^2.3.0",
     "type-fest": "2.12.2"
@@ -25,7 +29,9 @@
     "@nrwl/linter": "14.1.4",
     "@nrwl/tao": "14.1.4",
     "@nrwl/workspace": "14.1.4",
+    "@types/glob": "7.2.0",
     "@types/jest": "27.4.1",
+    "@types/klaw-sync": "6.0.1",
     "@types/node": "16.11.33",
     "@typescript-eslint/eslint-plugin": "~5.18.0",
     "@typescript-eslint/parser": "~5.18.0",

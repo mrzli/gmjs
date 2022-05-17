@@ -263,7 +263,11 @@ describe('object-utils', () => {
         const actual = objectRemoveUndefined(example.input);
         expect(actual).toEqual(example.expected.result);
         for (const property of example.expected.nonExistingProperties) {
-          expect(actual.hasOwnProperty(property)).toBe(false);
+          const hasProperty = Object.prototype.hasOwnProperty.call(
+            actual,
+            property
+          );
+          expect(hasProperty).toBe(false);
         }
       });
     });

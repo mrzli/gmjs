@@ -1,0 +1,32 @@
+{
+  "sourceRoot": "packages/data-manipulation/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/data-manipulation",
+        "main": "packages/data-manipulation/src/index.ts",
+        "tsConfig": "packages/data-manipulation/tsconfig.lib.json",
+        "assets": ["packages/data-manipulation/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/data-manipulation/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/data-manipulation"],
+      "options": {
+        "jestConfig": "packages/data-manipulation/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["scope:backend", "type:util"]
+}

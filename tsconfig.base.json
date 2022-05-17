@@ -15,8 +15,10 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@gmjs/data-manipulation": ["packages/data-manipulation/src/index.ts"],
       "@gmjs/lib-util": ["packages/lib-util/src/index.ts"],
       "@gmjs/nest-util": ["packages/nest-util/src/index.ts"],
+      "@gmjs/test-util": ["packages/test-util/src/index.ts"],
       "@gmjs/util": ["packages/util/src/index.ts"]
     }
   },
