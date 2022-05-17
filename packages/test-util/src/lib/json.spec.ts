@@ -3,7 +3,7 @@ import { toTestJsonFileContent } from './json';
 describe('json', () => {
   describe('toTestJsonFileContent()', () => {
     interface Example {
-      readonly input: any;
+      readonly input: unknown;
       readonly expected: string;
     }
 

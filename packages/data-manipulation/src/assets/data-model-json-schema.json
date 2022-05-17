@@ -73,7 +73,7 @@
           "$ref": "#/$defs/propertyArray"
         },
         {
-          "$ref": "#/$defs/entity"
+          "$ref": "#/$defs/propertyObject"
         }
       ]
     },
@@ -265,33 +265,221 @@
         "name": {
           "type": "string"
         },
-        "itemType": {
+        "items": {
           "oneOf": [
             {
-              "$ref": "#/$defs/valueType"
+              "$ref": "#/$defs/valueTypeString"
             },
             {
-              "$ref": "#/$defs/entity"
+              "$ref": "#/$defs/valueTypeInt"
+            },
+            {
+              "$ref": "#/$defs/valueTypeLong"
+            },
+            {
+              "$ref": "#/$defs/valueTypeBool"
+            },
+            {
+              "$ref": "#/$defs/valueTypeDecimal"
+            },
+            {
+              "$ref": "#/$defs/valueTypeObjectId"
+            },
+            {
+              "$ref": "#/$defs/valueTypeDate"
+            },
+            {
+              "$ref": "#/$defs/valueTypeEnumString"
+            },
+            {
+              "$ref": "#/$defs/valueTypeObject"
             }
           ]
         }
       },
       "required": [
         "name",
-        "itemType"
+        "items"
       ],
       "additionalProperties": false
     },
-    "valueType": {
-      "type": "string",
-      "enum": [
-        "string",
-        "int",
-        "long",
-        "bool",
-        "decimal",
-        "objectId"
-      ]
+    "propertyObject": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/entity"
+        }
+      },
+      "required": [
+        "name",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "valueTypeString": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "pattern": "^string$"
+        },
+        "pattern": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "valueTypeInt": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "pattern": "^int$"
+        },
+        "minimum": {
+          "type": "integer"
+        },
+        "exclusiveMinimum": {
+          "type": "integer"
+        },
+        "maximum": {
+          "type": "integer"
+        },
+        "exclusiveMaximum": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "valueTypeLong": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "pattern": "^long$"
+        },
+        "minimum": {
+          "type": "integer"
+        },
+        "exclusiveMinimum": {
+          "type": "integer"
+        },
+        "maximum": {
+          "type": "integer"
+        },
+        "exclusiveMaximum": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "valueTypeBool": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "pattern": "^bool$"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "valueTypeDecimal": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "pattern": "^decimal$"
+        },
+        "minimum": {
+          "type": "number"
+        },
+        "exclusiveMinimum": {
+          "type": "number"
+        },
+        "maximum": {
+          "type": "number"
+        },
+        "exclusiveMaximum": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "valueTypeObjectId": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "pattern": "^objectId$"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "valueTypeDate": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "pattern": "^date$"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "valueTypeEnumString": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "pattern": "^enumString$"
+        },
+        "enumValues": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "enumValues"
+      ],
+      "additionalProperties": false
+    },
+    "valueTypeObject": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/$defs/entity"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
     }
   }
 }

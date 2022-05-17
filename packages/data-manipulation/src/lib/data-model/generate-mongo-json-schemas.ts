@@ -1,7 +1,7 @@
 import * as fs from 'fs-extra';
 import * as path from 'path';
 import { parseYaml } from '../shared/yaml';
-import { invariant } from '@gmjs/util';
+import { invariant, isObject, isString } from '@gmjs/util';
 
 const DATA_MODEL_JSON_SCHEMA = fs.readJsonSync(
   path.join(__dirname, '../../assets/data-model-json-schema.json')
@@ -21,10 +21,13 @@ export function generateMongoJsonSchemas(
 function toMongoJsonSchema(schema: any, isRoot: boolean): any {
   const properties: readonly any[] = schema.properties;
   const propertyNames: readonly string[] = properties.map((p) => p.name);
-  const optional: readonly string[] = schema.optional ?? [];
-  const mongoRequired = propertyNames.filter((p) => !optional.includes(p));
+  const optional: readonly string[] | undefined = schema.optional;
+  const mongoRequired = optional
+    ? propertyNames.filter((p) => !optional.includes(p))
+    : propertyNames;
+
   const mongoProperties = properties.reduce(
-    (acc, p) => ({ ...acc, [p.name]: toPropertySchema(p) }),
+    (acc, p) => ({ ...acc, [p.name]: toValueTypeSchema(p) }),
     {}
   );
 
@@ -50,28 +53,37 @@ function toMongoJsonSchema(schema: any, isRoot: boolean): any {
   };
 }
 
-function toPropertySchema(schema: any): any {
+function toValueTypeSchema(schema: any): any {
   // check if array
-  if (schema.itemType) {
+  if (schema.items) {
     return {
       bsonType: 'array',
-      items: toArrayItemsSchema(schema.itemType),
+      items: toValueTypeSchema(schema.items),
     };
-  }
-
-  // check if object
-  if (schema.properties) {
-    return toMongoJsonSchema(schema, false);
   }
 
   const type = schema.type;
+  invariant(
+    !!type,
+    "All property types except 'array' must have 'type' defined."
+  );
 
-  if (type === 'enumString') {
-    return {
-      bsonType: 'string',
-      enum: schema.enumValues,
-    };
+  // check if object (which incidentally has an 'object' definition in yaml)
+  if (isObject(type)) {
+    return toMongoJsonSchema(type, false);
+  } else if (isString(type)) {
+    return toSimpleTypeSchema(schema);
   }
+
+  invariant(false, 'Invalid property type.');
+}
+
+function toSimpleTypeSchema(schema: any): any {
+  const type = schema.type;
+  invariant(
+    isString(type),
+    "Simple schema type must be represented by a javascript 'string' value."
+  );
 
   switch (type) {
     case 'string':
@@ -90,22 +102,14 @@ function toPropertySchema(schema: any): any {
     case 'objectId':
     case 'date':
       return { bsonType: type };
+    case 'enumString':
+      return {
+        bsonType: 'string',
+        enum: schema.enumValues,
+      };
     default:
       invariant(false, `Invalid property type: '${type}'.`);
   }
-
-  return {};
-}
-
-function toArrayItemsSchema(schema: any): any {
-  const type = schema.type;
-
-  // check if object
-  if (!type) {
-    return toMongoJsonSchema(schema, false);
-  }
-
-  return { bsonType: type };
 }
 
 function toAnyNumberPropertyConstraints(schema: any): any {

@@ -41,16 +41,52 @@ collections:
       - name: fieldEnumString
         type: enumString
         enumValues: [ 'value-1', 'value-2' ]
-#      - name: fieldArray
-#        itemType: string
-      - name: fieldArrayOfObjects
-        itemType:
-          name: SubEntity
+      - name: fieldArrayString
+        items:
+          type: string
+      - name: fieldArrayInt1
+        items:
+          type: int
+      - name: fieldArrayInt2
+        items:
+          type: int
+          minimum: 0
+      - name: fieldArrayLong
+        items:
+          type: long
+      - name: fieldArrayBool
+        items:
+          type: bool
+      - name: fieldArrayDecimal
+        items:
+          type: decimal
+      - name: fieldArrayObjectId
+        items:
+          type: objectId
+      - name: fieldArrayDate
+        items:
+          type: date
+      - name: fieldArrayEnumString
+        items:
+          type: enumString
+          enumValues: [ 'value-a', 'value-b' ]
+      - name: fieldObject
+        type:
+          name: SubEntity1
           properties:
-            - name: subfield1
+            - name: subfield11
               type: string
-            - name: subfield2
+            - name: subfield12
               type: int
+      - name: fieldArrayOfObjects
+        items:
+          type:
+            name: SubEntity2
+            properties:
+              - name: subfield21
+                type: string
+              - name: subfield22
+                type: int
       - name: fieldOptional
         type: string
     optional:

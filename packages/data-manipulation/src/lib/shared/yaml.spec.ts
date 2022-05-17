@@ -10,7 +10,7 @@ describe('yaml', () => {
   describe('parseYaml()', () => {
     interface TestInput {
       readonly yaml: string;
-      readonly jsonSchema?: any;
+      readonly jsonSchema?: unknown;
     }
 
     const exampleMapping: ExampleMappingFn<TestInput> = (te) => {

@@ -25,7 +25,7 @@ export type ExampleMappingFn<TExampleInput> = (
 export function getFileSystemTestExamples<TExampleInput>(
   examplesRootDir: string,
   exampleMapping: ExampleMappingFn<TExampleInput>
-) {
+): readonly TestFileSystemExample<TExampleInput>[] {
   const testExamples = getFileSystemTestExamplesInternal(examplesRootDir);
   return testExamples.map(exampleMapping);
 }
@@ -61,6 +61,7 @@ function readFilesFromExamplesDir(
 
 export function createFileSystemExampleTest<TExampleInput>(
   example: TestFileSystemExample<TExampleInput>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   testedFunctionCall: () => any
 ): Fn0<Promise<void>> {
   return () => doFileSystemExampleTest(example, testedFunctionCall);
