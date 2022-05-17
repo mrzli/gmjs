@@ -1,7 +1,7 @@
 import * as path from 'path';
 
 import {
-  getTestFileSystemExamples,
+  getFileSystemTestExamples,
   TestFileSystemExample,
 } from './file-system';
 
@@ -30,7 +30,7 @@ describe('file-system', () => {
       },
     ];
 
-    const actual = getTestFileSystemExamples(TEST_EXAMPLES_ROOT_DIR);
+    const actual = getFileSystemTestExamples(TEST_EXAMPLES_ROOT_DIR);
     expect(actual).toEqual(EXPECTED);
   });
 });

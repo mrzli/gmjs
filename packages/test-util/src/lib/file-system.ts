@@ -11,7 +11,7 @@ export interface TestFileSystemExample {
   readonly files: ReadonlyRecord<string, string>;
 }
 
-export function getTestFileSystemExamples(
+export function getFileSystemTestExamples(
   examplesRootDir: string
 ): readonly TestFileSystemExample[] {
   const exampleDirs = klawSync(examplesRootDir, {
