@@ -1,6 +1,6 @@
 import * as path from 'path';
 import { Fn0, ReadonlyRecord } from '@gmjs/util';
-import { toTestJsonFileContent } from './json';
+import { toTestJsonFileContent } from './internal-utils';
 import { expect } from '@jest/globals';
 import { findDirsShallowSync, readTextFilesInDirSync } from '@gmjs/lib-util';
 
