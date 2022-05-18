@@ -1,11 +1,8 @@
 import * as path from 'path';
-import * as fs from 'fs-extra';
 import { Fn0, ReadonlyRecord } from '@gmjs/util';
-import * as klawSync from 'klaw-sync';
 import { toTestJsonFileContent } from './json';
 import { expect } from '@jest/globals';
-
-const ENCODING = 'utf-8';
+import { findDirsShallowSync, readTextFilesInDirSync } from '@gmjs/lib-util';
 
 export interface TestFileSystemExample<TExampleInput> {
   readonly description: string;
@@ -33,30 +30,14 @@ export function getFileSystemTestExamples<TExampleInput>(
 function getFileSystemTestExamplesInternal(
   examplesRootDir: string
 ): readonly TestFileSystemExampleFileData[] {
-  const exampleDirs = klawSync(examplesRootDir, {
-    nofile: true,
-    depthLimit: 0,
-  });
-
+  const exampleDirs = findDirsShallowSync(examplesRootDir);
   return exampleDirs.map((d) => {
-    const dir = path.basename(d.path);
-    const files = readFilesFromExamplesDir(d.path);
+    const result = readTextFilesInDirSync(d.fullPath);
     return {
-      dir,
-      files,
+      dir: path.basename(result.dirFullPath),
+      files: result.files,
     };
   });
-}
-
-function readFilesFromExamplesDir(
-  exampleDir: string
-): ReadonlyRecord<string, string> {
-  const files = klawSync(exampleDir, { nodir: true, depthLimit: 0 });
-  return files.reduce((acc, f) => {
-    const fileName = path.basename(f.path);
-    const content = fs.readFileSync(f.path, ENCODING);
-    return { ...acc, [fileName]: content };
-  }, {});
 }
 
 export function createFileSystemExampleTest<TExampleInput>(

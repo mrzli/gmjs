@@ -1,9 +1,9 @@
-import * as fs from 'fs-extra';
 import * as path from 'path';
 import { parseYaml } from '../shared/yaml';
 import { invariant, isObject, isString } from '@gmjs/util';
+import { readJsonSync } from '@gmjs/lib-util';
 
-const DATA_MODEL_JSON_SCHEMA = fs.readJsonSync(
+const DATA_MODEL_JSON_SCHEMA = readJsonSync(
   path.join(__dirname, '../../assets/data-model-json-schema.json')
 );
 
