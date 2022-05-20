@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { Fn0, ReadonlyRecord } from '@gmjs/util';
+import { AnyValue, Fn0, ReadonlyRecord } from '@gmjs/util';
 import { toTestJsonFileContent } from './internal-utils';
 import { expect } from '@jest/globals';
 import { findDirsShallowSync, readTextFilesInDirSync } from '@gmjs/lib-util';
@@ -42,8 +42,7 @@ function getFileSystemTestExamplesInternal(
 
 export function createFileSystemExampleTest<TExampleInput>(
   example: TestFileSystemExample<TExampleInput>,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  testedFunctionCall: () => any
+  testedFunctionCall: () => AnyValue
 ): Fn0<Promise<void>> {
   return () => doFileSystemExampleTest(example, testedFunctionCall);
 }
