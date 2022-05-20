@@ -1,4 +1,5 @@
 import { ImmutableMap, ImmutableMapKeyValuePair } from './immutable-map';
+import { AnyValue } from '@gmjs/util';
 
 describe('ImmutableMap', () => {
   it.skip('performance-test', () => {
@@ -687,8 +688,7 @@ describe('ImmutableMap', () => {
       interface Example {
         readonly input: {
           readonly initialValues: readonly [string, string][];
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          readonly key: any;
+          readonly key: AnyValue;
         };
       }
 

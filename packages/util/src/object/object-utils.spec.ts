@@ -6,7 +6,7 @@ import {
   objectRemoveUndefined,
 } from './object-utils';
 import { ConditionalKeys } from 'type-fest';
-import { AnyObject } from '../types/generic';
+import { AnyObject, AnyValue } from '../types/generic';
 
 describe('object-utils', () => {
   interface ObjectType {
@@ -186,15 +186,12 @@ describe('object-utils', () => {
         expect(INPUT_OBJECT).toEqual(COPY_OF_INPUT_OBJECT);
         expect(actual).toEqual(example.expected);
 
-        const fieldsToOmit =
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (Object.keys(INPUT_OBJECT) as any[]).filter(
-            (key) => !example.input.fieldsToPick.includes(key)
-          );
+        const fieldsToOmit = (Object.keys(INPUT_OBJECT) as AnyValue[]).filter(
+          (key) => !example.input.fieldsToPick.includes(key)
+        );
 
         for (const field of fieldsToOmit) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          expect((actual as any)[field]).toBeUndefined();
+          expect((actual as AnyValue)[field]).toBeUndefined();
           expect(Object.prototype.hasOwnProperty.call(actual, field)).toEqual(
             false
           );

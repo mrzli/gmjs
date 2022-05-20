@@ -1,5 +1,8 @@
 export type SimpleValue = string | number | boolean;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type AnyValue = any;
+
 const hiddenSymbol = Symbol();
 
 export type EmptyObject = {
@@ -11,8 +14,7 @@ export type ReadonlyRecord<K extends PropertyKey, TValue> = Readonly<
 >;
 export type ReadonlyPick<TObj, K extends keyof TObj> = Readonly<Pick<TObj, K>>;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type AnyObject = Record<string, any>;
+export type AnyObject = Record<string, AnyValue>;
 
 export type Extends<T, U extends T> = U;
 
