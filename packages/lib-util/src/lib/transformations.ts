@@ -1,14 +1,14 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function textToJson(content: string): any {
+import { JsonValue } from 'type-fest';
+import { AnyValue } from '@gmjs/util';
+
+export function textToJson(content: string): AnyValue {
   return JSON.parse(content);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function jsonToText(json: any): string {
+export function jsonToText(json: JsonValue): string {
   return JSON.stringify(json);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function jsonToPretty(json: any): string {
+export function jsonToPretty(json: JsonValue): string {
   return `${JSON.stringify(json, null, 2)}\n`;
 }
