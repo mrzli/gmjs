@@ -4,9 +4,10 @@ import {
   objectOmitFields,
   objectPickFields,
   objectRemoveUndefined,
+  objectGetEntries,
 } from './object-utils';
 import { ConditionalKeys } from 'type-fest';
-import { AnyObject, AnyValue } from '../types/generic';
+import { AnyObject, AnyValue, ObjectEntry } from '../types/generic';
 
 describe('object-utils', () => {
   interface ObjectType {
@@ -27,6 +28,18 @@ describe('object-utils', () => {
     it('example', () => {
       const actual: readonly (keyof ObjectType)[] = objectGetKeys(INPUT_OBJECT);
       expect(actual).toEqual(['field1', 'field2', 'field3']);
+    });
+  });
+
+  describe('objectGetEntries()', () => {
+    it('example', () => {
+      const actual: readonly ObjectEntry<ObjectType>[] =
+        objectGetEntries(INPUT_OBJECT);
+      expect(actual).toEqual([
+        { key: 'field1', value: 'value1' },
+        { key: 'field2', value: 'value2' },
+        { key: 'field3', value: 3 },
+      ]);
     });
   });
 

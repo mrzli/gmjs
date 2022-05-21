@@ -1,5 +1,5 @@
 import { ConditionalKeys, Except } from 'type-fest';
-import { AnyObject, ReadonlyRecord } from '../types/generic';
+import { AnyObject, ObjectEntry, ReadonlyRecord } from '../types/generic';
 
 // https://stackoverflow.com/a/61765012/520229
 // dual declaration to allow both implementation and proper type checking
@@ -19,6 +19,12 @@ export function objectGetKeys<T extends AnyObject, K extends keyof T = keyof T>(
   obj: T
 ): readonly K[] {
   return Object.keys(obj) as unknown as readonly K[];
+}
+
+export function objectGetEntries<T extends AnyObject>(
+  obj: T
+): readonly ObjectEntry<T>[] {
+  return objectGetKeys(obj).map((key) => ({ key, value: obj[key] }));
 }
 
 export function objectOmitFields<T extends AnyObject, K extends keyof T>(
