@@ -1,4 +1,5 @@
 import { jsonToPretty, jsonToText, textToJson } from './transformations';
+import { JsonValue } from 'type-fest';
 
 describe('transformations', () => {
   describe('textToJson()', () => {
@@ -52,7 +53,7 @@ describe('transformations', () => {
 
   describe('jsonToText()', () => {
     interface Example {
-      readonly input: unknown;
+      readonly input: JsonValue;
       readonly expected: string;
     }
 
@@ -101,7 +102,7 @@ describe('transformations', () => {
 
   describe('jsonToPretty()', () => {
     interface Example {
-      readonly input: unknown;
+      readonly input: JsonValue;
       readonly expected: string;
     }
 

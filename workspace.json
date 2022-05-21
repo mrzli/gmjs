@@ -2,6 +2,7 @@
   "version": 2,
   "projects": {
     "data-manipulation": "packages/data-manipulation",
+    "fs-util": "packages/fs-util",
     "lib-util": "packages/lib-util",
     "nest-util": "packages/nest-util",
     "test-util": "packages/test-util",

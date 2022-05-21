@@ -1,6 +1,6 @@
 import * as fs from 'fs-extra';
 import { promisify } from 'util';
-import { ENCODING_UTF8 } from '../constants';
+import { ENCODING_UTF8 } from './util/constants';
 import { AnyValue } from '@gmjs/util';
 
 export function readTextSync(filePath: string): string {

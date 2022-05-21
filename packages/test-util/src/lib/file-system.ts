@@ -2,7 +2,7 @@ import * as path from 'path';
 import { AnyValue, Fn0, ReadonlyRecord } from '@gmjs/util';
 import { toTestJsonFileContent } from './internal-utils';
 import { expect } from '@jest/globals';
-import { findDirsShallowSync, readTextFilesInDirSync } from '@gmjs/lib-util';
+import { findDirsShallowSync, readTextFilesInDirSync } from '@gmjs/fs-util';
 
 export interface TestFileSystemExample<TExampleInput> {
   readonly description: string;
