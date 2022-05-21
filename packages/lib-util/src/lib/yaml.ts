@@ -1,11 +1,11 @@
 import * as yaml from 'js-yaml';
 import * as util from 'util';
 import { validate } from 'jsonschema';
-import { invariant } from '@gmjs/util';
+import { AnyValue, invariant } from '@gmjs/util';
+import { JsonObject } from 'type-fest';
 
 export interface ParseYamlOptions {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  readonly jsonSchema?: any;
+  readonly jsonSchema?: JsonObject;
   readonly nestedErrors?: boolean;
 }
 
@@ -14,8 +14,7 @@ const DEFAULT_PARSE_YAML_OPTIONS: ParseYamlOptions = {};
 export function parseYaml(
   yamlContent: string,
   options?: ParseYamlOptions
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): any {
+): AnyValue {
   const finalOptions = options ?? DEFAULT_PARSE_YAML_OPTIONS;
   const { jsonSchema, nestedErrors } = finalOptions;
 

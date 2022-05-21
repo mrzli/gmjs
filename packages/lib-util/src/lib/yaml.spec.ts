@@ -5,12 +5,13 @@ import {
   getFileSystemTestExamples,
 } from '@gmjs/test-util';
 import { parseYaml } from './yaml';
+import { JsonObject } from 'type-fest';
 
 describe('yaml', () => {
   describe('parseYaml()', () => {
     interface TestInput {
       readonly yaml: string;
-      readonly jsonSchema?: unknown;
+      readonly jsonSchema?: JsonObject;
     }
 
     const exampleMapping: ExampleMappingFn<TestInput> = (te) => {
