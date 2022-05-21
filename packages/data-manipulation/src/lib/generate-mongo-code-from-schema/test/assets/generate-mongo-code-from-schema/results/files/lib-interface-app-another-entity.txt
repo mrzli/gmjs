@@ -1,0 +1,4 @@
+export interface AnotherEntity {
+  readonly id: string;
+  readonly field: string;
+}

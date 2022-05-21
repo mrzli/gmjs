@@ -1,7 +1,19 @@
 import * as path from 'path';
-import { parseYaml } from '../shared/yaml';
-import { invariant, isObject, isString } from '@gmjs/util';
-import { readJsonSync } from '@gmjs/lib-util';
+import {
+  AnyValue,
+  invariant,
+  isObject,
+  isString,
+  ReadonlyRecord,
+} from '@gmjs/util';
+import { parseYaml } from '@gmjs/lib-util';
+import { readJsonSync } from '@gmjs/fs-util';
+import {
+  MongoJsonSchemaAnyType,
+  MongoJsonSchemaTypeNumberBase,
+  MongoJsonSchemaTypeObject,
+} from './mongo-json-schema';
+import { Except } from 'type-fest';
 
 const DATA_MODEL_JSON_SCHEMA = readJsonSync(
   path.join(__dirname, '../../assets/data-model-json-schema.json')
@@ -9,36 +21,41 @@ const DATA_MODEL_JSON_SCHEMA = readJsonSync(
 
 export function generateMongoJsonSchemas(
   dataModelYamlContent: string
-): readonly any[] {
+): readonly MongoJsonSchemaTypeObject[] {
   const dataModel = parseYaml(dataModelYamlContent, {
     jsonSchema: DATA_MODEL_JSON_SCHEMA,
   });
 
-  const collections: readonly any[] = dataModel.collections;
+  const collections: readonly AnyValue[] = dataModel.collections;
   return collections.map((c) => toMongoJsonSchema(c, true));
 }
 
-function toMongoJsonSchema(schema: any, isRoot: boolean): any {
-  const properties: readonly any[] = schema.properties;
+function toMongoJsonSchema(
+  schema: AnyValue,
+  isRoot: boolean
+): MongoJsonSchemaTypeObject {
+  const properties: readonly AnyValue[] = schema.properties;
   const propertyNames: readonly string[] = properties.map((p) => p.name);
   const optional: readonly string[] | undefined = schema.optional;
   const mongoRequired = optional
     ? propertyNames.filter((p) => !optional.includes(p))
     : propertyNames;
 
-  const mongoProperties = properties.reduce(
-    (acc, p) => ({ ...acc, [p.name]: toValueTypeSchema(p) }),
-    {}
-  );
+  const mongoProperties: ReadonlyRecord<string, MongoJsonSchemaAnyType> =
+    properties.reduce(
+      (acc, p) => ({ ...acc, [p.name]: toValueTypeSchema(p) }),
+      {}
+    );
 
-  const finalMongoProperties: any = isRoot
-    ? {
-        _id: {
-          bsonType: 'objectId',
-        },
-        ...mongoProperties,
-      }
-    : mongoProperties;
+  const finalMongoProperties: ReadonlyRecord<string, MongoJsonSchemaAnyType> =
+    isRoot
+      ? {
+          _id: {
+            bsonType: 'objectId',
+          },
+          ...mongoProperties,
+        }
+      : mongoProperties;
 
   const finalMongoRequired: readonly string[] = isRoot
     ? ['_id', ...mongoRequired]
@@ -53,7 +70,7 @@ function toMongoJsonSchema(schema: any, isRoot: boolean): any {
   };
 }
 
-function toValueTypeSchema(schema: any): any {
+function toValueTypeSchema(schema: AnyValue): MongoJsonSchemaAnyType {
   // check if array
   if (schema.items) {
     return {
@@ -78,7 +95,7 @@ function toValueTypeSchema(schema: any): any {
   invariant(false, 'Invalid property type.');
 }
 
-function toSimpleTypeSchema(schema: any): any {
+function toSimpleTypeSchema(schema: AnyValue): MongoJsonSchemaAnyType {
   const type = schema.type;
   invariant(
     isString(type),
@@ -95,8 +112,8 @@ function toSimpleTypeSchema(schema: any): any {
     case 'long':
     case 'decimal':
       return {
-        bsonType: type,
         ...toAnyNumberPropertyConstraints(schema),
+        bsonType: type,
       };
     case 'bool':
     case 'objectId':
@@ -112,8 +129,10 @@ function toSimpleTypeSchema(schema: any): any {
   }
 }
 
-function toAnyNumberPropertyConstraints(schema: any): any {
-  let constraints: any = {};
+function toAnyNumberPropertyConstraints(
+  schema: AnyValue
+): Except<MongoJsonSchemaTypeNumberBase, 'bsonType'> {
+  let constraints: Except<MongoJsonSchemaTypeNumberBase, 'bsonType'> = {};
 
   if (schema.exclusiveMinimum !== undefined) {
     constraints = {

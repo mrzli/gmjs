@@ -1,0 +1,4 @@
+export interface Entity2 {
+  readonly id: string;
+  readonly field: string;
+}

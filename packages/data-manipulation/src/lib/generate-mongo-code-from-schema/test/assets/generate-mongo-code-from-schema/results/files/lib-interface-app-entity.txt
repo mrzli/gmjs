@@ -1,0 +1,41 @@
+export interface Entity {
+  readonly id: string;
+  readonly fieldString1: string;
+  readonly fieldString2: string;
+  readonly fieldInt1: number;
+  readonly fieldInt2: number;
+  readonly fieldInt3: number;
+  readonly fieldInt4: number;
+  readonly fieldInt5: number;
+  readonly fieldInt6: number;
+  readonly fieldInt7: number;
+  readonly fieldLong: number;
+  readonly fieldDecimal: string;
+  readonly fieldBool: boolean;
+  readonly fieldObjectId: string;
+  readonly fieldDate: string;
+  readonly fieldEnumString: string;
+  readonly fieldArrayString: readonly string[];
+  readonly fieldArrayInt1: readonly number[];
+  readonly fieldArrayInt2: readonly number[];
+  readonly fieldArrayLong: readonly number[];
+  readonly fieldArrayBool: readonly boolean[];
+  readonly fieldArrayDecimal: readonly string[];
+  readonly fieldArrayObjectId: readonly string[];
+  readonly fieldArrayDate: readonly string[];
+  readonly fieldArrayEnumString: readonly string[];
+  readonly fieldObject: SubEntity1;
+  readonly fieldArrayOfObjects: readonly SubEntity2[];
+  readonly fieldOptional?: string;
+}
+
+export interface SubEntity1 {
+  readonly subfield11: string;
+  readonly subfield12: number;
+}
+
+export interface SubEntity2 {
+  readonly subfield21: string;
+  readonly subfield22: number;
+  readonly subfield32: string;
+}

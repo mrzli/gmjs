@@ -1,0 +1,2 @@
+export * from './lib/some-file';
+export * from './lib/mongo/db-collection-name';

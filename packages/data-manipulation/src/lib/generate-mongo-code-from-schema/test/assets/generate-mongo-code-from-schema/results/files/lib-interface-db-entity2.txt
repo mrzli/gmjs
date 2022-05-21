@@ -1,0 +1,6 @@
+import { ObjectId } from 'mongodb';
+
+export interface DbEntity2 {
+  readonly _id: ObjectId;
+  readonly field: string;
+}

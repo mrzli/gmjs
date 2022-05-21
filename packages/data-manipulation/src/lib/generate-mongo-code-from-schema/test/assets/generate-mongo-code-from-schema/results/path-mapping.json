@@ -1,0 +1,34 @@
+[
+  {
+    "testFile": "lib-index.txt",
+    "path": "libs/example-shared/src/index.ts"
+  },
+  {
+    "testFile": "lib-interface-collection-name.txt",
+    "path": "libs/example-shared/src/lib/mongo/db-collection-name.ts"
+  },
+  {
+    "testFile": "lib-interface-app-another-entity.txt",
+    "path": "libs/example-shared/src/lib/mongo/app/another-entity.ts"
+  },
+  {
+    "testFile": "lib-interface-app-entity.txt",
+    "path": "libs/example-shared/src/lib/mongo/app/entity.ts"
+  },
+  {
+    "testFile": "lib-interface-app-entity2.txt",
+    "path": "libs/example-shared/src/lib/mongo/app/entity2.ts"
+  },
+  {
+    "testFile": "lib-interface-db-another-entity.txt",
+    "path": "libs/example-shared/src/lib/mongo/db/db-another-entity.ts"
+  },
+  {
+    "testFile": "lib-interface-db-entity.txt",
+    "path": "libs/example-shared/src/lib/mongo/db/db-entity.ts"
+  },
+  {
+    "testFile": "lib-interface-db-entity2.txt",
+    "path": "libs/example-shared/src/lib/mongo/db/db-entity2.ts"
+  }
+]
