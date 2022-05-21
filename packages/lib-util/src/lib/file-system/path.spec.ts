@@ -1,4 +1,4 @@
-import { isInDir } from '@gmjs/lib-util';
+import { isInDir, pathWithoutExtension } from './path';
 
 describe('path', () => {
   describe('isInDir()', () => {
@@ -79,6 +79,47 @@ describe('path', () => {
     EXAMPLES.forEach((example) => {
       it(JSON.stringify(example), () => {
         const actual = isInDir(example.input.rootDir, example.input.fsPath);
+        expect(actual).toEqual(example.expected);
+      });
+    });
+  });
+
+  describe('pathWithoutExtension()', () => {
+    interface Example {
+      readonly input: string;
+      readonly expected: string;
+    }
+
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: '',
+        expected: '.',
+      },
+      {
+        input: 'a',
+        expected: 'a',
+      },
+      {
+        input: 'a.ext',
+        expected: 'a',
+      },
+      {
+        input: '/a',
+        expected: '/a',
+      },
+      {
+        input: 'a/b',
+        expected: 'a/b',
+      },
+      {
+        input: 'a/b.ext',
+        expected: 'a/b',
+      },
+    ];
+
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        const actual = pathWithoutExtension(example.input);
         expect(actual).toEqual(example.expected);
       });
     });

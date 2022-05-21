@@ -1,5 +1,5 @@
 import { ImmutableMap, ImmutableMapKeyValuePair } from './immutable-map';
-import { AnyValue } from '@gmjs/util';
+import { AnyValue } from '../types/generic';
 
 describe('ImmutableMap', () => {
   it.skip('performance-test', () => {

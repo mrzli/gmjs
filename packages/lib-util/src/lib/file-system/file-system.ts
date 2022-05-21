@@ -11,11 +11,13 @@ export async function readTextAsync(filePath: string): Promise<string> {
   return fs.readFile(filePath, ENCODING_UTF8);
 }
 
-export function readJsonSync(filePath: string): AnyValue {
+export function readJsonSync<T = AnyValue>(filePath: string): T {
   return fs.readJsonSync(filePath, ENCODING_UTF8);
 }
 
-export async function readJsonAsync(filePath: string): Promise<AnyValue> {
+export async function readJsonAsync<T = AnyValue>(
+  filePath: string
+): Promise<T> {
   return fs.readJson(filePath, ENCODING_UTF8);
 }
 
