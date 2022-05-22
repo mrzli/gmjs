@@ -20,7 +20,7 @@ import { invariant, objectGetEntries, sortArrayByStringAsc } from '@gmjs/util';
 import { getRelativeImportPath } from '../util/util';
 
 export interface InterfaceCodeGenerator {
-  generateInterfacesCode(): void;
+  generate(): void;
 }
 
 export function createInterfaceCodeGenerator(
@@ -43,7 +43,7 @@ abstract class InterfaceCodeGeneratorBase implements InterfaceCodeGenerator {
     protected readonly pathResolver: PathResolver
   ) {}
 
-  public generateInterfacesCode(): void {
+  public generate(): void {
     const interfacesDir = path.join(
       this.pathResolver.resolveSharedProjectInterfacesRootDir(),
       this.interfaceOptions.dir

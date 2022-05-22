@@ -26,16 +26,18 @@ export interface Entity {
   readonly fieldArrayEnumString: readonly string[];
   readonly fieldObject: SubEntity1;
   readonly fieldArrayOfObjects: readonly SubEntity2[];
-  readonly fieldOptional?: string;
+  readonly fieldOptional1?: string;
+  readonly fieldOptional2?: string;
 }
 
 export interface SubEntity1 {
   readonly subfield11: string;
   readonly subfield12: number;
+  readonly subfield13: string;
 }
 
 export interface SubEntity2 {
   readonly subfield21: string;
   readonly subfield22: number;
-  readonly subfield32: string;
+  readonly subfield23: string;
 }

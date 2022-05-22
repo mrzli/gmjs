@@ -4,7 +4,7 @@ import { PathResolver } from '../util/path-resolver';
 import * as path from 'path';
 import { getRelativeImportPath } from '../util/util';
 import { pascalCase } from '@gmjs/lib-util';
-import { createInterfaceCodeGenerator } from './generate-interfaces-code';
+import { createInterfaceCodeGenerator } from './interface-code-generator';
 
 export function generateSharedLibCode(
   input: GenerateMongoCodeFromSchemaInput,
@@ -46,16 +46,6 @@ export function generateSharedLibCode(
     members: collectionNames.map((n) => ({ name: n, value: n })),
   });
 
-  createInterfaceCodeGenerator(
-    input,
-    project,
-    pathResolver,
-    true
-  ).generateInterfacesCode();
-  createInterfaceCodeGenerator(
-    input,
-    project,
-    pathResolver,
-    false
-  ).generateInterfacesCode();
+  createInterfaceCodeGenerator(input, project, pathResolver, true).generate();
+  createInterfaceCodeGenerator(input, project, pathResolver, false).generate();
 }

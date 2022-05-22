@@ -1,4 +1,4 @@
-import { IndentationText, Project, QuoteKind, SourceFile } from 'ts-morph';
+import { Project, SourceFile } from 'ts-morph';
 import * as prettier from 'prettier';
 import { GenerateMongoCodeFromSchemaInput } from './util/types';
 import { PathResolver } from './util/path-resolver';

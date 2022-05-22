@@ -136,11 +136,15 @@
           },
           "subfield12": {
             "bsonType": "int"
+          },
+          "subfield13": {
+            "bsonType": "date"
           }
         },
         "required": [
           "subfield11",
-          "subfield12"
+          "subfield12",
+          "subfield13"
         ],
         "additionalProperties": false
       },
@@ -156,20 +160,23 @@
             "subfield22": {
               "bsonType": "int"
             },
-            "subfield32": {
+            "subfield23": {
               "bsonType": "date"
             }
           },
           "required": [
             "subfield21",
             "subfield22",
-            "subfield32"
+            "subfield23"
           ],
           "additionalProperties": false
         }
       },
-      "fieldOptional": {
+      "fieldOptional1": {
         "bsonType": "string"
+      },
+      "fieldOptional2": {
+        "bsonType": "date"
       }
     },
     "required": [

@@ -29,8 +29,7 @@ export const TEST_OPTIONS: GenerateMongoCodeFromSchemaOptions = {
     },
     appProject: {
       projectDir: 'example-be',
-      nestModulesRootDir: 'src/app',
-      appModulePath: 'src/app/app.module.ts',
+      appDir: 'src/app',
     },
   },
 };

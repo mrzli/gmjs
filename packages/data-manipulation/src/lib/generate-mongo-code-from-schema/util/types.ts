@@ -41,6 +41,5 @@ export interface GenerateMongoCodeFromSchemaSharedProjectOptions {
 
 export interface GenerateMongoCodeFromSchemaAppProjectOptions {
   readonly projectDir: string;
-  readonly nestModulesRootDir: string;
-  readonly appModulePath: string;
+  readonly appDir: string;
 }

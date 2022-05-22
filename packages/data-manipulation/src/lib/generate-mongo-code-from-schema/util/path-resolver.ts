@@ -32,4 +32,20 @@ export class PathResolver {
       this.options.appsMonorepo.sharedProject.sharedInterfacesDir
     );
   }
+
+  public resolveAppProjectDir(): string {
+    const { appsMonorepo } = this.options;
+    return path.resolve(
+      this.rootDir,
+      appsMonorepo.appsDir,
+      appsMonorepo.appProject.projectDir
+    );
+  }
+
+  public resolveAppProjectAppDir(): string {
+    return path.join(
+      this.resolveAppProjectDir(),
+      this.options.appsMonorepo.appProject.appDir
+    );
+  }
 }

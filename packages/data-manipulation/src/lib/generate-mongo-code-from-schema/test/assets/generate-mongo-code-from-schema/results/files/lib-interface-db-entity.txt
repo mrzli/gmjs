@@ -28,16 +28,18 @@ export interface DbEntity {
   readonly fieldArrayEnumString: readonly string[];
   readonly fieldObject: DbSubEntity1;
   readonly fieldArrayOfObjects: readonly DbSubEntity2[];
-  readonly fieldOptional?: string;
+  readonly fieldOptional1?: string;
+  readonly fieldOptional2?: Date;
 }
 
 export interface DbSubEntity1 {
   readonly subfield11: string;
   readonly subfield12: number;
+  readonly subfield13: Date;
 }
 
 export interface DbSubEntity2 {
   readonly subfield21: string;
   readonly subfield22: number;
-  readonly subfield32: Date;
+  readonly subfield23: Date;
 }
