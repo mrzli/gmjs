@@ -17,6 +17,7 @@ import {
   MongoJsonSchemaTypeObject,
 } from '../../data-model/mongo-json-schema';
 import { invariant, objectGetEntries, sortArrayByStringAsc } from '@gmjs/util';
+import { getRelativeImportPath } from '../util/util';
 
 export interface InterfaceCodeGenerator {
   generateInterfacesCode(): void;
@@ -47,6 +48,18 @@ abstract class InterfaceCodeGeneratorBase implements InterfaceCodeGenerator {
       this.pathResolver.resolveSharedProjectInterfacesRootDir(),
       this.interfaceOptions.dir
     );
+    const filePaths = this.generateInterfaceFiles(interfacesDir);
+    const interfacesIndexFile = path.join(interfacesDir, 'index.ts');
+    const indexSf = this.project.createSourceFile(interfacesIndexFile);
+    indexSf.addExportDeclarations(
+      filePaths.map((p) => ({
+        moduleSpecifier: getRelativeImportPath(interfacesIndexFile, p),
+      }))
+    );
+  }
+
+  private generateInterfaceFiles(interfacesDir: string): readonly string[] {
+    const filePaths: string[] = [];
     for (const schema of this.input.schemas) {
       const entityName = getEntityName(
         this.interfaceOptions.prefix,
@@ -57,7 +70,10 @@ abstract class InterfaceCodeGeneratorBase implements InterfaceCodeGenerator {
       const sf = this.project.createSourceFile(filePath);
       this.addImports(sf, schema);
       this.addInterface(sf, schema);
+      filePaths.push(filePath);
     }
+
+    return filePaths;
   }
 
   private addInterface(

@@ -8,5 +8,8 @@ export function getRelativeImportPath(
   const relativePath = pathWithoutExtension(
     path.relative(path.dirname(importingFilePath), filePathToImport)
   );
-  return `./${relativePath}`;
+  const importPath = relativePath.endsWith('index')
+    ? path.dirname(relativePath)
+    : relativePath;
+  return `./${importPath}`;
 }

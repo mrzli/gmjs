@@ -32,11 +32,4 @@ export class PathResolver {
       this.options.appsMonorepo.sharedProject.sharedInterfacesDir
     );
   }
-
-  public resolveSharedProjectDbCollectionNameFile(): string {
-    return path.join(
-      this.resolveSharedProjectInterfacesRootDir(),
-      'db-collection-name.ts'
-    );
-  }
 }
