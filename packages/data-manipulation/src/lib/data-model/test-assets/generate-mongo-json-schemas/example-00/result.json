@@ -139,12 +139,26 @@
           },
           "subfield13": {
             "bsonType": "date"
+          },
+          "subfield14": {
+            "title": "SubEntity11",
+            "bsonType": "object",
+            "properties": {
+              "subfield111": {
+                "bsonType": "string"
+              }
+            },
+            "required": [
+              "subfield111"
+            ],
+            "additionalProperties": false
           }
         },
         "required": [
           "subfield11",
           "subfield12",
-          "subfield13"
+          "subfield13",
+          "subfield14"
         ],
         "additionalProperties": false
       },
@@ -202,12 +216,26 @@
           },
           "subfield13": {
             "bsonType": "date"
+          },
+          "subfield14": {
+            "title": "SubEntity11",
+            "bsonType": "object",
+            "properties": {
+              "subfield111": {
+                "bsonType": "string"
+              }
+            },
+            "required": [
+              "subfield111"
+            ],
+            "additionalProperties": false
           }
         },
         "required": [
           "subfield11",
           "subfield12",
-          "subfield13"
+          "subfield13",
+          "subfield14"
         ],
         "additionalProperties": false
       },
@@ -289,12 +317,26 @@
           },
           "subfield13": {
             "bsonType": "date"
+          },
+          "subfield14": {
+            "title": "SubEntity11",
+            "bsonType": "object",
+            "properties": {
+              "subfield111": {
+                "bsonType": "string"
+              }
+            },
+            "required": [
+              "subfield111"
+            ],
+            "additionalProperties": false
           }
         },
         "required": [
           "subfield11",
           "subfield12",
-          "subfield13"
+          "subfield13",
+          "subfield14"
         ],
         "additionalProperties": false
       }

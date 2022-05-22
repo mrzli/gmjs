@@ -80,6 +80,12 @@ collections:
               type: int
             - name: subfield13
               type: date
+            - name: subfield14
+              type:
+                name: SubEntity11
+                properties:
+                  - name: subfield111
+                    type: string
       - name: fieldArrayOfObjects
         items:
           type:
