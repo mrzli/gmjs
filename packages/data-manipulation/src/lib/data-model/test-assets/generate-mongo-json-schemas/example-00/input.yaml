@@ -91,17 +91,34 @@ collections:
                 type: int
               - name: subfield23
                 type: date
-      - name: fieldOptional1
+      - name: fieldOptionalString
         type: string
-      - name: fieldOptional2
+      - name: fieldOptionalDate
         type: date
+      - name: fieldOptionalArrayString
+        items:
+          type: string
+      - name: fieldOptionalArrayDate
+        items:
+          type: date
+      - name: fieldOptionalObject
+        ref: SubEntity1
+      - name: fieldOptionalArrayOfObjects
+        items:
+          ref: SubEntity2
     optional:
-      - fieldOptional1
-      - fieldOptional2
+      - fieldOptionalString
+      - fieldOptionalDate
+      - fieldOptionalArrayString
+      - fieldOptionalArrayDate
+      - fieldOptionalObject
+      - fieldOptionalArrayOfObjects
   - name: Entity2
     properties:
       - name: field
         type: string
+      - name: fieldRefFromOtherCollection
+        ref: SubEntity1
   - name: AnotherEntity
     properties:
       - name: field

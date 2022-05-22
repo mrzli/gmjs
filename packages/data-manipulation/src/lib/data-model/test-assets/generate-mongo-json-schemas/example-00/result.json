@@ -172,11 +172,68 @@
           "additionalProperties": false
         }
       },
-      "fieldOptional1": {
+      "fieldOptionalString": {
         "bsonType": "string"
       },
-      "fieldOptional2": {
+      "fieldOptionalDate": {
         "bsonType": "date"
+      },
+      "fieldOptionalArrayString": {
+        "bsonType": "array",
+        "items": {
+          "bsonType": "string"
+        }
+      },
+      "fieldOptionalArrayDate": {
+        "bsonType": "array",
+        "items": {
+          "bsonType": "date"
+        }
+      },
+      "fieldOptionalObject": {
+        "title": "SubEntity1",
+        "bsonType": "object",
+        "properties": {
+          "subfield11": {
+            "bsonType": "string"
+          },
+          "subfield12": {
+            "bsonType": "int"
+          },
+          "subfield13": {
+            "bsonType": "date"
+          }
+        },
+        "required": [
+          "subfield11",
+          "subfield12",
+          "subfield13"
+        ],
+        "additionalProperties": false
+      },
+      "fieldOptionalArrayOfObjects": {
+        "bsonType": "array",
+        "items": {
+          "title": "SubEntity2",
+          "bsonType": "object",
+          "properties": {
+            "subfield21": {
+              "bsonType": "string"
+            },
+            "subfield22": {
+              "bsonType": "int"
+            },
+            "subfield23": {
+              "bsonType": "date"
+            }
+          },
+          "required": [
+            "subfield21",
+            "subfield22",
+            "subfield23"
+          ],
+          "additionalProperties": false
+        }
       }
     },
     "required": [
@@ -219,11 +276,33 @@
       },
       "field": {
         "bsonType": "string"
+      },
+      "fieldRefFromOtherCollection": {
+        "title": "SubEntity1",
+        "bsonType": "object",
+        "properties": {
+          "subfield11": {
+            "bsonType": "string"
+          },
+          "subfield12": {
+            "bsonType": "int"
+          },
+          "subfield13": {
+            "bsonType": "date"
+          }
+        },
+        "required": [
+          "subfield11",
+          "subfield12",
+          "subfield13"
+        ],
+        "additionalProperties": false
       }
     },
     "required": [
       "_id",
-      "field"
+      "field",
+      "fieldRefFromOtherCollection"
     ],
     "additionalProperties": false
   },

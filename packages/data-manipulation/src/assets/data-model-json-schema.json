@@ -74,6 +74,9 @@
         },
         {
           "$ref": "#/$defs/propertyObject"
+        },
+        {
+          "$ref": "#/$defs/propertyRef"
         }
       ]
     },
@@ -293,6 +296,9 @@
             },
             {
               "$ref": "#/$defs/valueTypeObject"
+            },
+            {
+              "$ref": "#/$defs/valueTypeRef"
             }
           ]
         }
@@ -316,6 +322,22 @@
       "required": [
         "name",
         "type"
+      ],
+      "additionalProperties": false
+    },
+    "propertyRef": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "ref": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "ref"
       ],
       "additionalProperties": false
     },
@@ -478,6 +500,18 @@
       },
       "required": [
         "type"
+      ],
+      "additionalProperties": false
+    },
+    "valueTypeRef": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "ref"
       ],
       "additionalProperties": false
     }

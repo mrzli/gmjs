@@ -7,6 +7,7 @@ export * from './array/array-min-length-utils';
 export * from './assert/assert';
 export * from './containers/immutable-map';
 export * from './containers/immutable-set';
+export * from './containers/map';
 export * from './enum/enum-utils';
 export * from './fluent/chainable';
 export * from './function/generic-function-utils';

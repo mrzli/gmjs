@@ -3,4 +3,4 @@ collections:
     properties:
       - name: fieldString
         type: string
-        invalidProperty: whetever
+        invalidProperty: whatever

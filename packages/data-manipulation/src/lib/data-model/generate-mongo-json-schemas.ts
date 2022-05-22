@@ -4,6 +4,7 @@ import {
   invariant,
   isObject,
   isString,
+  mapGetOrThrow,
   ReadonlyRecord,
 } from '@gmjs/util';
 import { parseYaml } from '@gmjs/lib-util';
@@ -27,11 +28,13 @@ export function generateMongoJsonSchemas(
   });
 
   const collections: readonly AnyValue[] = dataModel.collections;
-  return collections.map((c) => toMongoJsonSchema(c, true));
+  const objectReferences = new Map<string, MongoJsonSchemaTypeObject>();
+  return collections.map((c) => toMongoJsonSchema(c, objectReferences, true));
 }
 
 function toMongoJsonSchema(
   schema: AnyValue,
+  objectReferences: Map<string, MongoJsonSchemaTypeObject>,
   isRoot: boolean
 ): MongoJsonSchemaTypeObject {
   const properties: readonly AnyValue[] = schema.properties;
@@ -43,7 +46,10 @@ function toMongoJsonSchema(
 
   const mongoProperties: ReadonlyRecord<string, MongoJsonSchemaAnyType> =
     properties.reduce(
-      (acc, p) => ({ ...acc, [p.name]: toValueTypeSchema(p) }),
+      (acc, p) => ({
+        ...acc,
+        [p.name]: toValueTypeSchema(p, objectReferences),
+      }),
       {}
     );
 
@@ -70,24 +76,40 @@ function toMongoJsonSchema(
   };
 }
 
-function toValueTypeSchema(schema: AnyValue): MongoJsonSchemaAnyType {
-  // check if array
+function toValueTypeSchema(
+  schema: AnyValue,
+  objectReferences: Map<string, MongoJsonSchemaTypeObject>
+): MongoJsonSchemaAnyType {
   if (schema.items) {
+    // this is an array
     return {
       bsonType: 'array',
-      items: toValueTypeSchema(schema.items),
+      items: toValueTypeSchema(schema.items, objectReferences),
     };
+  } else if (schema.ref) {
+    invariant(
+      objectReferences.has(schema.ref),
+      `Invalid object reference: '${schema.ref}'.`
+    );
+    return mapGetOrThrow(objectReferences, schema.ref);
   }
 
   const type = schema.type;
   invariant(
     !!type,
-    "All property types except 'array' must have 'type' defined."
+    "All property types except 'array' or 'ref' must have 'type' defined."
   );
 
-  // check if object (which incidentally has an 'object' definition in yaml)
+  // check if object
+  // (which incidentally is the only type that has an 'object' structure in yaml)
   if (isObject(type)) {
-    return toMongoJsonSchema(type, false);
+    const objDefinition = toMongoJsonSchema(type, objectReferences, false);
+    invariant(
+      !objectReferences.has(objDefinition.title),
+      `Object with the name '${objDefinition.title}' already defined.`
+    );
+    objectReferences.set(objDefinition.title, objDefinition);
+    return objDefinition;
   } else if (isString(type)) {
     return toSimpleTypeSchema(schema);
   }
