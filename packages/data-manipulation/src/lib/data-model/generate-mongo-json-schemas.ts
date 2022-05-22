@@ -112,8 +112,8 @@ function toSimpleTypeSchema(schema: AnyValue): MongoJsonSchemaAnyType {
     case 'long':
     case 'decimal':
       return {
-        ...toAnyNumberPropertyConstraints(schema),
         bsonType: type,
+        ...toAnyNumberPropertyConstraints(schema),
       };
     case 'bool':
     case 'objectId':

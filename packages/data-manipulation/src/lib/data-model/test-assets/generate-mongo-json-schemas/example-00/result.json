@@ -1,6 +1,6 @@
 [
   {
-    "title": "Entity1",
+    "title": "Entity",
     "bsonType": "object",
     "properties": {
       "_id": {
@@ -136,11 +136,15 @@
           },
           "subfield12": {
             "bsonType": "int"
+          },
+          "subfield13": {
+            "bsonType": "date"
           }
         },
         "required": [
           "subfield11",
-          "subfield12"
+          "subfield12",
+          "subfield13"
         ],
         "additionalProperties": false
       },
@@ -155,17 +159,24 @@
             },
             "subfield22": {
               "bsonType": "int"
+            },
+            "subfield23": {
+              "bsonType": "date"
             }
           },
           "required": [
             "subfield21",
-            "subfield22"
+            "subfield22",
+            "subfield23"
           ],
           "additionalProperties": false
         }
       },
-      "fieldOptional": {
+      "fieldOptional1": {
         "bsonType": "string"
+      },
+      "fieldOptional2": {
+        "bsonType": "date"
       }
     },
     "required": [
@@ -201,6 +212,23 @@
   },
   {
     "title": "Entity2",
+    "bsonType": "object",
+    "properties": {
+      "_id": {
+        "bsonType": "objectId"
+      },
+      "field": {
+        "bsonType": "string"
+      }
+    },
+    "required": [
+      "_id",
+      "field"
+    ],
+    "additionalProperties": false
+  },
+  {
+    "title": "AnotherEntity",
     "bsonType": "object",
     "properties": {
       "_id": {

@@ -1,5 +1,5 @@
 collections:
-  - name: Entity1
+  - name: Entity
     properties:
       - name: fieldString1
         type: string
@@ -78,6 +78,8 @@ collections:
               type: string
             - name: subfield12
               type: int
+            - name: subfield13
+              type: date
       - name: fieldArrayOfObjects
         items:
           type:
@@ -87,11 +89,20 @@ collections:
                 type: string
               - name: subfield22
                 type: int
-      - name: fieldOptional
+              - name: subfield23
+                type: date
+      - name: fieldOptional1
         type: string
+      - name: fieldOptional2
+        type: date
     optional:
-      - fieldOptional
+      - fieldOptional1
+      - fieldOptional2
   - name: Entity2
+    properties:
+      - name: field
+        type: string
+  - name: AnotherEntity
     properties:
       - name: field
         type: string
