@@ -4,17 +4,34 @@ import { GenerateMongoCodeFromSchemaInput } from './util/types';
 import { createTestOptions } from './test/test-util';
 import { readJsonSync, readTextFilesInDirSync } from '@gmjs/fs-util';
 import { MongoJsonSchemaTypeObject } from '../data-model/mongo-json-schema';
+import { flatMap, ImmutableMap, ImmutableSet } from '@gmjs/util';
 
 describe('generate-mongo-code-from-schema', () => {
   it('generateMongoCodeFromSchema()', () => {
     interface PathAndContent {
       readonly path: string;
-      readonly content: string;
+      readonly content: string | undefined;
     }
 
     interface PathMapping {
       readonly testFile: string;
       readonly path: string;
+    }
+
+    const TEXT_DELIMITER = '-'.repeat(20);
+    const MISSING_FILE_TEXT = '<MISSING_FILE>';
+
+    function createComparisonText(
+      pathAndContentList: readonly PathAndContent[]
+    ): string {
+      const contentParts = flatMap(pathAndContentList, (item) => [
+        TEXT_DELIMITER,
+        `File path: ${item.path}`,
+        TEXT_DELIMITER,
+        item.content ?? MISSING_FILE_TEXT,
+        TEXT_DELIMITER,
+      ]);
+      return contentParts.join('\n');
     }
 
     const testDir = path.join(
@@ -40,14 +57,44 @@ describe('generate-mongo-code-from-schema', () => {
       path.join(testResultsDir, 'path-mapping.json')
     );
 
-    const EXPECTED: readonly PathAndContent[] = pathMapping.map((p) => ({
-      path: path.join(testProjDir, p.path),
-      content: testResultFiles.files[p.testFile],
-    }));
+    const expectedPathAndContentList: readonly PathAndContent[] =
+      pathMapping.map((p) => ({
+        path: path.join(testProjDir, p.path),
+        content: testResultFiles.files[p.testFile],
+      }));
 
-    const actual: readonly PathAndContent[] = generateMongoCodeFromSchema(
-      INPUT
-    ).map((sf) => ({ path: sf.getFilePath(), content: sf.getFullText() }));
-    expect(actual).toEqual(EXPECTED);
+    const actualPathAndContentList: readonly PathAndContent[] =
+      generateMongoCodeFromSchema(INPUT).map((sf) => ({
+        path: sf.getFilePath(),
+        content: sf.getFullText(),
+      }));
+
+    const expectedPathsSet = ImmutableSet.fromArrayWithFieldMapping(
+      expectedPathAndContentList,
+      'path'
+    );
+
+    const finalExpectedPathAndContentList: readonly PathAndContent[] =
+      expectedPathAndContentList.concat(
+        actualPathAndContentList.filter(
+          (item) => !expectedPathsSet.has(item.path)
+        )
+      );
+
+    const actualPathsAndContentMap = ImmutableMap.fromArrayWithKeyField(
+      actualPathAndContentList,
+      'path'
+    );
+
+    const finalActualPathAndContentList: readonly PathAndContent[] =
+      finalExpectedPathAndContentList.map((item) => ({
+        path: item.path,
+        content: actualPathsAndContentMap.get(item.path)?.content,
+      }));
+
+    const expected = createComparisonText(finalExpectedPathAndContentList);
+    const actual = createComparisonText(finalActualPathAndContentList);
+
+    expect(actual).toEqual(expected);
   });
 });

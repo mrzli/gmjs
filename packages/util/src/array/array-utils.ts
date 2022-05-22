@@ -38,3 +38,39 @@ export function flatMap<TItemInput, TItemResult>(
     return acc;
   }, []);
 }
+
+export function distinctItems<TElement>(
+  array: readonly TElement[]
+): readonly TElement[] {
+  const set = new Set<TElement>();
+
+  // using mutable array and forEach for performance
+  const finalArray: TElement[] = [];
+  array.forEach((item) => {
+    if (!set.has(item)) {
+      set.add(item);
+      finalArray.push(item);
+    }
+  });
+
+  return finalArray;
+}
+
+export function distinctItemsBy<TElement, TSelectorResult>(
+  array: readonly TElement[],
+  distinctBy: (item: TElement) => TSelectorResult
+): readonly TElement[] {
+  const set = new Set<TSelectorResult>();
+
+  // using mutable array and forEach for performance
+  const finalArray: TElement[] = [];
+  array.forEach((item) => {
+    const valueToCheck = distinctBy(item);
+    if (!set.has(valueToCheck)) {
+      set.add(valueToCheck);
+      finalArray.push(item);
+    }
+  });
+
+  return finalArray;
+}

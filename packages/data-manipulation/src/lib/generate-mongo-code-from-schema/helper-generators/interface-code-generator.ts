@@ -3,6 +3,7 @@ import {
   GenerateMongoCodeFromSchemaInterfaceOptions,
 } from '../util/types';
 import {
+  ImportSpecifierStructure,
   OptionalKind,
   Project,
   PropertySignatureStructure,
@@ -16,8 +17,15 @@ import {
   MongoJsonSchemaBsonType,
   MongoJsonSchemaTypeObject,
 } from '../../data-model/mongo-json-schema';
-import { invariant, objectGetEntries, sortArrayByStringAsc } from '@gmjs/util';
-import { getRelativeImportPath } from '../util/util';
+import {
+  asChainable,
+  distinctItems,
+  invariant,
+  ObjectEntry,
+  objectGetEntries,
+  ReadonlyRecord,
+  sortArrayByStringAsc,
+} from '@gmjs/util';
 
 export interface InterfaceCodeGenerator {
   generate(): void;
@@ -44,109 +52,245 @@ abstract class InterfaceCodeGeneratorBase implements InterfaceCodeGenerator {
   ) {}
 
   public generate(): void {
-    const interfacesDir = path.join(
-      this.pathResolver.resolveSharedProjectInterfacesRootDir(),
-      this.interfaceOptions.dir
-    );
-    const filePaths = this.generateInterfaceFiles(interfacesDir);
-    const interfacesIndexFile = path.join(interfacesDir, 'index.ts');
-    const indexSf = this.project.createSourceFile(interfacesIndexFile);
-    indexSf.addExportDeclarations(
-      filePaths.map((p) => ({
-        moduleSpecifier: getRelativeImportPath(interfacesIndexFile, p),
-      }))
-    );
-  }
-
-  private generateInterfaceFiles(interfacesDir: string): readonly string[] {
-    const filePaths: string[] = [];
+    const generatedInterfaces: GeneratedInterfaceSets = {
+      collections: new Set<string>(),
+      embedded: new Set<string>(),
+    };
     for (const schema of this.input.schemas) {
-      const entityName = getEntityName(
-        this.interfaceOptions.prefix,
-        schema.title
-      );
-      const fileName = `${kebabCase(entityName)}.ts`;
-      const filePath = path.join(interfacesDir, fileName);
-      const sf = this.project.createSourceFile(filePath);
-      this.addImports(sf, schema);
-      this.addInterface(sf, schema);
-      filePaths.push(filePath);
+      this.generateInterfaceFile(schema, false, generatedInterfaces);
     }
-
-    return filePaths;
+    this.generateInterfacesIndexFile(generatedInterfaces);
   }
 
-  private addInterface(
-    sf: SourceFile,
-    schema: MongoJsonSchemaTypeObject
+  private generateInterfaceFile(
+    schema: MongoJsonSchemaTypeObject,
+    isEmbedded: boolean,
+    generatedInterfaces: GeneratedInterfaceSets
   ): void {
     const entityName = getEntityName(
       this.interfaceOptions.prefix,
       schema.title
     );
+
+    if (isInterfaceAlreadyGenerated(generatedInterfaces, entityName)) {
+      return;
+    }
+
+    addGeneratedInterface(generatedInterfaces, entityName, isEmbedded);
+
+    const filePath = InterfaceCodeGeneratorBase.getCollectionInterfaceFilePath(
+      entityName,
+      this.getInterfacesDir(),
+      isEmbedded
+    );
+
+    const sf = this.project.createSourceFile(filePath);
+
     const interfaceDeclaration = sf.addInterface({
       name: entityName,
       isExported: true,
     });
 
-    const propertyDeclarations: OptionalKind<PropertySignatureStructure>[] = [];
     const propertyEntries = objectGetEntries(schema.properties);
     const requiredSet = new Set(
       schema.required.map((name) => this.getPropertyName(name))
     );
-    for (const property of propertyEntries) {
-      const propertyName = this.getPropertyName(property.key);
-      const propertyDef = property.value;
-      const propertyType = this.getValueTypeAndAddEmbeddedTypeInterfaces(
-        sf,
-        propertyDef,
-        false
-      );
-      propertyDeclarations.push({
-        name: propertyName,
-        isReadonly: true,
-        type: propertyType,
-        hasQuestionToken: !requiredSet.has(propertyName),
-      });
-    }
+    const propertyResults = propertyEntries.map((property) =>
+      this.getPropertySignatureAndGenerateNestedTypeInterfaces(
+        property,
+        requiredSet,
+        generatedInterfaces
+      )
+    );
+    const propertySignatures = propertyResults.map((r) => r.propertyType);
+    interfaceDeclaration.addProperties(propertySignatures);
 
-    interfaceDeclaration.addProperties(propertyDeclarations);
+    const propertyValueTypes = propertyResults.map((r) => r.valueTypeResult);
+    this.addImports(sf, propertyValueTypes, isEmbedded);
   }
 
-  private getValueTypeAndAddEmbeddedTypeInterfaces(
-    sf: SourceFile,
+  private getInterfacesDir(): string {
+    return path.join(
+      this.pathResolver.resolveSharedProjectInterfacesRootDir(),
+      this.interfaceOptions.dir
+    );
+  }
+
+  private getPropertySignatureAndGenerateNestedTypeInterfaces(
+    property: ObjectEntry<ReadonlyRecord<string, MongoJsonSchemaAnyType>>,
+    requiredPropertiesSet: Set<string>,
+    generatedInterfaces: GeneratedInterfaceSets
+  ): GetPropertySignatureResult {
+    const propertyName = this.getPropertyName(property.key);
+    const propertyDef = property.value;
+    const propertyValueTypeResult =
+      this.getValueTypeAndGenerateNestedTypeInterfaces(
+        propertyDef,
+        false,
+        generatedInterfaces
+      );
+    const propertySignature: OptionalKind<PropertySignatureStructure> = {
+      name: propertyName,
+      isReadonly: true,
+      type: propertyValueTypeResult.type,
+      hasQuestionToken: !requiredPropertiesSet.has(propertyName),
+    };
+
+    return {
+      valueTypeResult: propertyValueTypeResult,
+      propertyType: propertySignature,
+    };
+  }
+
+  getValueTypeAndGenerateNestedTypeInterfaces(
     schema: MongoJsonSchemaAnyType,
-    isInArray: boolean
-  ): string {
+    isInArray: boolean,
+    generatedInterfaces: GeneratedInterfaceSets
+  ): GetValueTypeResult {
     const type = schema.bsonType;
     if (type === 'object') {
-      this.addInterface(sf, schema);
-      return getEntityName(this.interfaceOptions.prefix, schema.title);
+      this.generateInterfaceFile(schema, true, generatedInterfaces);
+      const type = getEntityName(this.interfaceOptions.prefix, schema.title);
+      return {
+        type,
+        typeForImport: type,
+        importModuleType: 'local',
+      };
     } else if (type === 'array') {
-      const itemType = this.getValueTypeAndAddEmbeddedTypeInterfaces(
-        sf,
+      const itemResult = this.getValueTypeAndGenerateNestedTypeInterfaces(
         schema.items,
-        true
+        true,
+        generatedInterfaces
       );
-      const fullArrayType = `readonly ${itemType}[]`;
-      return isInArray ? `(${fullArrayType})` : fullArrayType;
+      const fullArrayType = `readonly ${itemResult.type}[]`;
+      return {
+        type: isInArray ? `(${fullArrayType})` : fullArrayType,
+        typeForImport: itemResult.type,
+        importModuleType: itemResult.importModuleType,
+      };
     } else {
       return this.getSimpleValueTypeMapping(schema.bsonType);
     }
   }
 
-  protected abstract get interfaceOptions(): GenerateMongoCodeFromSchemaInterfaceOptions;
+  private generateInterfacesIndexFile(
+    generatedInterfaces: GeneratedInterfaceSets
+  ): void {
+    const interfacesDir = this.getInterfacesDir();
 
-  protected abstract addImports(
+    const embedded = sortArrayByStringAsc(
+      Array.from(generatedInterfaces.embedded)
+    );
+    const collections = sortArrayByStringAsc(
+      Array.from(generatedInterfaces.collections)
+    );
+
+    const hasEmbedded = embedded.length > 0;
+    const hasCollections = collections.length > 0;
+
+    if (hasEmbedded) {
+      const embeddedIndexFile = path.join(interfacesDir, 'embedded/index.ts');
+
+      const embeddedIndexSf = this.project.createSourceFile(embeddedIndexFile);
+
+      embeddedIndexSf.addExportDeclarations(
+        embedded.map((name) => ({
+          moduleSpecifier: `./${kebabCase(name)}`,
+        }))
+      );
+    }
+
+    if (hasEmbedded || hasCollections) {
+      const collectionsIndexFile = path.join(interfacesDir, 'index.ts');
+
+      const collectionsIndexSf =
+        this.project.createSourceFile(collectionsIndexFile);
+
+      if (hasEmbedded) {
+        collectionsIndexSf.addExportDeclaration({
+          moduleSpecifier: './embedded',
+        });
+      }
+
+      collectionsIndexSf.addExportDeclarations(
+        collections.map((name) => ({
+          moduleSpecifier: `./${kebabCase(name)}`,
+        }))
+      );
+    }
+  }
+
+  private addImports(
     sf: SourceFile,
-    schema: MongoJsonSchemaTypeObject
-  ): void;
+    propertyValueTypes: readonly GetValueTypeResult[],
+    isEmbedded: boolean
+  ): void {
+    const localImports = InterfaceCodeGeneratorBase.getImportSpecifiers(
+      propertyValueTypes,
+      'local'
+    );
+
+    if (localImports.length > 0) {
+      if (!isEmbedded) {
+        sf.insertImportDeclaration(0, {
+          namedImports: [...localImports],
+          moduleSpecifier: './embedded',
+        });
+      } else {
+        sf.insertImportDeclarations(
+          0,
+          localImports.map((li) => ({
+            namedImports: [li],
+            moduleSpecifier: `./${kebabCase(li.name)}`,
+          }))
+        );
+      }
+    }
+
+    const mongoImports = InterfaceCodeGeneratorBase.getImportSpecifiers(
+      propertyValueTypes,
+      'mongo'
+    );
+
+    if (mongoImports.length > 0) {
+      sf.insertImportDeclaration(0, {
+        namedImports: [...mongoImports],
+        moduleSpecifier: 'mongodb',
+      });
+    }
+  }
+
+  private static getCollectionInterfaceFilePath(
+    entityName: string,
+    interfacesDir: string,
+    isEmbedded: boolean
+  ): string {
+    const fileName = `${kebabCase(entityName)}.ts`;
+    return path.join(interfacesDir, isEmbedded ? 'embedded' : '', fileName);
+  }
+
+  private static getImportSpecifiers(
+    propertyValueTypes: readonly GetValueTypeResult[],
+    importModuleType: InterfacePropertyImportModuleType
+  ): readonly OptionalKind<ImportSpecifierStructure>[] {
+    return asChainable(propertyValueTypes)
+      .filter((p) => p.importModuleType === importModuleType)
+      .map((p) => p.typeForImport)
+      .apply(distinctItems)
+      .apply(sortArrayByStringAsc)
+      .map<string, OptionalKind<ImportSpecifierStructure>>((t) => ({
+        name: t,
+      }))
+      .getValue();
+  }
+
+  protected abstract get interfaceOptions(): GenerateMongoCodeFromSchemaInterfaceOptions;
 
   protected abstract getPropertyName(initialPropertyName: string): string;
 
   protected abstract getSimpleValueTypeMapping(
     type: MongoJsonSchemaBsonType
-  ): string;
+  ): GetValueTypeResult;
 }
 
 class InterfaceCodeGeneratorDb extends InterfaceCodeGeneratorBase {
@@ -162,63 +306,29 @@ class InterfaceCodeGeneratorDb extends InterfaceCodeGeneratorBase {
     return this.input.options.appsMonorepo.dbInterfaceOptions;
   }
 
-  protected addImports(
-    sf: SourceFile,
-    schema: MongoJsonSchemaTypeObject
-  ): void {
-    const mongoImports = InterfaceCodeGeneratorDb.getMongoImports(schema);
-    sf.addImportDeclaration({
-      namedImports: mongoImports.map((mi) => ({ name: mi })),
-      moduleSpecifier: 'mongodb',
-    });
-  }
-
-  private static getMongoImports(
-    schema: MongoJsonSchemaTypeObject
-  ): readonly string[] {
-    const mongoImports = new Set<string>();
-    InterfaceCodeGeneratorDb.getMongoImportsObject(schema, mongoImports);
-    return sortArrayByStringAsc(Array.from(mongoImports.values()));
-  }
-
-  private static getMongoImportsAnyType(
-    schema: MongoJsonSchemaAnyType,
-    mongoImports: Set<string>
-  ): void {
-    switch (schema.bsonType) {
-      case 'object':
-        InterfaceCodeGeneratorDb.getMongoImportsObject(schema, mongoImports);
-        break;
-      case 'array':
-        InterfaceCodeGeneratorDb.getMongoImportsAnyType(
-          schema.items,
-          mongoImports
-        );
-        break;
-      case 'decimal':
-        mongoImports.add('Decimal128');
-        break;
-      case 'objectId':
-        mongoImports.add('ObjectId');
-        break;
-    }
-  }
-
-  private static getMongoImportsObject(
-    schema: MongoJsonSchemaTypeObject,
-    mongoImports: Set<string>
-  ): void {
-    const properties = Object.values(schema.properties);
-    for (const prop of properties) {
-      InterfaceCodeGeneratorDb.getMongoImportsAnyType(prop, mongoImports);
-    }
-  }
-
   protected getPropertyName(initialPropertyName: string): string {
     return initialPropertyName;
   }
 
-  protected getSimpleValueTypeMapping(type: MongoJsonSchemaBsonType): string {
+  protected getSimpleValueTypeMapping(
+    type: MongoJsonSchemaBsonType
+  ): GetValueTypeResult {
+    const mongoTypes: readonly MongoJsonSchemaBsonType[] = [
+      'objectId',
+      'decimal',
+    ];
+    const simpleType =
+      InterfaceCodeGeneratorDb.getSimpleValueTypeMappingInternal(type);
+    return {
+      type: simpleType,
+      typeForImport: simpleType,
+      importModuleType: mongoTypes.includes(type) ? 'mongo' : 'none',
+    };
+  }
+
+  private static getSimpleValueTypeMappingInternal(
+    type: MongoJsonSchemaBsonType
+  ): string {
     switch (type) {
       case 'string':
         return 'string';
@@ -252,16 +362,25 @@ class InterfaceCodeGeneratorApp extends InterfaceCodeGeneratorBase {
     return this.input.options.appsMonorepo.appInterfaceOptions;
   }
 
-  protected addImports(
-    _sf: SourceFile,
-    _schema: MongoJsonSchemaTypeObject
-  ): void {}
-
   protected getPropertyName(initialPropertyName: string): string {
     return initialPropertyName.replace(/^_+|_+$/g, '');
   }
 
-  protected getSimpleValueTypeMapping(type: MongoJsonSchemaBsonType): string {
+  protected getSimpleValueTypeMapping(
+    type: MongoJsonSchemaBsonType
+  ): GetValueTypeResult {
+    const simpleType =
+      InterfaceCodeGeneratorApp.getSimpleValueTypeMappingInternal(type);
+    return {
+      type: simpleType,
+      typeForImport: simpleType,
+      importModuleType: 'none',
+    };
+  }
+
+  private static getSimpleValueTypeMappingInternal(
+    type: MongoJsonSchemaBsonType
+  ): string {
     switch (type) {
       case 'string':
         return 'string';
@@ -278,6 +397,43 @@ class InterfaceCodeGeneratorApp extends InterfaceCodeGeneratorBase {
         invariant(false, `Invalid property type: '${type}'.`);
     }
   }
+}
+
+interface GeneratedInterfaceSets {
+  readonly collections: Set<string>;
+  readonly embedded: Set<string>;
+}
+
+function isInterfaceAlreadyGenerated(
+  sets: GeneratedInterfaceSets,
+  name: string
+): boolean {
+  return sets.collections.has(name) || sets.embedded.has(name);
+}
+
+function addGeneratedInterface(
+  sets: GeneratedInterfaceSets,
+  name: string,
+  isEmbedded: boolean
+): void {
+  if (isEmbedded) {
+    sets.embedded.add(name);
+  } else {
+    sets.collections.add(name);
+  }
+}
+
+type InterfacePropertyImportModuleType = 'mongo' | 'local' | 'none';
+
+interface GetValueTypeResult {
+  readonly type: string;
+  readonly typeForImport: string;
+  readonly importModuleType: InterfacePropertyImportModuleType;
+}
+
+interface GetPropertySignatureResult {
+  readonly propertyType: OptionalKind<PropertySignatureStructure>;
+  readonly valueTypeResult: GetValueTypeResult;
 }
 
 function getEntityName(prefix: string, name: string): string {

@@ -1,3 +1,5 @@
+import { SubEntity1, SubEntity2 } from './embedded';
+
 export interface Entity {
   readonly id: string;
   readonly fieldString1: string;
@@ -26,18 +28,10 @@ export interface Entity {
   readonly fieldArrayEnumString: readonly string[];
   readonly fieldObject: SubEntity1;
   readonly fieldArrayOfObjects: readonly SubEntity2[];
-  readonly fieldOptional1?: string;
-  readonly fieldOptional2?: string;
-}
-
-export interface SubEntity1 {
-  readonly subfield11: string;
-  readonly subfield12: number;
-  readonly subfield13: string;
-}
-
-export interface SubEntity2 {
-  readonly subfield21: string;
-  readonly subfield22: number;
-  readonly subfield23: string;
+  readonly fieldOptionalString?: string;
+  readonly fieldOptionalDate?: string;
+  readonly fieldOptionalArrayString?: readonly string[];
+  readonly fieldOptionalArrayDate?: readonly string[];
+  readonly fieldOptionalObject?: SubEntity1;
+  readonly fieldOptionalArrayOfObjects?: readonly SubEntity2[];
 }

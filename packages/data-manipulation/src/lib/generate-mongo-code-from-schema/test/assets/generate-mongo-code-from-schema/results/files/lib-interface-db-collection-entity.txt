@@ -1,4 +1,5 @@
 import { Decimal128, ObjectId } from 'mongodb';
+import { DbSubEntity1, DbSubEntity2 } from './embedded';
 
 export interface DbEntity {
   readonly _id: ObjectId;
@@ -28,18 +29,10 @@ export interface DbEntity {
   readonly fieldArrayEnumString: readonly string[];
   readonly fieldObject: DbSubEntity1;
   readonly fieldArrayOfObjects: readonly DbSubEntity2[];
-  readonly fieldOptional1?: string;
-  readonly fieldOptional2?: Date;
-}
-
-export interface DbSubEntity1 {
-  readonly subfield11: string;
-  readonly subfield12: number;
-  readonly subfield13: Date;
-}
-
-export interface DbSubEntity2 {
-  readonly subfield21: string;
-  readonly subfield22: number;
-  readonly subfield23: Date;
+  readonly fieldOptionalString?: string;
+  readonly fieldOptionalDate?: Date;
+  readonly fieldOptionalArrayString?: readonly string[];
+  readonly fieldOptionalArrayDate?: readonly Date[];
+  readonly fieldOptionalObject?: DbSubEntity1;
+  readonly fieldOptionalArrayOfObjects?: readonly DbSubEntity2[];
 }

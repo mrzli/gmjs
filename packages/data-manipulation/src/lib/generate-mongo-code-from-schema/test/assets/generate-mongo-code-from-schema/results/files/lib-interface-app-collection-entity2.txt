@@ -1,0 +1,7 @@
+import { SubEntity1 } from './embedded';
+
+export interface Entity2 {
+  readonly id: string;
+  readonly field: string;
+  readonly fieldRefFromOtherCollection: SubEntity1;
+}

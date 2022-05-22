@@ -1,3 +1,4 @@
+export * from './embedded';
+export * from './another-entity';
 export * from './entity';
 export * from './entity2';
-export * from './another-entity';

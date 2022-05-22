@@ -1,4 +1,9 @@
-import { arrayGetPrimitiveDuplicates, flatMap } from './array-utils';
+import {
+  arrayGetPrimitiveDuplicates,
+  distinctItems,
+  distinctItemsBy,
+  flatMap,
+} from './array-utils';
 import { Nullish, SimpleValue } from '../types/generic';
 
 describe('array-utils', () => {
@@ -122,6 +127,178 @@ describe('array-utils', () => {
         'first-b-1',
         'second-b-1',
       ]);
+    });
+  });
+
+  describe('distinctItems()', () => {
+    describe('will work for simple types', () => {
+      interface Example {
+        readonly input: readonly number[];
+        readonly expected: readonly number[];
+      }
+
+      const EXAMPLES: readonly Example[] = [
+        {
+          input: [],
+          expected: [],
+        },
+        {
+          input: [1],
+          expected: [1],
+        },
+        {
+          input: [1, 2],
+          expected: [1, 2],
+        },
+        {
+          input: [2, 1],
+          expected: [2, 1],
+        },
+        {
+          input: [1, 1],
+          expected: [1],
+        },
+        {
+          input: [1, 2, 2, 3],
+          expected: [1, 2, 3],
+        },
+        {
+          input: [1, 2, 3, 2],
+          expected: [1, 2, 3],
+        },
+        {
+          input: [1, 2, 3, 3, 2],
+          expected: [1, 2, 3],
+        },
+        {
+          input: [2, 1, 1, 2, 3],
+          expected: [2, 1, 3],
+        },
+      ];
+
+      EXAMPLES.forEach((example) => {
+        it(JSON.stringify(example), () => {
+          expect(distinctItems(example.input)).toEqual(example.expected);
+        });
+      });
+    });
+
+    describe('will not work for object items', () => {
+      interface ExampleObject {
+        readonly value: number;
+      }
+
+      interface Example {
+        readonly input: readonly ExampleObject[];
+        readonly expected: readonly ExampleObject[];
+      }
+
+      const EXAMPLES: readonly Example[] = [
+        {
+          input: [{ value: 1 }, { value: 1 }],
+          expected: [{ value: 1 }, { value: 1 }],
+        },
+      ];
+
+      EXAMPLES.forEach((example) => {
+        it(JSON.stringify(example), () => {
+          expect(distinctItems(example.input)).toEqual(example.expected);
+        });
+      });
+    });
+
+    describe('will not work for array items', () => {
+      interface Example {
+        readonly input: readonly number[][];
+        readonly expected: readonly number[][];
+      }
+
+      const EXAMPLES: readonly Example[] = [
+        {
+          input: [[1], [1]],
+          expected: [[1], [1]],
+        },
+      ];
+
+      EXAMPLES.forEach((example) => {
+        it(JSON.stringify(example), () => {
+          expect(distinctItems(example.input)).toEqual(example.expected);
+        });
+      });
+    });
+  });
+
+  describe('distinctItemsBy()', () => {
+    interface ExampleObject {
+      readonly value: number;
+      readonly otherValue: number;
+    }
+
+    interface Example {
+      readonly input: readonly ExampleObject[];
+      readonly expected: readonly ExampleObject[];
+    }
+
+    function distinctBy(value: ExampleObject): number {
+      return value.value;
+    }
+
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: [],
+        expected: [],
+      },
+      {
+        input: [{ value: 1, otherValue: 1 }],
+        expected: [{ value: 1, otherValue: 1 }],
+      },
+      {
+        input: [
+          { value: 1, otherValue: 1 },
+          { value: 1, otherValue: 1 },
+        ],
+        expected: [{ value: 1, otherValue: 1 }],
+      },
+      {
+        input: [
+          { value: 1, otherValue: 1 },
+          { value: 1, otherValue: 2 },
+        ],
+        expected: [{ value: 1, otherValue: 1 }],
+      },
+      {
+        input: [
+          { value: 1, otherValue: 1 },
+          { value: 2, otherValue: 1 },
+        ],
+        expected: [
+          { value: 1, otherValue: 1 },
+          { value: 2, otherValue: 1 },
+        ],
+      },
+      {
+        input: [
+          { value: 1, otherValue: 1 },
+          { value: 1, otherValue: 2 },
+          { value: 3, otherValue: 6 },
+          { value: 2, otherValue: 4 },
+          { value: 2, otherValue: 3 },
+          { value: 3, otherValue: 5 },
+        ],
+        expected: [
+          { value: 1, otherValue: 1 },
+          { value: 3, otherValue: 6 },
+          { value: 2, otherValue: 4 },
+        ],
+      },
+    ];
+
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        expect(distinctItemsBy(example.input, distinctBy)).toEqual(
+          example.expected
+        );
+      });
     });
   });
 });
