@@ -1,5 +1,5 @@
 import { mapGetOrThrow } from './map';
-import { AnyValue } from '@gmjs/util';
+import { AnyValue } from '../types/generic';
 
 describe('map', () => {
   describe('mapGetOrThrow()', () => {

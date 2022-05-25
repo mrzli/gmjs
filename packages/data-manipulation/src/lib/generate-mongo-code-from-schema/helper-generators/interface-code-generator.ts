@@ -142,7 +142,7 @@ abstract class InterfaceCodeGeneratorBase implements InterfaceCodeGenerator {
     };
   }
 
-  getValueTypeAndGenerateNestedTypeInterfaces(
+  private getValueTypeAndGenerateNestedTypeInterfaces(
     schema: MongoJsonSchemaAnyType,
     isInArray: boolean,
     generatedInterfaces: GeneratedInterfaceSets
