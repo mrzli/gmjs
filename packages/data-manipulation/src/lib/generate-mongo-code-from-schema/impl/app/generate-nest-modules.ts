@@ -6,6 +6,8 @@ import { kebabCase } from '@gmjs/lib-util';
 import path from 'path';
 import { generateRepository } from './generate-repository';
 import { generateService } from './generate-service';
+import { generateController } from './generate-controller';
+import { generateModule } from './generate-module';
 
 export function generateNestModules(
   input: GenerateMongoCodeFromSchemaInput,
@@ -30,4 +32,6 @@ function generateNestModule(
   const moduleDir = path.join(appDir, entityFsName);
   generateRepository(project, optionsHelper, schema, moduleDir);
   generateService(project, optionsHelper, schema, moduleDir);
+  generateController(project, optionsHelper, schema, moduleDir);
+  generateModule(project, optionsHelper, schema, moduleDir);
 }

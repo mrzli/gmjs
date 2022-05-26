@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
-import { Entity } from '@gmjs-apps/example-shared';
 import type { Except } from 'type-fest';
+import { Entity } from '@gmjs-apps/example-shared';
 import { EntityService } from './entity.service';
 
 @Controller({ path: 'entity' })
@@ -13,25 +13,25 @@ export class EntityController {
   }
 
   @Get('/find/:id')
-  public async get(@Param('id') id: string): Promise<Entity> {
+  public async getById(@Param('id') id: string): Promise<Entity> {
     return this.entityService.getById(id);
   }
 
   @Post('/create')
-  public async create(@Body() data: Except<Entity, 'id'>): Promise<Entity> {
-    return this.entityService.create(data);
+  public async create(@Body() entity: Except<Entity, 'id'>): Promise<Entity> {
+    return this.entityService.create(entity);
   }
 
   @Post('/update/:id')
   public async update(
     @Param('id') id: string,
-    @Body() data: Partial<Except<Entity, 'id'>>
+    @Body() entity: Partial<Except<Entity, 'id'>>
   ): Promise<Entity> {
-    return this.entityService.update(id, data);
+    return this.entityService.update(id, entity);
   }
 
   @Delete('/remove/:id')
-  public async removeTask(@Param('id') id: string): Promise<void> {
+  public async remove(@Param('id') id: string): Promise<void> {
     await this.entityService.remove(id);
   }
 }
