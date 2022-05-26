@@ -1,7 +1,7 @@
 import { GenerateMongoCodeFromSchemaInput } from '../util/types';
 import { Project } from 'ts-morph';
-import { PathResolver } from '../util/path-resolver';
-import * as path from 'path';
+import { OptionsHelper } from '../util/options-helper';
+import path from 'path';
 import { getRelativeImportPath } from '../util/util';
 import { pascalCase } from '@gmjs/lib-util';
 import { createInterfaceCodeGenerator } from './interface-code-generator';
@@ -9,14 +9,14 @@ import { createInterfaceCodeGenerator } from './interface-code-generator';
 export function generateSharedLibCode(
   input: GenerateMongoCodeFromSchemaInput,
   project: Project,
-  pathResolver: PathResolver
+  optionsHelper: OptionsHelper
 ): void {
-  addSharedProjectExportDeclarations(input, project, pathResolver);
+  addSharedProjectExportDeclarations(input, project, optionsHelper);
 
   const collectionNames = input.schemas.map((s) => pascalCase(s.title));
 
   const dbCollectionNameSf = project.createSourceFile(
-    getDbCollectionNameFilePath(pathResolver)
+    getDbCollectionNameFilePath(optionsHelper)
   );
   dbCollectionNameSf.addEnum({
     name: 'DbCollectionName',
@@ -24,17 +24,18 @@ export function generateSharedLibCode(
     members: collectionNames.map((n) => ({ name: n, value: n })),
   });
 
-  createInterfaceCodeGenerator(input, project, pathResolver, true).generate();
-  createInterfaceCodeGenerator(input, project, pathResolver, false).generate();
+  createInterfaceCodeGenerator(input, project, optionsHelper, true).generate();
+  createInterfaceCodeGenerator(input, project, optionsHelper, false).generate();
 }
 
 function addSharedProjectExportDeclarations(
   input: GenerateMongoCodeFromSchemaInput,
   project: Project,
-  pathResolver: PathResolver
+  optionsHelper: OptionsHelper
 ): void {
-  const libIndexPath = pathResolver.resolveSharedProjectIndexFile();
-  const libInterfacesDir = pathResolver.resolveSharedProjectInterfacesRootDir();
+  const libIndexPath = optionsHelper.resolveSharedProjectIndexFile();
+  const libInterfacesDir =
+    optionsHelper.resolveSharedProjectInterfacesRootDir();
   const dbInterfacesIndexPath = path.join(
     libInterfacesDir,
     input.options.appsMonorepo.dbInterfaceOptions.dir,
@@ -49,7 +50,7 @@ function addSharedProjectExportDeclarations(
   const libIndexSf = project.addSourceFileAtPath(libIndexPath);
   libIndexSf.addExportDeclarations(
     [
-      getDbCollectionNameFilePath(pathResolver),
+      getDbCollectionNameFilePath(optionsHelper),
       dbInterfacesIndexPath,
       appInterfacesIndexPath,
     ].map((p) => ({
@@ -58,7 +59,8 @@ function addSharedProjectExportDeclarations(
   );
 }
 
-function getDbCollectionNameFilePath(pathResolver: PathResolver): string {
-  const libInterfacesDir = pathResolver.resolveSharedProjectInterfacesRootDir();
+function getDbCollectionNameFilePath(optionsHelper: OptionsHelper): string {
+  const libInterfacesDir =
+    optionsHelper.resolveSharedProjectInterfacesRootDir();
   return path.join(libInterfacesDir, 'db-collection-name.ts');
 }

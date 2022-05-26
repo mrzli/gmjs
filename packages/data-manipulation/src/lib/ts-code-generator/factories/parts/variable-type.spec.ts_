@@ -1,4 +1,4 @@
-import * as ts from 'typescript';
+import ts from 'typescript';
 import { createVariableType } from './variable-type';
 import { statementsToString } from '../../util/print';
 import { createCodeFactory } from '../code-factory';

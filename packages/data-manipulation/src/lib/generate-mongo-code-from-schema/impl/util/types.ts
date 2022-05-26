@@ -1,4 +1,4 @@
-import { MongoJsonSchemaTypeObject } from '../../data-model/mongo-json-schema';
+import { MongoJsonSchemaTypeObject } from '../../../data-model/mongo-json-schema';
 
 export interface GenerateMongoCodeFromSchemaInput {
   readonly schemas: readonly MongoJsonSchemaTypeObject[];
@@ -34,12 +34,12 @@ export interface GenerateMongoCodeFromSchemaInterfaceOptions {
 }
 
 export interface GenerateMongoCodeFromSchemaSharedProjectOptions {
-  readonly projectDir: string;
+  readonly projectName: string;
   readonly sharedInterfacesDir: string;
   readonly indexFilePath: string;
 }
 
 export interface GenerateMongoCodeFromSchemaAppProjectOptions {
-  readonly projectDir: string;
+  readonly projectName: string;
   readonly appDir: string;
 }

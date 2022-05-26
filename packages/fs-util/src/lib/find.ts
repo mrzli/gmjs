@@ -1,4 +1,4 @@
-import * as klawSync from 'klaw-sync';
+import klawSync from 'klaw-sync';
 import {
   FILE_SYSTEM_FIND_DEFAULT_OPTIONS,
   FileSystemFindFsType,

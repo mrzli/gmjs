@@ -1,6 +1,6 @@
 import { identifyFn, ReadonlyRecord } from '@gmjs/util';
 import { findFilesShallowSync } from './find';
-import * as path from 'path';
+import path from 'path';
 import { readTextSync } from './file-system';
 
 export interface DirFilesReadResult<T> {

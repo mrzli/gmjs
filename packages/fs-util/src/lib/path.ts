@@ -1,4 +1,4 @@
-import * as path from 'path';
+import path from 'path';
 
 export function isInDir(rootDir: string, fsPath: string): boolean {
   const relative = path.relative(rootDir, fsPath);

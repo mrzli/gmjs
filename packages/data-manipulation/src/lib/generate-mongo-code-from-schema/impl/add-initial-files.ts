@@ -1,15 +1,15 @@
-import { GenerateMongoCodeFromSchemaInput } from '../util/types';
+import { GenerateMongoCodeFromSchemaInput } from './util/types';
 import { Project } from 'ts-morph';
-import { PathResolver } from '../util/path-resolver';
+import { OptionsHelper } from './util/options-helper';
 import { TEST_FILE_SUFFIX } from '../test/test-util';
 
 export function addInitialFiles(
   input: GenerateMongoCodeFromSchemaInput,
   project: Project,
-  pathResolver: PathResolver
+  optionsHelper: OptionsHelper
 ): void {
   const initialFiles: readonly string[] = [
-    pathResolver.resolveSharedProjectIndexFile(),
+    optionsHelper.resolveSharedProjectIndexFile(),
   ];
 
   for (const initialFile of initialFiles) {

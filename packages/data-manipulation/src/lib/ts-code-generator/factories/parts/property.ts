@@ -1,4 +1,4 @@
-import * as ts from 'typescript';
+import ts from 'typescript';
 import { createVariableType } from './variable-type';
 import { CodeFactory } from '../code-factory';
 import { CodeNodeProperty } from '../../types/property';

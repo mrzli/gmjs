@@ -1,7 +1,7 @@
 import { GenerateMongoCodeFromSchemaOptions } from './types';
-import * as path from 'path';
+import path from 'path';
 
-export class PathResolver {
+export class OptionsHelper {
   private readonly rootDir: string;
 
   public constructor(
@@ -15,7 +15,7 @@ export class PathResolver {
     return path.resolve(
       this.rootDir,
       appsMonorepo.libsDir,
-      appsMonorepo.sharedProject.projectDir
+      appsMonorepo.sharedProject.projectName
     );
   }
 
@@ -38,7 +38,7 @@ export class PathResolver {
     return path.resolve(
       this.rootDir,
       appsMonorepo.appsDir,
-      appsMonorepo.appProject.projectDir
+      appsMonorepo.appProject.projectName
     );
   }
 
@@ -47,5 +47,28 @@ export class PathResolver {
       this.resolveAppProjectDir(),
       this.options.appsMonorepo.appProject.appDir
     );
+  }
+
+  public getDbInterfacePrefix(): string {
+    return this.options.appsMonorepo.dbInterfaceOptions.prefix;
+  }
+
+  public getAppInterfacePrefix(): string {
+    return this.options.appsMonorepo.appInterfaceOptions.prefix;
+  }
+
+  public getSharedLibraryModuleSpecifier(): string {
+    const appsMonorepo = this.options.appsMonorepo;
+    return `@${appsMonorepo.npmScope}/${appsMonorepo.sharedProject.projectName}`;
+  }
+
+  public getNestUtilModuleSpecifier(): string {
+    const libsMonorepo = this.options.libsMonorepoNames;
+    return `@${libsMonorepo.npmScope}/${libsMonorepo.nestUtilProjectName}`;
+  }
+
+  public getUtilModuleSpecifier(): string {
+    const libsMonorepo = this.options.libsMonorepoNames;
+    return `@${libsMonorepo.npmScope}/${libsMonorepo.utilProjectName}`;
   }
 }

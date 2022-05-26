@@ -1,4 +1,4 @@
-import * as fs from 'fs-extra';
+import fs from 'fs-extra';
 
 export interface FileSystemFindInfo {
   readonly fullPath: string;

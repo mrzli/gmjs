@@ -1,4 +1,4 @@
-import * as ts from 'typescript';
+import ts from 'typescript';
 import { createProperty } from './property';
 import { CodeFactory } from '../code-factory';
 import { CodeNodeInterface } from '../../types/interface';

@@ -1,4 +1,4 @@
-import * as path from 'path';
+import path from 'path';
 import { AnyValue, Fn0, ReadonlyRecord } from '@gmjs/util';
 import { toTestJsonFileContent } from './internal-utils';
 import { expect } from '@jest/globals';

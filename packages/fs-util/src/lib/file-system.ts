@@ -1,4 +1,4 @@
-import * as fs from 'fs-extra';
+import fs from 'fs-extra';
 import { promisify } from 'util';
 import { ENCODING_UTF8 } from './util/constants';
 import { AnyValue } from '@gmjs/util';

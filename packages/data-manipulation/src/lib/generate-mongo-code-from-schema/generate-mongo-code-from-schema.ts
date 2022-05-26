@@ -1,24 +1,32 @@
 import { Project, SourceFile } from 'ts-morph';
-import * as prettier from 'prettier';
-import { GenerateMongoCodeFromSchemaInput } from './util/types';
-import { PathResolver } from './util/path-resolver';
-import { addInitialFiles } from './helper-generators/add-initial-files';
-import { generateSharedLibCode } from './helper-generators/generate-shared-lib-code';
-import { generateAppCode } from './helper-generators/generate-app-code';
+import prettier from 'prettier';
+import { GenerateMongoCodeFromSchemaInput } from './impl/util/types';
+import { OptionsHelper } from './impl/util/options-helper';
+import { addInitialFiles } from './impl/add-initial-files';
+import { generateSharedLibCode } from './impl/lib/generate-shared-lib-code';
+import { generateAppCode } from './impl/app/generate-app-code';
+import { PLACEHOLDER_MAP } from './impl/util/placeholders';
 
 export function generateMongoCodeFromSchema(
   input: GenerateMongoCodeFromSchemaInput
 ): readonly SourceFile[] {
-  const pathResolver = new PathResolver(input.options);
+  const optionsHelper = new OptionsHelper(input.options);
   const project = new Project();
 
-  addInitialFiles(input, project, pathResolver);
-  generateSharedLibCode(input, project, pathResolver);
-  generateAppCode(input, project, pathResolver);
+  addInitialFiles(input, project, optionsHelper);
+  generateSharedLibCode(input, project, optionsHelper);
+  generateAppCode(input, project, optionsHelper);
 
-  // format text
+  // process and format source code
   project.getSourceFiles().forEach((sf) => {
-    const text = prettier.format(sf.getFullText(), {
+    // there is some performance issue with source code generation when it contains a 'type-fest' import
+    // therefore I import with a placeholder which I then replace here
+    let processedText = sf.getFullText();
+    for (const { key, value } of PLACEHOLDER_MAP.entryPairs()) {
+      processedText = processedText.replace(key, value);
+    }
+
+    const text = prettier.format(processedText, {
       singleQuote: true,
       parser: 'typescript',
     });

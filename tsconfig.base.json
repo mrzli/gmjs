@@ -21,7 +21,11 @@
       "@gmjs/nest-util": ["packages/nest-util/src/index.ts"],
       "@gmjs/test-util": ["packages/test-util/src/index.ts"],
       "@gmjs/util": ["packages/util/src/index.ts"]
-    }
+    },
+    "strict": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true
   },
   "exclude": ["node_modules", "tmp"]
 }

@@ -1,0 +1,299 @@
+import { Injectable } from '@nestjs/common';
+import { Decimal128, ObjectId } from 'mongodb';
+import { Except } from 'type-fest';
+import { objectRemoveUndefined, transformIfExists } from '@gmjs/util';
+import {
+  Entity,
+  DbEntity,
+  DbSubEntity1,
+  DbSubEntity2,
+  SubEntity1,
+  SubEntity2,
+  SubEntity11,
+  DbSubEntity11,
+} from '@gmjs-apps/example-shared';
+import { EntityRepository } from './entity.repository';
+
+@Injectable()
+export class EntityService {
+  public constructor(private readonly entityRepository: EntityRepository) {}
+
+  public async getAll(): Promise<readonly Entity[]> {
+    const dbEntityList = await this.entityRepository.getAll();
+    return dbEntityList.map(dbEntityToAppEntity);
+  }
+
+  public async getById(id: string): Promise<Entity | undefined> {
+    const dbEntity = await this.entityRepository.getById(new ObjectId(id));
+    return transformIfExists(dbEntity, dbEntityToAppEntity, undefined);
+  }
+
+  public async create(entity: Except<Entity, 'id'>): Promise<Entity> {
+    const dbEntity = await this.entityRepository.create(
+      appEntityToDbEntityWithoutId(entity)
+    );
+    return dbEntityToAppEntity(dbEntity);
+  }
+
+  public async update(
+    id: string,
+    entity: Partial<Except<Entity, 'id'>>
+  ): Promise<Entity> {
+    const dbEntity = await this.entityRepository.update(
+      new ObjectId(id),
+      appEntityToDbEntityWithoutIdPartial(entity)
+    );
+    return dbEntityToAppEntity(dbEntity);
+  }
+
+  public async remove(id: string): Promise<void> {
+    await this.entityRepository.remove(new ObjectId(id));
+  }
+}
+
+export function dbEntityToAppEntity(dbEntity: DbEntity): Entity {
+  return {
+    id: dbEntity._id.toString(),
+    fieldString1: dbEntity.fieldString1,
+    fieldString2: dbEntity.fieldString2,
+    fieldInt1: dbEntity.fieldInt1,
+    fieldInt2: dbEntity.fieldInt2,
+    fieldInt3: dbEntity.fieldInt3,
+    fieldInt4: dbEntity.fieldInt4,
+    fieldInt5: dbEntity.fieldInt5,
+    fieldInt6: dbEntity.fieldInt6,
+    fieldInt7: dbEntity.fieldInt7,
+    fieldLong: dbEntity.fieldLong,
+    fieldDecimal: dbEntity.fieldDecimal.toString(),
+    fieldBool: dbEntity.fieldBool,
+    fieldObjectId: dbEntity.fieldObjectId.toString(),
+    fieldDate: dbEntity.fieldDate.toISOString(),
+    fieldEnumString: dbEntity.fieldEnumString,
+    fieldArrayString: dbEntity.fieldArrayString,
+    fieldArrayInt1: dbEntity.fieldArrayInt1,
+    fieldArrayInt2: dbEntity.fieldArrayInt2,
+    fieldArrayLong: dbEntity.fieldArrayLong,
+    fieldArrayBool: dbEntity.fieldArrayBool,
+    fieldArrayDecimal: dbEntity.fieldArrayDecimal.map((item) =>
+      item.toString()
+    ),
+    fieldArrayObjectId: dbEntity.fieldArrayObjectId.map((item) =>
+      item.toString()
+    ),
+    fieldArrayDate: dbEntity.fieldArrayDate.map((item) => item.toISOString()),
+    fieldArrayEnumString: dbEntity.fieldArrayEnumString,
+    fieldObject: dbSubEntity1ToAppSubEntity1(dbEntity.fieldObject),
+    fieldArrayOfObjects: dbEntity.fieldArrayOfObjects.map(
+      dbSubEntity2ToAppSubEntity2
+    ),
+    fieldOptionalString: dbEntity.fieldOptionalString,
+    fieldOptionalDate: dbEntity.fieldOptionalDate?.toString(),
+    fieldOptionalArrayString: dbEntity.fieldOptionalArrayString,
+    fieldOptionalArrayDate: dbEntity.fieldOptionalArrayDate?.map((item) =>
+      item.toISOString()
+    ),
+    fieldOptionalObject: transformIfExists(
+      dbEntity.fieldOptionalObject,
+      dbSubEntity1ToAppSubEntity1,
+      undefined
+    ),
+    fieldOptionalArrayOfObjects: dbEntity.fieldOptionalArrayOfObjects?.map(
+      dbSubEntity2ToAppSubEntity2
+    ),
+  };
+}
+
+export function dbSubEntity1ToAppSubEntity1(
+  dbSubEntity1: DbSubEntity1
+): SubEntity1 {
+  return {
+    subfield11: dbSubEntity1.subfield11,
+    subfield12: dbSubEntity1.subfield12,
+    subfield13: dbSubEntity1.subfield13.toISOString(),
+    subfield14: dbSubEntity11ToAppSubEntity11(dbSubEntity1.subfield14),
+  };
+}
+
+export function dbSubEntity11ToAppSubEntity11(
+  dbSubEntity11: DbSubEntity11
+): SubEntity11 {
+  return {
+    subfield111: dbSubEntity11.subfield111,
+  };
+}
+
+export function dbSubEntity2ToAppSubEntity2(
+  dbSubEntity2: DbSubEntity2
+): SubEntity2 {
+  return {
+    subfield21: dbSubEntity2.subfield21,
+    subfield22: dbSubEntity2.subfield22,
+    subfield23: dbSubEntity2.subfield23.toISOString(),
+  };
+}
+
+export function appEntityToDbEntity(entity: Entity): DbEntity {
+  return {
+    _id: new ObjectId(entity.id),
+    ...appEntityToDbEntityWithoutId(entity),
+  };
+}
+
+export function appEntityToDbEntityWithoutId(
+  entity: Except<Entity, 'id'>
+): Except<DbEntity, '_id'> {
+  return {
+    fieldString1: entity.fieldString1,
+    fieldString2: entity.fieldString2,
+    fieldInt1: entity.fieldInt1,
+    fieldInt2: entity.fieldInt2,
+    fieldInt3: entity.fieldInt3,
+    fieldInt4: entity.fieldInt4,
+    fieldInt5: entity.fieldInt5,
+    fieldInt6: entity.fieldInt6,
+    fieldInt7: entity.fieldInt7,
+    fieldLong: entity.fieldLong,
+    fieldDecimal: new Decimal128(entity.fieldDecimal),
+    fieldBool: entity.fieldBool,
+    fieldObjectId: new ObjectId(entity.fieldObjectId),
+    fieldDate: new Date(entity.fieldDate),
+    fieldEnumString: entity.fieldEnumString,
+    fieldArrayString: entity.fieldArrayString,
+    fieldArrayInt1: entity.fieldArrayInt1,
+    fieldArrayInt2: entity.fieldArrayInt2,
+    fieldArrayLong: entity.fieldArrayLong,
+    fieldArrayBool: entity.fieldArrayBool,
+    fieldArrayDecimal: entity.fieldArrayDecimal.map(
+      (item) => new Decimal128(item)
+    ),
+    fieldArrayObjectId: entity.fieldArrayObjectId.map(
+      (item) => new ObjectId(item)
+    ),
+    fieldArrayDate: entity.fieldArrayDate.map((item) => new Date(item)),
+    fieldArrayEnumString: entity.fieldArrayEnumString,
+    fieldObject: appSubEntity1ToDbSubEntity1(entity.fieldObject),
+    fieldArrayOfObjects: entity.fieldArrayOfObjects.map(
+      appSubEntity2ToDbSubEntity2
+    ),
+    fieldOptionalString: entity.fieldOptionalString,
+    fieldOptionalDate: transformIfExists(
+      entity.fieldOptionalDate,
+      (value) => new Date(value),
+      undefined
+    ),
+    fieldOptionalArrayString: entity.fieldOptionalArrayString,
+    fieldOptionalArrayDate: entity.fieldOptionalArrayDate?.map(
+      (item) => new Date(item)
+    ),
+    fieldOptionalObject: transformIfExists(
+      entity.fieldOptionalObject,
+      appSubEntity1ToDbSubEntity1,
+      undefined
+    ),
+    fieldOptionalArrayOfObjects: entity.fieldOptionalArrayOfObjects?.map(
+      appSubEntity2ToDbSubEntity2
+    ),
+  };
+}
+
+export function appSubEntity1ToDbSubEntity1(
+  subEntity1: SubEntity1
+): DbSubEntity1 {
+  return {
+    subfield11: subEntity1.subfield11,
+    subfield12: subEntity1.subfield12,
+    subfield13: new Date(subEntity1.subfield13),
+    subfield14: appSubEntity11ToDbSubEntity11(subEntity1.subfield14),
+  };
+}
+
+export function appSubEntity11ToDbSubEntity11(
+  subEntity11: SubEntity11
+): DbSubEntity11 {
+  return {
+    subfield111: subEntity11.subfield111,
+  };
+}
+
+export function appSubEntity2ToDbSubEntity2(
+  subEntity2: SubEntity2
+): DbSubEntity2 {
+  return {
+    subfield21: subEntity2.subfield21,
+    subfield22: subEntity2.subfield22,
+    subfield23: new Date(subEntity2.subfield23),
+  };
+}
+
+export function appEntityToDbEntityWithoutIdPartial(
+  entity: Partial<Except<Entity, 'id'>>
+): Partial<Except<DbEntity, '_id'>> {
+  return objectRemoveUndefined({
+    fieldString1: entity.fieldString1,
+    fieldString2: entity.fieldString2,
+    fieldInt1: entity.fieldInt1,
+    fieldInt2: entity.fieldInt2,
+    fieldInt3: entity.fieldInt3,
+    fieldInt4: entity.fieldInt4,
+    fieldInt5: entity.fieldInt5,
+    fieldInt6: entity.fieldInt6,
+    fieldInt7: entity.fieldInt7,
+    fieldLong: entity.fieldLong,
+    fieldDecimal: transformIfExists(
+      entity.fieldDecimal,
+      (value) => new Decimal128(value),
+      undefined
+    ),
+    fieldBool: entity.fieldBool,
+    fieldObjectId: transformIfExists(
+      entity.fieldObjectId,
+      (value) => new ObjectId(value),
+      undefined
+    ),
+    fieldDate: transformIfExists(
+      entity.fieldDate,
+      (value) => new Date(value),
+      undefined
+    ),
+    fieldEnumString: entity.fieldEnumString,
+    fieldArrayString: entity.fieldArrayString,
+    fieldArrayInt1: entity.fieldArrayInt1,
+    fieldArrayInt2: entity.fieldArrayInt2,
+    fieldArrayLong: entity.fieldArrayLong,
+    fieldArrayBool: entity.fieldArrayBool,
+    fieldArrayDecimal: entity.fieldArrayDecimal?.map(
+      (item) => new Decimal128(item)
+    ),
+    fieldArrayObjectId: entity.fieldArrayObjectId?.map(
+      (item) => new ObjectId(item)
+    ),
+    fieldArrayDate: entity.fieldArrayDate?.map((item) => new Date(item)),
+    fieldArrayEnumString: entity.fieldArrayEnumString,
+    fieldObject: transformIfExists(
+      entity.fieldObject,
+      appSubEntity1ToDbSubEntity1,
+      undefined
+    ),
+    fieldArrayOfObjects: entity.fieldArrayOfObjects?.map(
+      appSubEntity2ToDbSubEntity2
+    ),
+    fieldOptionalString: entity.fieldOptionalString,
+    fieldOptionalDate: transformIfExists(
+      entity.fieldOptionalDate,
+      (value) => new Date(value),
+      undefined
+    ),
+    fieldOptionalArrayString: entity.fieldOptionalArrayString,
+    fieldOptionalArrayDate: entity.fieldOptionalArrayDate?.map(
+      (item) => new Date(item)
+    ),
+    fieldOptionalObject: transformIfExists(
+      entity.fieldOptionalObject,
+      appSubEntity1ToDbSubEntity1,
+      undefined
+    ),
+    fieldOptionalArrayOfObjects: entity.fieldOptionalArrayOfObjects?.map(
+      appSubEntity2ToDbSubEntity2
+    ),
+  });
+}

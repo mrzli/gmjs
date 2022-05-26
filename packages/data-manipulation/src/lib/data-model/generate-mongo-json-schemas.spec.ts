@@ -1,4 +1,4 @@
-import * as path from 'path';
+import path from 'path';
 import { generateMongoJsonSchemas } from './generate-mongo-json-schemas';
 import {
   createFileSystemExampleTest,

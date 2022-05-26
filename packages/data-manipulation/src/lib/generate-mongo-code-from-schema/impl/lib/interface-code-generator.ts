@@ -9,14 +9,14 @@ import {
   PropertySignatureStructure,
   SourceFile,
 } from 'ts-morph';
-import { PathResolver } from '../util/path-resolver';
+import { OptionsHelper } from '../util/options-helper';
 import { kebabCase, pascalCase } from '@gmjs/lib-util';
-import * as path from 'path';
+import path from 'path';
 import {
   MongoJsonSchemaAnyType,
   MongoJsonSchemaBsonType,
   MongoJsonSchemaTypeObject,
-} from '../../data-model/mongo-json-schema';
+} from '../../../data-model/mongo-json-schema';
 import {
   asChainable,
   distinctItems,
@@ -34,13 +34,13 @@ export interface InterfaceCodeGenerator {
 export function createInterfaceCodeGenerator(
   input: GenerateMongoCodeFromSchemaInput,
   project: Project,
-  pathResolver: PathResolver,
+  optionsHelper: OptionsHelper,
   isDb: boolean
 ): InterfaceCodeGenerator {
   if (isDb) {
-    return new InterfaceCodeGeneratorDb(input, project, pathResolver);
+    return new InterfaceCodeGeneratorDb(input, project, optionsHelper);
   } else {
-    return new InterfaceCodeGeneratorApp(input, project, pathResolver);
+    return new InterfaceCodeGeneratorApp(input, project, optionsHelper);
   }
 }
 
@@ -48,7 +48,7 @@ abstract class InterfaceCodeGeneratorBase implements InterfaceCodeGenerator {
   protected constructor(
     protected readonly input: GenerateMongoCodeFromSchemaInput,
     protected readonly project: Project,
-    protected readonly pathResolver: PathResolver
+    protected readonly optionsHelper: OptionsHelper
   ) {}
 
   public generate(): void {
@@ -111,7 +111,7 @@ abstract class InterfaceCodeGeneratorBase implements InterfaceCodeGenerator {
 
   private getInterfacesDir(): string {
     return path.join(
-      this.pathResolver.resolveSharedProjectInterfacesRootDir(),
+      this.optionsHelper.resolveSharedProjectInterfacesRootDir(),
       this.interfaceOptions.dir
     );
   }
@@ -297,9 +297,9 @@ class InterfaceCodeGeneratorDb extends InterfaceCodeGeneratorBase {
   public constructor(
     input: GenerateMongoCodeFromSchemaInput,
     project: Project,
-    pathResolver: PathResolver
+    optionsHelper: OptionsHelper
   ) {
-    super(input, project, pathResolver);
+    super(input, project, optionsHelper);
   }
 
   protected get interfaceOptions(): GenerateMongoCodeFromSchemaInterfaceOptions {
@@ -353,9 +353,9 @@ class InterfaceCodeGeneratorApp extends InterfaceCodeGeneratorBase {
   public constructor(
     input: GenerateMongoCodeFromSchemaInput,
     project: Project,
-    pathResolver: PathResolver
+    optionsHelper: OptionsHelper
   ) {
-    super(input, project, pathResolver);
+    super(input, project, optionsHelper);
   }
 
   protected get interfaceOptions(): GenerateMongoCodeFromSchemaInterfaceOptions {

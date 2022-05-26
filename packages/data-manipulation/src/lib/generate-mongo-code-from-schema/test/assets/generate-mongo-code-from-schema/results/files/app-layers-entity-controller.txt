@@ -1,0 +1,37 @@
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Entity } from '@gmjs-apps/example-shared';
+import type { Except } from 'type-fest';
+import { EntityService } from './entity.service';
+
+@Controller({ path: 'entity' })
+export class EntityController {
+  public constructor(private readonly entityService: EntityService) {}
+
+  @Get('/find-all')
+  public async getAll(): Promise<readonly Entity[]> {
+    return this.entityService.getAll();
+  }
+
+  @Get('/find/:id')
+  public async get(@Param('id') id: string): Promise<Entity> {
+    return this.entityService.getById(id);
+  }
+
+  @Post('/create')
+  public async create(@Body() data: Except<Entity, 'id'>): Promise<Entity> {
+    return this.entityService.create(data);
+  }
+
+  @Post('/update/:id')
+  public async update(
+    @Param('id') id: string,
+    @Body() data: Partial<Except<Entity, 'id'>>
+  ): Promise<Entity> {
+    return this.entityService.update(id, data);
+  }
+
+  @Delete('/remove/:id')
+  public async removeTask(@Param('id') id: string): Promise<void> {
+    await this.entityService.remove(id);
+  }
+}

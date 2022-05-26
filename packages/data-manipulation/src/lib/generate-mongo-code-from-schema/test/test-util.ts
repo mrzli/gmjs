@@ -1,4 +1,4 @@
-import { GenerateMongoCodeFromSchemaOptions } from '../util/types';
+import { GenerateMongoCodeFromSchemaOptions } from '../impl/util/types';
 
 export const TEST_FILE_SUFFIX = '_';
 
@@ -23,12 +23,12 @@ export const TEST_OPTIONS: GenerateMongoCodeFromSchemaOptions = {
       prefix: '',
     },
     sharedProject: {
-      projectDir: 'example-shared',
+      projectName: 'example-shared',
       sharedInterfacesDir: 'src/lib/mongo',
       indexFilePath: 'src/index.ts',
     },
     appProject: {
-      projectDir: 'example-be',
+      projectName: 'example-be',
       appDir: 'src/app',
     },
   },
