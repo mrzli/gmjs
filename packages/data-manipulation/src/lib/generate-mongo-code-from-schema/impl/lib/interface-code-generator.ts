@@ -22,9 +22,10 @@ import {
 } from '../util/collection-structure/mongo-collection-structure';
 import { schemasToAllCollectionStructures } from '../util/collection-structure/mongo-collection-structure-util';
 import {
+  getAppInterfacePropertyName,
   isMongoBsonType,
   mongoBsonTypeToMongoJsType,
-} from '../util/mongo-utils';
+} from '../util/util';
 
 export interface InterfaceCodeGenerator {
   generate(): void;
@@ -292,7 +293,7 @@ class InterfaceCodeGeneratorApp extends InterfaceCodeGeneratorBase {
   }
 
   protected getPropertyName(initialPropertyName: string): string {
-    return initialPropertyName.replace(/^_+|_+$/g, '');
+    return getAppInterfacePropertyName(initialPropertyName);
   }
 
   protected getSimpleValueTypeMapping(type: MongoJsonSchemaBsonType): string {

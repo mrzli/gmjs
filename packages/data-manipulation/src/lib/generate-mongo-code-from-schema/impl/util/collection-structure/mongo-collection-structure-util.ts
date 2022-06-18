@@ -16,7 +16,7 @@ import {
   invariant,
   objectGetEntries,
 } from '@gmjs/util';
-import { isMongoBsonType } from '../mongo-utils';
+import { isMongoBsonType } from '../util';
 
 export function schemasToAllCollectionStructures(
   schemas: readonly MongoJsonSchemaTypeObject[]
