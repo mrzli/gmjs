@@ -1,12 +1,27 @@
-import { Project, Scope } from 'ts-morph';
+import {
+  FunctionDeclarationStructure,
+  OptionalKind,
+  Project,
+  Scope,
+} from 'ts-morph';
 import { OptionsHelper } from '../util/options-helper';
-import { MongoJsonSchemaTypeObject } from '../../../data-model/mongo-json-schema';
+import {
+  MongoJsonSchemaBsonType,
+  MongoJsonSchemaTypeObject,
+} from '../../../data-model/mongo-json-schema';
 import { camelCase, kebabCase, pascalCase } from '@gmjs/lib-util';
 import path from 'path';
 import {
   PLACEHOLDER_MODULE_NAME_NESTJS_COMMON,
   PLACEHOLDER_MODULE_NAME_TYPE_FEST,
 } from '../util/placeholders';
+import { schemaToCollectionStructure } from '../util/collection-structure/mongo-collection-structure-util';
+import {
+  MongoCollectionStructure,
+  MongoEntityStructure,
+} from '../util/collection-structure/mongo-collection-structure';
+import { asChainable, distinctItems, sortArrayByStringAsc } from '@gmjs/util';
+import { mongoBsonTypeToMongoJsType } from '../util/mongo-utils';
 
 export function generateService(
   project: Project,
@@ -14,12 +29,14 @@ export function generateService(
   schema: MongoJsonSchemaTypeObject,
   moduleDir: string
 ): void {
+  const collectionStructure = schemaToCollectionStructure(schema);
   const dbPrefix = optionsHelper.getDbInterfacePrefix();
 
-  const entityFsName = kebabCase(schema.title);
-  const variableName = camelCase(schema.title);
-  const typeName = pascalCase(schema.title);
-  const dbTypeName = pascalCase(`${dbPrefix}${typeName}`);
+  const collectionEntityName = collectionStructure.collectionType.name;
+
+  const entityFsName = kebabCase(collectionEntityName);
+  const variableName = camelCase(collectionEntityName);
+  const typeName = pascalCase(collectionEntityName);
 
   const filePath = path.join(moduleDir, `${entityFsName}.service.ts`);
   const sf = project.createSourceFile(filePath);
@@ -27,7 +44,7 @@ export function generateService(
   const repositoryVariable = `${variableName}Repository`;
   const repositoryType = `${typeName}Repository`;
 
-  const dbVariableName = `db${typeName}`; // fixed to 'db' does not depend on prefix
+  const dbVariableName = `db${typeName}`; // fixed to 'db', does not depend on prefix
   const dbToAppMapper = `db${typeName}ToApp${typeName}`;
   const appToDbMapper = `app${typeName}ToDb${typeName}`;
 
@@ -40,7 +57,7 @@ export function generateService(
       moduleSpecifier: PLACEHOLDER_MODULE_NAME_NESTJS_COMMON,
     },
     {
-      namedImports: ['Collection', 'ObjectId', 'OptionalId'],
+      namedImports: [...getMongoImports(collectionStructure)],
       moduleSpecifier: 'mongodb',
     },
     {
@@ -48,12 +65,18 @@ export function generateService(
       moduleSpecifier: PLACEHOLDER_MODULE_NAME_TYPE_FEST,
     },
     {
-      namedImports: ['MongoDatabaseService', 'valueOrThrow'],
-      moduleSpecifier: optionsHelper.getNestUtilModuleSpecifier(),
+      namedImports: ['objectRemoveUndefined', transformIfExists],
+      moduleSpecifier: optionsHelper.getUtilModuleSpecifier(),
     },
     {
-      namedImports: ['DbCollectionName', dbTypeName],
+      namedImports: [
+        ...getSharedLibraryInterfaceImports(collectionStructure, dbPrefix),
+      ],
       moduleSpecifier: optionsHelper.getSharedLibraryModuleSpecifier(),
+    },
+    {
+      namedImports: [repositoryType],
+      moduleSpecifier: `./${entityFsName}.repository`,
     },
   ]);
 
@@ -163,4 +186,59 @@ export function generateService(
       },
     ],
   });
+
+  sf.addFunctions([]);
+}
+
+function getMongoImports(
+  collectionStructure: MongoCollectionStructure
+): readonly string[] {
+  const fixedMongoImports: readonly string[] = [
+    /* 'Collection', 'OptionalId' */
+  ];
+
+  const allMongoBsonTypes: MongoJsonSchemaBsonType[] = [];
+  allMongoBsonTypes.push(...collectionStructure.collectionType.mongoTypes);
+  for (const embeddedType of collectionStructure.embeddedTypes) {
+    allMongoBsonTypes.push(...embeddedType.mongoTypes);
+  }
+
+  return asChainable(allMongoBsonTypes)
+    .apply(distinctItems)
+    .map(mongoBsonTypeToMongoJsType)
+    .apply((items) => [...items, ...fixedMongoImports])
+    .apply(sortArrayByStringAsc)
+    .getValue();
+}
+
+function getSharedLibraryInterfaceImports(
+  collectionStructure: MongoCollectionStructure,
+  dbPrefix: string
+): readonly string[] {
+  const entityNames: readonly string[] = [
+    collectionStructure.collectionType.name,
+    ...collectionStructure.embeddedTypes.map((item) => item.name),
+  ].map(pascalCase);
+
+  const dbEntityNames = entityNames.map((name) =>
+    pascalCase(`${dbPrefix}${name}`)
+  );
+
+  return asChainable(entityNames.concat(dbEntityNames))
+    .apply(distinctItems)
+    .apply(sortArrayByStringAsc)
+    .getValue();
+}
+
+function createDbToAppMapperFunctionDeclaration(
+  entity: MongoEntityStructure
+): OptionalKind<FunctionDeclarationStructure> {
+  return {};
+}
+
+function getDbToAppMapperFunctionName(entityName: string): string {
+  return '';
+  // const dbVariableName = `db${typeName}`; // fixed to 'db', does not depend on prefix
+  // const dbToAppMapper = `db${typeName}ToApp${typeName}`;
+  // const appToDbMapper = `app${typeName}ToDb${typeName}`;
 }

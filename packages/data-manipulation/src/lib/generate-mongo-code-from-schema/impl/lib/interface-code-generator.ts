@@ -20,7 +20,11 @@ import {
   MongoPropertyStructure,
   MongoValueTypeStructureAny,
 } from '../util/collection-structure/mongo-collection-structure';
-import { schemasToCollectionStructures } from '../util/collection-structure/mongo-collection-structure-util';
+import { schemasToAllCollectionStructures } from '../util/collection-structure/mongo-collection-structure-util';
+import {
+  isMongoBsonType,
+  mongoBsonTypeToMongoJsType,
+} from '../util/mongo-utils';
 
 export interface InterfaceCodeGenerator {
   generate(): void;
@@ -47,7 +51,7 @@ abstract class InterfaceCodeGeneratorBase implements InterfaceCodeGenerator {
   ) {}
 
   public generate(): void {
-    const allCollections = schemasToCollectionStructures(this.input.schemas);
+    const allCollections = schemasToAllCollectionStructures(this.input.schemas);
 
     this.generateInterfacesIndexFiles(allCollections);
 
@@ -248,6 +252,10 @@ class InterfaceCodeGeneratorDb extends InterfaceCodeGeneratorBase {
   }
 
   protected getSimpleValueTypeMapping(type: MongoJsonSchemaBsonType): string {
+    if (isMongoBsonType(type)) {
+      return mongoBsonTypeToMongoJsType(type);
+    }
+
     switch (type) {
       case 'string':
         return 'string';
@@ -256,10 +264,6 @@ class InterfaceCodeGeneratorDb extends InterfaceCodeGeneratorBase {
         return 'number';
       case 'bool':
         return 'boolean';
-      case 'decimal':
-        return 'Decimal128';
-      case 'objectId':
-        return 'ObjectId';
       case 'date':
         return 'Date';
       default:

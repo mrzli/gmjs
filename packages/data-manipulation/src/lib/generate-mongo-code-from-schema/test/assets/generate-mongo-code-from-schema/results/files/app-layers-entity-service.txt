@@ -3,14 +3,14 @@ import { Decimal128, ObjectId } from 'mongodb';
 import { Except } from 'type-fest';
 import { objectRemoveUndefined, transformIfExists } from '@gmjs/util';
 import {
-  Entity,
   DbEntity,
   DbSubEntity1,
-  DbSubEntity2,
-  SubEntity1,
-  SubEntity2,
-  SubEntity11,
   DbSubEntity11,
+  DbSubEntity2,
+  Entity,
+  SubEntity1,
+  SubEntity11,
+  SubEntity2,
 } from '@gmjs-apps/example-shared';
 import { EntityRepository } from './entity.repository';
 

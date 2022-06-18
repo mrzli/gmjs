@@ -16,8 +16,9 @@ import {
   invariant,
   objectGetEntries,
 } from '@gmjs/util';
+import { isMongoBsonType } from '../mongo-utils';
 
-export function schemasToCollectionStructures(
+export function schemasToAllCollectionStructures(
   schemas: readonly MongoJsonSchemaTypeObject[]
 ): MongoAllCollectionsStructure {
   const collectionStructures = schemas.map(schemaToCollectionStructure);
@@ -40,12 +41,12 @@ export function schemasToCollectionStructures(
   };
 }
 
-function schemaToCollectionStructure(
+export function schemaToCollectionStructure(
   schema: MongoJsonSchemaTypeObject
 ): MongoCollectionStructure {
   const schemaMap = new Map<string, MongoJsonSchemaTypeObject>();
   findAllSchemas(schema, schemaMap);
-  schemaMap.delete(schema.title); // we don't need main schema in this map
+  schemaMap.delete(schema.title); // we don't want main schema in map of embedded entities
 
   return {
     collectionType: parseObject(schema),
@@ -143,17 +144,12 @@ function getFinalValueType(schema: MongoJsonSchemaAnyType): FinalValueType {
   return schema.bsonType === 'array' ? getFinalValueType(schema.items) : schema;
 }
 
-const MONGO_IMPORT_BSON_TYPES: readonly MongoJsonSchemaBsonType[] = [
-  'decimal',
-  'objectId',
-];
-
 function getMongoValueTypes(
   finalValueTypes: readonly FinalValueType[]
 ): readonly MongoJsonSchemaBsonType[] {
   return asChainable(finalValueTypes)
     .map((v) => v.bsonType)
-    .filter((t) => MONGO_IMPORT_BSON_TYPES.includes(t))
+    .filter(isMongoBsonType)
     .apply(distinctItems)
     .getValue();
 }
