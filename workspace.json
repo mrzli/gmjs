@@ -8,5 +8,6 @@
     "test-util": "packages/test-util",
     "util": "packages/util",
     "workspace": "packages/workspace"
-  }
+  },
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json"
 }
