@@ -3,29 +3,24 @@ import {
   GenerateMongoCodeFromSchemaInterfaceOptions,
 } from '../util/types';
 import {
-  ImportSpecifierStructure,
+  ExportDeclarationStructure,
+  ImportDeclarationStructure,
   OptionalKind,
   Project,
   PropertySignatureStructure,
-  SourceFile,
 } from 'ts-morph';
 import { OptionsHelper } from '../util/options-helper';
 import { kebabCase, pascalCase } from '@gmjs/lib-util';
 import path from 'path';
+import { MongoJsonSchemaBsonType } from '../../../data-model/mongo-json-schema';
+import { asChainable, invariant, sortArrayByStringAsc } from '@gmjs/util';
 import {
-  MongoJsonSchemaAnyType,
-  MongoJsonSchemaBsonType,
-  MongoJsonSchemaTypeObject,
-} from '../../../data-model/mongo-json-schema';
-import {
-  asChainable,
-  distinctItems,
-  invariant,
-  ObjectEntry,
-  objectGetEntries,
-  ReadonlyRecord,
-  sortArrayByStringAsc,
-} from '@gmjs/util';
+  MongoAllCollectionsStructure,
+  MongoEntityStructure,
+  MongoPropertyStructure,
+  MongoValueTypeStructureAny,
+} from '../util/collection-structure/mongo-collection-structure';
+import { schemasToCollectionStructures } from '../util/collection-structure/mongo-collection-structure-util';
 
 export interface InterfaceCodeGenerator {
   generate(): void;
@@ -52,33 +47,68 @@ abstract class InterfaceCodeGeneratorBase implements InterfaceCodeGenerator {
   ) {}
 
   public generate(): void {
-    const generatedInterfaces: GeneratedInterfaceSets = {
-      collections: new Set<string>(),
-      embedded: new Set<string>(),
-    };
-    for (const schema of this.input.schemas) {
-      this.generateInterfaceFile(schema, false, generatedInterfaces);
+    const allCollections = schemasToCollectionStructures(this.input.schemas);
+
+    this.generateInterfacesIndexFiles(allCollections);
+
+    for (const collectionType of allCollections.collectionTypes) {
+      this.generateInterfaceFile(collectionType, false);
     }
-    this.generateInterfacesIndexFile(generatedInterfaces);
+    for (const embeddedType of allCollections.embeddedTypes) {
+      this.generateInterfaceFile(embeddedType, true);
+    }
+  }
+
+  private generateInterfacesIndexFiles(
+    allCollections: MongoAllCollectionsStructure
+  ): void {
+    const interfacesDir = this.getInterfacesDir();
+
+    const hasCollections = allCollections.collectionTypes.length > 0;
+    const hasEmbedded = allCollections.embeddedTypes.length > 0;
+
+    if (hasEmbedded) {
+      const embeddedIndexFile = path.join(interfacesDir, 'embedded/index.ts');
+      const embeddedIndexSf = this.project.createSourceFile(embeddedIndexFile);
+      const exportDeclarations: readonly OptionalKind<ExportDeclarationStructure>[] =
+        getEntityExportDeclarations(
+          allCollections.embeddedTypes,
+          this.interfaceOptions.prefix
+        );
+      embeddedIndexSf.addExportDeclarations(exportDeclarations);
+    }
+
+    if (hasEmbedded || hasCollections) {
+      const collectionsIndexFile = path.join(interfacesDir, 'index.ts');
+
+      const collectionsIndexSf =
+        this.project.createSourceFile(collectionsIndexFile);
+
+      const exportDeclarations: OptionalKind<ExportDeclarationStructure>[] = [];
+
+      if (hasEmbedded) {
+        exportDeclarations.push({
+          moduleSpecifier: './embedded',
+        });
+      }
+
+      exportDeclarations.push(
+        ...getEntityExportDeclarations(
+          allCollections.collectionTypes,
+          this.interfaceOptions.prefix
+        )
+      );
+      collectionsIndexSf.addExportDeclarations(exportDeclarations);
+    }
   }
 
   private generateInterfaceFile(
-    schema: MongoJsonSchemaTypeObject,
-    isEmbedded: boolean,
-    generatedInterfaces: GeneratedInterfaceSets
+    entity: MongoEntityStructure,
+    isEmbedded: boolean
   ): void {
-    const entityName = getEntityName(
-      this.interfaceOptions.prefix,
-      schema.title
-    );
+    const entityName = getEntityName(this.interfaceOptions.prefix, entity.name);
 
-    if (isInterfaceAlreadyGenerated(generatedInterfaces, entityName)) {
-      return;
-    }
-
-    addGeneratedInterface(generatedInterfaces, entityName, isEmbedded);
-
-    const filePath = InterfaceCodeGeneratorBase.getCollectionInterfaceFilePath(
+    const filePath = getCollectionInterfaceFilePath(
       entityName,
       this.getInterfacesDir(),
       isEmbedded
@@ -86,27 +116,21 @@ abstract class InterfaceCodeGeneratorBase implements InterfaceCodeGenerator {
 
     const sf = this.project.createSourceFile(filePath);
 
-    const interfaceDeclaration = sf.addInterface({
+    const importDeclarations = this.getInterfaceFileImportDeclarations(
+      entity,
+      isEmbedded
+    );
+    sf.addImportDeclarations(importDeclarations);
+
+    const propertySignatures = entity.properties.map((property) =>
+      this.getPropertySignature(property)
+    );
+
+    sf.addInterface({
       name: entityName,
       isExported: true,
+      properties: propertySignatures,
     });
-
-    const propertyEntries = objectGetEntries(schema.properties);
-    const requiredSet = new Set(
-      schema.required.map((name) => this.getPropertyName(name))
-    );
-    const propertyResults = propertyEntries.map((property) =>
-      this.getPropertySignatureAndGenerateNestedTypeInterfaces(
-        property,
-        requiredSet,
-        generatedInterfaces
-      )
-    );
-    const propertySignatures = propertyResults.map((r) => r.propertyType);
-    interfaceDeclaration.addProperties(propertySignatures);
-
-    const propertyValueTypes = propertyResults.map((r) => r.valueTypeResult);
-    this.addImports(sf, propertyValueTypes, isEmbedded);
   }
 
   private getInterfacesDir(): string {
@@ -116,181 +140,88 @@ abstract class InterfaceCodeGeneratorBase implements InterfaceCodeGenerator {
     );
   }
 
-  private getPropertySignatureAndGenerateNestedTypeInterfaces(
-    property: ObjectEntry<ReadonlyRecord<string, MongoJsonSchemaAnyType>>,
-    requiredPropertiesSet: Set<string>,
-    generatedInterfaces: GeneratedInterfaceSets
-  ): GetPropertySignatureResult {
-    const propertyName = this.getPropertyName(property.key);
-    const propertyDef = property.value;
-    const propertyValueTypeResult =
-      this.getValueTypeAndGenerateNestedTypeInterfaces(
-        propertyDef,
-        false,
-        generatedInterfaces
-      );
-    const propertySignature: OptionalKind<PropertySignatureStructure> = {
-      name: propertyName,
-      isReadonly: true,
-      type: propertyValueTypeResult.type,
-      hasQuestionToken: !requiredPropertiesSet.has(propertyName),
-    };
-
-    return {
-      valueTypeResult: propertyValueTypeResult,
-      propertyType: propertySignature,
-    };
-  }
-
-  private getValueTypeAndGenerateNestedTypeInterfaces(
-    schema: MongoJsonSchemaAnyType,
-    isInArray: boolean,
-    generatedInterfaces: GeneratedInterfaceSets
-  ): GetValueTypeResult {
-    const type = schema.bsonType;
-    if (type === 'object') {
-      this.generateInterfaceFile(schema, true, generatedInterfaces);
-      const type = getEntityName(this.interfaceOptions.prefix, schema.title);
-      return {
-        type,
-        typeForImport: type,
-        importModuleType: 'local',
-      };
-    } else if (type === 'array') {
-      const itemResult = this.getValueTypeAndGenerateNestedTypeInterfaces(
-        schema.items,
-        true,
-        generatedInterfaces
-      );
-      const fullArrayType = `readonly ${itemResult.type}[]`;
-      return {
-        type: isInArray ? `(${fullArrayType})` : fullArrayType,
-        typeForImport: itemResult.type,
-        importModuleType: itemResult.importModuleType,
-      };
-    } else {
-      return this.getSimpleValueTypeMapping(schema.bsonType);
-    }
-  }
-
-  private generateInterfacesIndexFile(
-    generatedInterfaces: GeneratedInterfaceSets
-  ): void {
-    const interfacesDir = this.getInterfacesDir();
-
-    const embedded = sortArrayByStringAsc(
-      Array.from(generatedInterfaces.embedded)
-    );
-    const collections = sortArrayByStringAsc(
-      Array.from(generatedInterfaces.collections)
-    );
-
-    const hasEmbedded = embedded.length > 0;
-    const hasCollections = collections.length > 0;
-
-    if (hasEmbedded) {
-      const embeddedIndexFile = path.join(interfacesDir, 'embedded/index.ts');
-
-      const embeddedIndexSf = this.project.createSourceFile(embeddedIndexFile);
-
-      embeddedIndexSf.addExportDeclarations(
-        embedded.map((name) => ({
-          moduleSpecifier: `./${kebabCase(name)}`,
-        }))
-      );
-    }
-
-    if (hasEmbedded || hasCollections) {
-      const collectionsIndexFile = path.join(interfacesDir, 'index.ts');
-
-      const collectionsIndexSf =
-        this.project.createSourceFile(collectionsIndexFile);
-
-      if (hasEmbedded) {
-        collectionsIndexSf.addExportDeclaration({
-          moduleSpecifier: './embedded',
-        });
-      }
-
-      collectionsIndexSf.addExportDeclarations(
-        collections.map((name) => ({
-          moduleSpecifier: `./${kebabCase(name)}`,
-        }))
-      );
-    }
-  }
-
-  private addImports(
-    sf: SourceFile,
-    propertyValueTypes: readonly GetValueTypeResult[],
+  private getInterfaceFileImportDeclarations(
+    entity: MongoEntityStructure,
     isEmbedded: boolean
-  ): void {
-    const localImports = InterfaceCodeGeneratorBase.getImportSpecifiers(
-      propertyValueTypes,
-      'local'
+  ): readonly OptionalKind<ImportDeclarationStructure>[] {
+    const importDeclarations: OptionalKind<ImportDeclarationStructure>[] = [];
+
+    const mongoImports = sortArrayByStringAsc(
+      this.getMongoImportTypes(entity.mongoTypes)
+    );
+
+    if (mongoImports.length > 0) {
+      importDeclarations.push({
+        namedImports: [...mongoImports],
+        moduleSpecifier: 'mongodb',
+      });
+    }
+
+    const localImports = sortArrayByStringAsc(
+      entity.embeddedTypes.map((name) =>
+        getEntityName(this.interfaceOptions.prefix, name)
+      )
     );
 
     if (localImports.length > 0) {
       if (!isEmbedded) {
-        sf.insertImportDeclaration(0, {
+        importDeclarations.push({
           namedImports: [...localImports],
           moduleSpecifier: './embedded',
         });
       } else {
-        sf.insertImportDeclarations(
-          0,
-          localImports.map((li) => ({
-            namedImports: [li],
-            moduleSpecifier: `./${kebabCase(li.name)}`,
+        importDeclarations.push(
+          ...localImports.map((name) => ({
+            namedImports: [name],
+            moduleSpecifier: `./${kebabCase(name)}`,
           }))
         );
       }
     }
 
-    const mongoImports = InterfaceCodeGeneratorBase.getImportSpecifiers(
-      propertyValueTypes,
-      'mongo'
-    );
+    return importDeclarations;
+  }
 
-    if (mongoImports.length > 0) {
-      sf.insertImportDeclaration(0, {
-        namedImports: [...mongoImports],
-        moduleSpecifier: 'mongodb',
-      });
+  private getPropertySignature(
+    property: MongoPropertyStructure
+  ): OptionalKind<PropertySignatureStructure> {
+    const propertyName = this.getPropertyName(property.name);
+    const propertyValueType = this.getValueType(property.valueType, false);
+    return {
+      name: propertyName,
+      isReadonly: true,
+      type: propertyValueType,
+      hasQuestionToken: property.isOptional,
+    };
+  }
+
+  private getValueType(
+    valueType: MongoValueTypeStructureAny,
+    isInArray: boolean
+  ): string {
+    const type = valueType.bsonType;
+    if (type === 'object') {
+      return getEntityName(this.interfaceOptions.prefix, valueType.typeName);
+    } else if (type === 'array') {
+      const itemType = this.getValueType(valueType.items, true);
+      const fullArrayType = `readonly ${itemType}[]`;
+      return isInArray ? `(${fullArrayType})` : fullArrayType;
+    } else {
+      return this.getSimpleValueTypeMapping(valueType.bsonType);
     }
   }
 
-  private static getCollectionInterfaceFilePath(
-    entityName: string,
-    interfacesDir: string,
-    isEmbedded: boolean
-  ): string {
-    const fileName = `${kebabCase(entityName)}.ts`;
-    return path.join(interfacesDir, isEmbedded ? 'embedded' : '', fileName);
-  }
-
-  private static getImportSpecifiers(
-    propertyValueTypes: readonly GetValueTypeResult[],
-    importModuleType: InterfacePropertyImportModuleType
-  ): readonly OptionalKind<ImportSpecifierStructure>[] {
-    return asChainable(propertyValueTypes)
-      .filter((p) => p.importModuleType === importModuleType)
-      .map((p) => p.typeForImport)
-      .apply(distinctItems)
-      .apply(sortArrayByStringAsc)
-      .map<string, OptionalKind<ImportSpecifierStructure>>((t) => ({
-        name: t,
-      }))
-      .getValue();
-  }
-
   protected abstract get interfaceOptions(): GenerateMongoCodeFromSchemaInterfaceOptions;
+
+  protected abstract getMongoImportTypes(
+    bsonTypes: readonly MongoJsonSchemaBsonType[]
+  ): readonly string[];
 
   protected abstract getPropertyName(initialPropertyName: string): string;
 
   protected abstract getSimpleValueTypeMapping(
     type: MongoJsonSchemaBsonType
-  ): GetValueTypeResult;
+  ): string;
 }
 
 class InterfaceCodeGeneratorDb extends InterfaceCodeGeneratorBase {
@@ -306,29 +237,17 @@ class InterfaceCodeGeneratorDb extends InterfaceCodeGeneratorBase {
     return this.input.options.appsMonorepo.dbInterfaceOptions;
   }
 
+  protected getMongoImportTypes(
+    bsonTypes: readonly MongoJsonSchemaBsonType[]
+  ): readonly string[] {
+    return bsonTypes.map((type) => this.getSimpleValueTypeMapping(type));
+  }
+
   protected getPropertyName(initialPropertyName: string): string {
     return initialPropertyName;
   }
 
-  protected getSimpleValueTypeMapping(
-    type: MongoJsonSchemaBsonType
-  ): GetValueTypeResult {
-    const mongoTypes: readonly MongoJsonSchemaBsonType[] = [
-      'objectId',
-      'decimal',
-    ];
-    const simpleType =
-      InterfaceCodeGeneratorDb.getSimpleValueTypeMappingInternal(type);
-    return {
-      type: simpleType,
-      typeForImport: simpleType,
-      importModuleType: mongoTypes.includes(type) ? 'mongo' : 'none',
-    };
-  }
-
-  private static getSimpleValueTypeMappingInternal(
-    type: MongoJsonSchemaBsonType
-  ): string {
+  protected getSimpleValueTypeMapping(type: MongoJsonSchemaBsonType): string {
     switch (type) {
       case 'string':
         return 'string';
@@ -362,25 +281,17 @@ class InterfaceCodeGeneratorApp extends InterfaceCodeGeneratorBase {
     return this.input.options.appsMonorepo.appInterfaceOptions;
   }
 
+  protected getMongoImportTypes(
+    bsonTypes: readonly MongoJsonSchemaBsonType[]
+  ): readonly string[] {
+    return [];
+  }
+
   protected getPropertyName(initialPropertyName: string): string {
     return initialPropertyName.replace(/^_+|_+$/g, '');
   }
 
-  protected getSimpleValueTypeMapping(
-    type: MongoJsonSchemaBsonType
-  ): GetValueTypeResult {
-    const simpleType =
-      InterfaceCodeGeneratorApp.getSimpleValueTypeMappingInternal(type);
-    return {
-      type: simpleType,
-      typeForImport: simpleType,
-      importModuleType: 'none',
-    };
-  }
-
-  private static getSimpleValueTypeMappingInternal(
-    type: MongoJsonSchemaBsonType
-  ): string {
+  protected getSimpleValueTypeMapping(type: MongoJsonSchemaBsonType): string {
     switch (type) {
       case 'string':
         return 'string';
@@ -399,43 +310,28 @@ class InterfaceCodeGeneratorApp extends InterfaceCodeGeneratorBase {
   }
 }
 
-interface GeneratedInterfaceSets {
-  readonly collections: Set<string>;
-  readonly embedded: Set<string>;
-}
-
-function isInterfaceAlreadyGenerated(
-  sets: GeneratedInterfaceSets,
-  name: string
-): boolean {
-  return sets.collections.has(name) || sets.embedded.has(name);
-}
-
-function addGeneratedInterface(
-  sets: GeneratedInterfaceSets,
-  name: string,
-  isEmbedded: boolean
-): void {
-  if (isEmbedded) {
-    sets.embedded.add(name);
-  } else {
-    sets.collections.add(name);
-  }
-}
-
-type InterfacePropertyImportModuleType = 'mongo' | 'local' | 'none';
-
-interface GetValueTypeResult {
-  readonly type: string;
-  readonly typeForImport: string;
-  readonly importModuleType: InterfacePropertyImportModuleType;
-}
-
-interface GetPropertySignatureResult {
-  readonly propertyType: OptionalKind<PropertySignatureStructure>;
-  readonly valueTypeResult: GetValueTypeResult;
-}
-
 function getEntityName(prefix: string, name: string): string {
   return pascalCase(prefix + pascalCase(name));
+}
+
+function getCollectionInterfaceFilePath(
+  entityName: string,
+  interfacesDir: string,
+  isEmbedded: boolean
+): string {
+  const fileName = `${kebabCase(entityName)}.ts`;
+  return path.join(interfacesDir, isEmbedded ? 'embedded' : '', fileName);
+}
+
+function getEntityExportDeclarations(
+  entities: readonly MongoEntityStructure[],
+  prefix: string
+): readonly OptionalKind<ExportDeclarationStructure>[] {
+  return asChainable(entities)
+    .map((item) => item.name)
+    .apply(sortArrayByStringAsc)
+    .map((name) => ({
+      moduleSpecifier: `./${kebabCase(getEntityName(prefix, name))}`,
+    }))
+    .getValue();
 }

@@ -97,7 +97,7 @@ function parseObject(schema: MongoJsonSchemaTypeObject): MongoEntityStructure {
     name: schema.title,
     properties: propertyEntries.map((p) => ({
       name: p.key,
-      isOptional: requiredSet.has(p.key),
+      isOptional: !requiredSet.has(p.key),
       valueType: parseValueType(p.value),
     })),
     mongoTypes: getMongoValueTypes(finalValueTypes),
@@ -150,7 +150,7 @@ const MONGO_IMPORT_BSON_TYPES: readonly MongoJsonSchemaBsonType[] = [
 
 function getMongoValueTypes(
   finalValueTypes: readonly FinalValueType[]
-): readonly string[] {
+): readonly MongoJsonSchemaBsonType[] {
   return asChainable(finalValueTypes)
     .map((v) => v.bsonType)
     .filter((t) => MONGO_IMPORT_BSON_TYPES.includes(t))

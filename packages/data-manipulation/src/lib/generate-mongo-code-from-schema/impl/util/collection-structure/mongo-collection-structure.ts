@@ -13,7 +13,7 @@ export interface MongoCollectionStructure {
 export interface MongoEntityStructure {
   readonly name: string;
   readonly properties: readonly MongoPropertyStructure[];
-  readonly mongoTypes: readonly string[];
+  readonly mongoTypes: readonly MongoJsonSchemaBsonType[];
   readonly embeddedTypes: readonly string[];
 }
 
