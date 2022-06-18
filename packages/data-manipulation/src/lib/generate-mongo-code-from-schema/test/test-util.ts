@@ -20,7 +20,7 @@ export const TEST_OPTIONS: GenerateMongoCodeFromSchemaOptions = {
     },
     appInterfaceOptions: {
       dir: 'app',
-      prefix: '',
+      prefix: 'app',
     },
     sharedProject: {
       projectName: 'example-shared',

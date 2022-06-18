@@ -5,27 +5,27 @@
   },
   {
     "testFile": "lib-interface-app-collection-another-entity.txt",
-    "path": "libs/example-shared/src/lib/mongo/app/another-entity.ts"
+    "path": "libs/example-shared/src/lib/mongo/app/app-another-entity.ts"
   },
   {
     "testFile": "lib-interface-app-collection-entity.txt",
-    "path": "libs/example-shared/src/lib/mongo/app/entity.ts"
+    "path": "libs/example-shared/src/lib/mongo/app/app-entity.ts"
   },
   {
     "testFile": "lib-interface-app-collection-entity2.txt",
-    "path": "libs/example-shared/src/lib/mongo/app/entity2.ts"
+    "path": "libs/example-shared/src/lib/mongo/app/app-entity2.ts"
   },
   {
     "testFile": "lib-interface-app-embedded-sub-entity1.txt",
-    "path": "libs/example-shared/src/lib/mongo/app/embedded/sub-entity1.ts"
+    "path": "libs/example-shared/src/lib/mongo/app/embedded/app-sub-entity1.ts"
   },
   {
     "testFile": "lib-interface-app-embedded-sub-entity2.txt",
-    "path": "libs/example-shared/src/lib/mongo/app/embedded/sub-entity2.ts"
+    "path": "libs/example-shared/src/lib/mongo/app/embedded/app-sub-entity2.ts"
   },
   {
     "testFile": "lib-interface-app-embedded-sub-entity11.txt",
-    "path": "libs/example-shared/src/lib/mongo/app/embedded/sub-entity11.ts"
+    "path": "libs/example-shared/src/lib/mongo/app/embedded/app-sub-entity11.ts"
   },
   {
     "testFile": "lib-interface-app-embedded-index.txt",

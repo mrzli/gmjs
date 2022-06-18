@@ -1,7 +1,7 @@
-import { SubEntity1 } from './embedded';
+import { AppSubEntity1 } from './embedded';
 
-export interface Entity2 {
+export interface AppEntity2 {
   readonly id: string;
   readonly field: string;
-  readonly fieldRefFromOtherCollection: SubEntity1;
+  readonly fieldRefFromOtherCollection: AppSubEntity1;
 }
