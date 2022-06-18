@@ -14,6 +14,10 @@ export type ReadonlyRecord<K extends PropertyKey, TValue> = Readonly<
 >;
 export type ReadonlyPick<TObj, K extends keyof TObj> = Readonly<Pick<TObj, K>>;
 
+export type DeepWriteable<T> = {
+  -readonly [K in keyof T]: DeepWriteable<T[K]>;
+};
+
 export type AnyObject = Record<string, AnyValue>;
 
 export type Extends<T, U extends T> = U;
@@ -22,10 +26,6 @@ export type Nullish<TValue> = TValue | null | undefined;
 export type NullishOnly<TValue> = TValue extends null | undefined
   ? TValue
   : never;
-
-export type ReadonlyTuple2<T1, T2> = readonly [T1, T2];
-export type ReadonlyTuple3<T1, T2, T3> = readonly [T1, T2, T3];
-export type ReadonlyTuple4<T1, T2, T3, T4> = readonly [T1, T2, T3, T4];
 
 export interface ObjectEntry<T extends AnyObject, K extends keyof T = keyof T> {
   readonly key: keyof T;

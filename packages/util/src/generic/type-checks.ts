@@ -1,3 +1,5 @@
+import { AnyObject } from '../types/generic';
+
 export function isBoolean(value: unknown): value is boolean {
   return value === false || value === true;
 }
@@ -23,7 +25,7 @@ export function isArray(value: unknown): value is Array<unknown> {
   return Array.isArray(value);
 }
 
-export function isObject(value: unknown): value is object {
+export function isObject(value: unknown): value is AnyObject {
   return (
     typeof value === 'object' &&
     value !== null &&
