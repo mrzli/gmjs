@@ -14,9 +14,13 @@ export function generateController(
   schema: MongoJsonSchemaTypeObject,
   moduleDir: string
 ): void {
+  const appPrefix = optionsHelper.getAppInterfacePrefix();
+
   const entityFsName = kebabCase(schema.title);
-  const variableName = camelCase(schema.title);
   const typeName = pascalCase(schema.title);
+  const variableName = camelCase(schema.title);
+
+  const appTypeName = pascalCase(`${appPrefix}${typeName}`);
 
   const filePath = path.join(moduleDir, `${entityFsName}.controller.ts`);
   const sf = project.createSourceFile(filePath);
@@ -36,7 +40,7 @@ export function generateController(
       isTypeOnly: true,
     },
     {
-      namedImports: [typeName],
+      namedImports: [appTypeName],
       moduleSpecifier: optionsHelper.getSharedLibraryModuleSpecifier(),
     },
     {
@@ -78,7 +82,7 @@ export function generateController(
         scope: Scope.Public,
         isAsync: true,
         name: 'getAll',
-        returnType: `Promise<readonly ${typeName}[]>`,
+        returnType: `Promise<readonly ${appTypeName}[]>`,
         statements: [`return this.${serviceVariable}.getAll();`],
       },
       {
@@ -103,7 +107,7 @@ export function generateController(
             type: 'string',
           },
         ],
-        returnType: `Promise<${typeName}>`,
+        returnType: `Promise<${appTypeName}>`,
         statements: [`return this.${serviceVariable}.getById(id);`],
       },
       {
@@ -125,10 +129,10 @@ export function generateController(
               },
             ],
             name: variableName,
-            type: `Except<${typeName}, 'id'>`,
+            type: `Except<${appTypeName}, 'id'>`,
           },
         ],
-        returnType: `Promise<${typeName}>`,
+        returnType: `Promise<${appTypeName}>`,
         statements: [`return this.${serviceVariable}.create(${variableName})`],
       },
       {
@@ -160,10 +164,10 @@ export function generateController(
               },
             ],
             name: variableName,
-            type: `Partial<Except<${typeName}, 'id'>>`,
+            type: `Partial<Except<${appTypeName}, 'id'>>`,
           },
         ],
-        returnType: `Promise<${typeName}>`,
+        returnType: `Promise<${appTypeName}>`,
         statements: [
           `return this.${serviceVariable}.update(id, ${variableName})`,
         ],

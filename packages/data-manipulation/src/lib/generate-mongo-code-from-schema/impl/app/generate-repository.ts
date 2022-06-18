@@ -17,9 +17,10 @@ export function generateRepository(
   const dbPrefix = optionsHelper.getDbInterfacePrefix();
 
   const entityFsName = kebabCase(schema.title);
-  const variableName = camelCase(schema.title);
   const typeName = pascalCase(schema.title);
+
   const dbTypeName = pascalCase(`${dbPrefix}${typeName}`);
+  const dbVariableName = camelCase(`${dbPrefix}${typeName}`);
 
   const filePath = path.join(moduleDir, `${entityFsName}.repository.ts`);
   const sf = project.createSourceFile(filePath);
@@ -102,13 +103,13 @@ export function generateRepository(
         name: 'create',
         parameters: [
           {
-            name: variableName,
+            name: dbVariableName,
             type: `Except<${dbTypeName}, '_id'>`,
           },
         ],
         returnType: `Promise<${dbTypeName}>`,
         statements: [
-          `const { insertedId } = await this.collection.insertOne(${variableName});`,
+          `const { insertedId } = await this.collection.insertOne(${dbVariableName});`,
           [
             `const result = await this.collection.findOne<${dbTypeName}>({`,
             '  _id: insertedId,',
@@ -127,7 +128,7 @@ export function generateRepository(
             type: 'ObjectId',
           },
           {
-            name: variableName,
+            name: dbVariableName,
             type: `Partial<Except<${dbTypeName}, '_id'>>`,
           },
         ],
@@ -136,7 +137,7 @@ export function generateRepository(
           [
             'const result = await this.collection.findOneAndUpdate(',
             '  { _id: id },',
-            `  { $set: ${variableName} },`,
+            `  { $set: ${dbVariableName} },`,
             "  { returnDocument: 'after' }",
             ');',
           ].join('\n'),

@@ -22,8 +22,8 @@ export class EntityRepository {
     return this.collection.findOne({ _id: id });
   }
 
-  public async create(entity: Except<DbEntity, '_id'>): Promise<DbEntity> {
-    const { insertedId } = await this.collection.insertOne(entity);
+  public async create(dbEntity: Except<DbEntity, '_id'>): Promise<DbEntity> {
+    const { insertedId } = await this.collection.insertOne(dbEntity);
     const result = await this.collection.findOne<DbEntity>({
       _id: insertedId,
     });
@@ -32,11 +32,11 @@ export class EntityRepository {
 
   public async update(
     id: ObjectId,
-    entity: Partial<Except<DbEntity, '_id'>>
+    dbEntity: Partial<Except<DbEntity, '_id'>>
   ): Promise<DbEntity> {
     const result = await this.collection.findOneAndUpdate(
       { _id: id },
-      { $set: entity },
+      { $set: dbEntity },
       { returnDocument: 'after' }
     );
     return valueOrThrow(result.value);

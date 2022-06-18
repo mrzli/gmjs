@@ -31,12 +31,16 @@ export function generateService(
 ): void {
   const collectionStructure = schemaToCollectionStructure(schema);
   const dbPrefix = optionsHelper.getDbInterfacePrefix();
+  const appPrefix = optionsHelper.getAppInterfacePrefix();
 
   const collectionEntityName = collectionStructure.collectionType.name;
 
   const entityFsName = kebabCase(collectionEntityName);
-  const variableName = camelCase(collectionEntityName);
   const typeName = pascalCase(collectionEntityName);
+  const variableName = camelCase(collectionEntityName);
+
+  const appTypeName = pascalCase(`${appPrefix}${typeName}`);
+  const appVariableName = camelCase(`${appPrefix}${typeName}`);
 
   const filePath = path.join(moduleDir, `${entityFsName}.service.ts`);
   const sf = project.createSourceFile(filePath);
@@ -70,7 +74,11 @@ export function generateService(
     },
     {
       namedImports: [
-        ...getSharedLibraryInterfaceImports(collectionStructure, dbPrefix),
+        ...getSharedLibraryInterfaceImports(
+          collectionStructure,
+          dbPrefix,
+          appPrefix
+        ),
       ],
       moduleSpecifier: optionsHelper.getSharedLibraryModuleSpecifier(),
     },
@@ -102,7 +110,7 @@ export function generateService(
         scope: Scope.Public,
         isAsync: true,
         name: 'getAll',
-        returnType: `Promise<readonly ${typeName}[]>`,
+        returnType: `Promise<readonly ${appTypeName}[]>`,
         statements: [
           `const ${dbVariableName}List = await this.${repositoryVariable}.getAll();`,
           `return ${dbVariableName}List.map(${dbToAppMapper})`,
@@ -118,7 +126,7 @@ export function generateService(
             type: 'string',
           },
         ],
-        returnType: `Promise<${typeName} | undefined>`,
+        returnType: `Promise<${appTypeName} | undefined>`,
         statements: [
           `const ${dbVariableName} = await this.${repositoryVariable}.getById(new ObjectId(id));`,
           `return ${transformIfExists}(${dbVariableName}, ${dbToAppMapper}, undefined);`,
@@ -130,15 +138,15 @@ export function generateService(
         name: 'create',
         parameters: [
           {
-            name: variableName,
-            type: `Except<${typeName}, 'id'>`,
+            name: appVariableName,
+            type: `Except<${appTypeName}, 'id'>`,
           },
         ],
-        returnType: `Promise<${typeName}>`,
+        returnType: `Promise<${appTypeName}>`,
         statements: [
           [
             `const ${dbVariableName} = await this.${repositoryVariable}.create(`,
-            `  ${appToDbMapper}WithoutId(${variableName})`,
+            `  ${appToDbMapper}WithoutId(${appVariableName})`,
             ');',
           ].join('\n'),
           `return ${dbToAppMapper}(${dbVariableName});`,
@@ -154,16 +162,16 @@ export function generateService(
             type: 'string',
           },
           {
-            name: variableName,
-            type: `Partial<Except<${typeName}, 'id'>>`,
+            name: appVariableName,
+            type: `Partial<Except<${appTypeName}, 'id'>>`,
           },
         ],
-        returnType: `Promise<${typeName}>`,
+        returnType: `Promise<${appTypeName}>`,
         statements: [
           [
             `const ${dbVariableName} = await this.${repositoryVariable}.update(`,
             '  new ObjectId(id),',
-            `  ${appToDbMapper}WithoutIdPartial(${variableName})`,
+            `  ${appToDbMapper}WithoutIdPartial(${appVariableName})`,
             ');',
           ].join('\n'),
           `return ${dbToAppMapper}(${dbVariableName});`,
@@ -213,7 +221,8 @@ function getMongoImports(
 
 function getSharedLibraryInterfaceImports(
   collectionStructure: MongoCollectionStructure,
-  dbPrefix: string
+  dbPrefix: string,
+  appPrefix: string
 ): readonly string[] {
   const entityNames: readonly string[] = [
     collectionStructure.collectionType.name,
@@ -224,7 +233,11 @@ function getSharedLibraryInterfaceImports(
     pascalCase(`${dbPrefix}${name}`)
   );
 
-  return asChainable(entityNames.concat(dbEntityNames))
+  const appEntityNames = entityNames.map((name) =>
+    pascalCase(`${appPrefix}${name}`)
+  );
+
+  return asChainable(dbEntityNames.concat(appEntityNames))
     .apply(distinctItems)
     .apply(sortArrayByStringAsc)
     .getValue();
