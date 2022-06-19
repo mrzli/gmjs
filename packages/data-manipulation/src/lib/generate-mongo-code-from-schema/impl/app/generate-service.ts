@@ -1,16 +1,11 @@
 import {
-  CodeBlockWriter,
   FunctionDeclarationStructure,
   OptionalKind,
   Project,
   Scope,
-  WriterFunction,
 } from 'ts-morph';
 import { OptionsHelper } from '../util/options-helper';
-import {
-  MongoJsonSchemaBsonType,
-  MongoJsonSchemaTypeObject,
-} from '../../../data-model/mongo-json-schema';
+import { MongoJsonSchemaTypeObject } from '../../../data-model/mongo-json-schema';
 import { camelCase, kebabCase, pascalCase } from '@gmjs/lib-util';
 import path from 'path';
 import {
@@ -22,17 +17,26 @@ import {
   MongoCollectionStructure,
   MongoEntityStructure,
 } from '../util/collection-structure/mongo-collection-structure';
+import { compareFnStringAsc, sortArray } from '@gmjs/util';
 import {
-  asChainable,
-  compareFnStringAsc,
-  distinctItems,
-  sortArray,
-  sortArrayByStringAsc,
-} from '@gmjs/util';
+  getMongoImports,
+  getSharedLibraryInterfaceImports,
+} from './service-helpers/import-helpers';
 import {
-  getAppInterfacePropertyName,
-  mongoBsonTypeToMongoJsType,
-} from '../util/util';
+  OBJECT_REMOVE_UNDEFINED_FN_NAME,
+  TRANSFORM_IF_EXISTS_FN_NAME,
+} from './service-helpers/constants';
+import {
+  createDbToAppMapperFunctionDeclaration,
+  getDbToAppMapperFunctionName,
+} from './service-helpers/db-to-app-mapping-helpers';
+import {
+  createAppToDbMapperFunctionDeclaration,
+  createAppToDbMapperMainCollectionFunctionDeclaration,
+  createAppToDbWithoutIdMapperFunctionDeclaration,
+  createAppToDbWithoutIdPartialMapperFunctionDeclaration,
+  getAppToDbMapperFunctionName,
+} from './service-helpers/app-to-db-mapping-helpers';
 
 export function generateService(
   project: Project,
@@ -63,8 +67,6 @@ export function generateService(
   const dbToAppMapper = getDbToAppMapperFunctionName(typeName);
   const appToDbMapper = getAppToDbMapperFunctionName(typeName);
 
-  const transformIfExists = 'transformIfExists';
-
   // performance issues when not using a placeholder
   sf.addImportDeclarations([
     {
@@ -80,7 +82,10 @@ export function generateService(
       moduleSpecifier: PLACEHOLDER_MODULE_NAME_TYPE_FEST,
     },
     {
-      namedImports: ['objectRemoveUndefined', transformIfExists],
+      namedImports: [
+        OBJECT_REMOVE_UNDEFINED_FN_NAME,
+        TRANSFORM_IF_EXISTS_FN_NAME,
+      ],
       moduleSpecifier: optionsHelper.getUtilModuleSpecifier(),
     },
     {
@@ -140,7 +145,7 @@ export function generateService(
         returnType: `Promise<${appTypeName} | undefined>`,
         statements: [
           `const ${dbVariableName} = await this.${repositoryVariable}.getById(new ObjectId(id));`,
-          `return ${transformIfExists}(${dbVariableName}, ${dbToAppMapper}, undefined);`,
+          `return ${TRANSFORM_IF_EXISTS_FN_NAME}(${dbVariableName}, ${dbToAppMapper}, undefined);`,
         ],
       },
       {
@@ -214,68 +219,36 @@ export function generateService(
   sf.addFunctions(mapperFunctionDeclarations);
 }
 
-function getMongoImports(
-  collectionStructure: MongoCollectionStructure
-): readonly string[] {
-  const fixedMongoImports: readonly string[] = [
-    /* 'Collection', 'OptionalId' */
-  ];
-
-  const allMongoBsonTypes: MongoJsonSchemaBsonType[] = [];
-  allMongoBsonTypes.push(...collectionStructure.collectionType.mongoTypes);
-  for (const embeddedType of collectionStructure.embeddedTypes) {
-    allMongoBsonTypes.push(...embeddedType.mongoTypes);
-  }
-
-  return asChainable(allMongoBsonTypes)
-    .apply(distinctItems)
-    .map(mongoBsonTypeToMongoJsType)
-    .apply((items) => [...items, ...fixedMongoImports])
-    .apply(sortArrayByStringAsc)
-    .getValue();
-}
-
-function getSharedLibraryInterfaceImports(
-  collectionStructure: MongoCollectionStructure,
-  dbPrefix: string,
-  appPrefix: string
-): readonly string[] {
-  const entityNames: readonly string[] = [
-    collectionStructure.collectionType.name,
-    ...collectionStructure.embeddedTypes.map((item) => item.name),
-  ].map(pascalCase);
-
-  const dbEntityNames = entityNames.map((name) =>
-    pascalCase(`${dbPrefix}${name}`)
-  );
-
-  const appEntityNames = entityNames.map((name) =>
-    pascalCase(`${appPrefix}${name}`)
-  );
-
-  return asChainable(dbEntityNames.concat(appEntityNames))
-    .apply(distinctItems)
-    .apply(sortArrayByStringAsc)
-    .getValue();
-}
-
 function createMapperFunctionDeclarations(
   collectionStructure: MongoCollectionStructure,
   dbPrefix: string,
   appPrefix: string
 ): readonly OptionalKind<FunctionDeclarationStructure>[] {
-  const entities: readonly MongoEntityStructure[] = [
+  const embeddedEntities: readonly MongoEntityStructure[] = sortArray(
+    collectionStructure.embeddedTypes,
+    (item1, item2) => compareFnStringAsc(item1.name, item2.name)
+  );
+
+  const allEntities: readonly MongoEntityStructure[] = [
     collectionStructure.collectionType,
-    ...sortArray(collectionStructure.embeddedTypes, (item1, item2) =>
-      compareFnStringAsc(item1.name, item2.name)
-    ),
+    ...embeddedEntities,
   ];
 
   return [
-    ...entities.map((entity) =>
+    ...allEntities.map((entity) =>
       createDbToAppMapperFunctionDeclaration(entity, dbPrefix, appPrefix)
     ),
-    ...entities.map((entity) =>
+    createAppToDbMapperMainCollectionFunctionDeclaration(
+      collectionStructure.collectionType.name,
+      dbPrefix,
+      appPrefix
+    ),
+    createAppToDbWithoutIdMapperFunctionDeclaration(
+      collectionStructure.collectionType,
+      dbPrefix,
+      appPrefix
+    ),
+    ...embeddedEntities.map((entity) =>
       createAppToDbMapperFunctionDeclaration(entity, dbPrefix, appPrefix)
     ),
     createAppToDbWithoutIdPartialMapperFunctionDeclaration(
@@ -284,128 +257,4 @@ function createMapperFunctionDeclarations(
       appPrefix
     ),
   ];
-}
-
-function createDbToAppMapperFunctionDeclaration(
-  entity: MongoEntityStructure,
-  dbPrefix: string,
-  appPrefix: string
-): OptionalKind<FunctionDeclarationStructure> {
-  const typeName = pascalCase(entity.name);
-  const dbTypeName = pascalCase(`${dbPrefix}${typeName}`);
-  const dbVariableName = camelCase(`${dbPrefix}${typeName}`);
-  const appTypeName = pascalCase(`${appPrefix}${typeName}`);
-  const appVariableName = camelCase(`${appPrefix}${typeName}`);
-
-  const statement: WriterFunction = (writer: CodeBlockWriter) => {
-    writer.write('return').block(() => {
-      for (const property of entity.properties) {
-        writer.writeLine(
-          `${getAppInterfacePropertyName(property.name)}: ${dbVariableName}.${
-            property.name
-          },`
-        );
-      }
-    });
-  };
-
-  return {
-    name: getDbToAppMapperFunctionName(entity.name),
-    isExported: true,
-    isAsync: false,
-    parameters: [
-      {
-        name: dbVariableName,
-        type: dbTypeName,
-      },
-    ],
-    returnType: appTypeName,
-    statements: [statement],
-  };
-}
-
-function createAppToDbMapperFunctionDeclaration(
-  entity: MongoEntityStructure,
-  dbPrefix: string,
-  appPrefix: string
-): OptionalKind<FunctionDeclarationStructure> {
-  const typeName = pascalCase(entity.name);
-  const dbTypeName = pascalCase(`${dbPrefix}${typeName}`);
-  const dbVariableName = camelCase(`${dbPrefix}${typeName}`);
-  const appTypeName = pascalCase(`${appPrefix}${typeName}`);
-  const appVariableName = camelCase(`${appPrefix}${typeName}`);
-
-  const statement: WriterFunction = (writer: CodeBlockWriter) => {
-    writer.write('return').block(() => {
-      for (const property of entity.properties) {
-        writer.writeLine(
-          `${property.name}: ${appVariableName}.${getAppInterfacePropertyName(
-            property.name
-          )},`
-        );
-      }
-    });
-  };
-
-  return {
-    name: getAppToDbMapperFunctionName(entity.name),
-    isExported: true,
-    isAsync: false,
-    parameters: [
-      {
-        name: appVariableName,
-        type: appTypeName,
-      },
-    ],
-    returnType: dbTypeName,
-    statements: [statement],
-  };
-}
-
-function createAppToDbWithoutIdPartialMapperFunctionDeclaration(
-  entity: MongoEntityStructure,
-  dbPrefix: string,
-  appPrefix: string
-): OptionalKind<FunctionDeclarationStructure> {
-  const typeName = pascalCase(entity.name);
-  const dbTypeName = pascalCase(`${dbPrefix}${typeName}`);
-  const dbVariableName = camelCase(`${dbPrefix}${typeName}`);
-  const appTypeName = pascalCase(`${appPrefix}${typeName}`);
-  const appVariableName = camelCase(`${appPrefix}${typeName}`);
-
-  const statement: WriterFunction = (writer: CodeBlockWriter) => {
-    writer.write('return').block(() => {
-      for (const property of entity.properties) {
-        writer.writeLine(
-          `${property.name}: ${appVariableName}.${getAppInterfacePropertyName(
-            property.name
-          )},`
-        );
-      }
-    });
-  };
-
-  return {
-    name: `${getAppToDbMapperFunctionName(entity.name)}WithoutIdPartial`,
-    isExported: true,
-    isAsync: false,
-    parameters: [
-      {
-        name: appVariableName,
-        type: `Partial<Except<${appTypeName}>, 'id'>`,
-      },
-    ],
-    returnType: `Partial<Except<${dbTypeName}>, '_id'>`,
-    statements: [statement],
-  };
-}
-
-function getDbToAppMapperFunctionName(entityName: string): string {
-  const typeName = pascalCase(entityName);
-  return `db${typeName}ToApp${typeName}`;
-}
-
-function getAppToDbMapperFunctionName(entityName: string): string {
-  const typeName = pascalCase(entityName);
-  return `app${typeName}ToDb${typeName}`;
 }

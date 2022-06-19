@@ -87,7 +87,7 @@ export function dbEntityToAppEntity(dbEntity: DbEntity): AppEntity {
       dbSubEntity2ToAppSubEntity2
     ),
     fieldOptionalString: dbEntity.fieldOptionalString,
-    fieldOptionalDate: dbEntity.fieldOptionalDate?.toString(),
+    fieldOptionalDate: dbEntity.fieldOptionalDate?.toISOString(),
     fieldOptionalArrayString: dbEntity.fieldOptionalArrayString,
     fieldOptionalArrayDate: dbEntity.fieldOptionalArrayDate?.map((item) =>
       item.toISOString()
