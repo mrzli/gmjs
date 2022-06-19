@@ -1,6 +1,6 @@
 import { generateMongoCodeFromSchema } from './generate-mongo-code-from-schema';
 import path from 'path';
-import { GenerateMongoCodeFromSchemaInput } from './impl/util/types';
+import { GenerateMongoCodeFromSchemaInput } from './input-types';
 import { createTestOptions } from './test/test-util';
 import { readJsonSync, readTextFilesInDirSync } from '@gmjs/fs-util';
 import { MongoJsonSchemaTypeObject } from '../data-model/mongo-json-schema';

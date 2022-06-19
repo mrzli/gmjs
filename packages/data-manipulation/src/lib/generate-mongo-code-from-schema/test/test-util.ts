@@ -1,4 +1,4 @@
-import { GenerateMongoCodeFromSchemaOptions } from '../impl/util/types';
+import { GenerateMongoCodeFromSchemaOptions } from '../input-types';
 
 export const TEST_FILE_SUFFIX = '_';
 

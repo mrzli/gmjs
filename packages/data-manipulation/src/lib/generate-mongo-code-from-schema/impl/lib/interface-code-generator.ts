@@ -1,7 +1,7 @@
 import {
   GenerateMongoCodeFromSchemaInput,
   GenerateMongoCodeFromSchemaInterfaceOptions,
-} from '../util/types';
+} from '../../input-types';
 import {
   ExportDeclarationStructure,
   ImportDeclarationStructure,

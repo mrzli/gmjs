@@ -1,4 +1,4 @@
-import { GenerateMongoCodeFromSchemaInput } from './util/types';
+import { GenerateMongoCodeFromSchemaInput } from '../input-types';
 import { Project } from 'ts-morph';
 import { OptionsHelper } from './util/options-helper';
 import { TEST_FILE_SUFFIX } from '../test/test-util';

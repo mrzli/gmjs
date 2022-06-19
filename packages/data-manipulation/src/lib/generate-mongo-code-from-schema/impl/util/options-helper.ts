@@ -1,4 +1,4 @@
-import { GenerateMongoCodeFromSchemaOptions } from './types';
+import { GenerateMongoCodeFromSchemaOptions } from '../../input-types';
 import path from 'path';
 
 export class OptionsHelper {
