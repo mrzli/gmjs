@@ -1,0 +1,131 @@
+import { Injectable } from '@nestjs/common';
+import { ObjectId } from 'mongodb';
+import { Except } from 'type-fest';
+import { objectRemoveUndefined, transformIfExists } from '@gmjs/util';
+import {
+  AppEntity2,
+  AppSubEntity1,
+  AppSubEntity11,
+  DbEntity2,
+  DbSubEntity1,
+  DbSubEntity11,
+} from '@gmjs-apps/example-shared';
+import { Entity2Repository } from './entity2.repository';
+
+@Injectable()
+export class Entity2Service {
+  public constructor(private readonly entity2Repository: Entity2Repository) {}
+
+  public async getAll(): Promise<readonly AppEntity2[]> {
+    const dbEntity2List = await this.entity2Repository.getAll();
+    return dbEntity2List.map(dbEntity2ToAppEntity2);
+  }
+
+  public async getById(id: string): Promise<AppEntity2 | undefined> {
+    const dbEntity2 = await this.entity2Repository.getById(new ObjectId(id));
+    return transformIfExists(dbEntity2, dbEntity2ToAppEntity2, undefined);
+  }
+
+  public async create(
+    appEntity2: Except<AppEntity2, 'id'>
+  ): Promise<AppEntity2> {
+    const dbEntity2 = await this.entity2Repository.create(
+      appEntity2ToDbEntity2WithoutId(appEntity2)
+    );
+    return dbEntity2ToAppEntity2(dbEntity2);
+  }
+
+  public async update(
+    id: string,
+    appEntity2: Partial<Except<AppEntity2, 'id'>>
+  ): Promise<AppEntity2> {
+    const dbEntity2 = await this.entity2Repository.update(
+      new ObjectId(id),
+      appEntity2ToDbEntity2WithoutIdPartial(appEntity2)
+    );
+    return dbEntity2ToAppEntity2(dbEntity2);
+  }
+
+  public async remove(id: string): Promise<void> {
+    await this.entity2Repository.remove(new ObjectId(id));
+  }
+}
+
+export function dbEntity2ToAppEntity2(dbEntity2: DbEntity2): AppEntity2 {
+  return {
+    id: dbEntity2._id.toString(),
+    field: dbEntity2.field,
+    fieldRefFromOtherCollection: dbSubEntity1ToAppSubEntity1(
+      dbEntity2.fieldRefFromOtherCollection
+    ),
+  };
+}
+
+export function dbSubEntity1ToAppSubEntity1(
+  dbSubEntity1: DbSubEntity1
+): AppSubEntity1 {
+  return {
+    subfield11: dbSubEntity1.subfield11,
+    subfield12: dbSubEntity1.subfield12,
+    subfield13: dbSubEntity1.subfield13.toISOString(),
+    subfield14: dbSubEntity11ToAppSubEntity11(dbSubEntity1.subfield14),
+  };
+}
+
+export function dbSubEntity11ToAppSubEntity11(
+  dbSubEntity11: DbSubEntity11
+): AppSubEntity11 {
+  return {
+    subfield111: dbSubEntity11.subfield111,
+  };
+}
+
+export function appEntity2ToDbEntity2(appEntity2: AppEntity2): DbEntity2 {
+  return {
+    _id: new ObjectId(appEntity2.id),
+    ...appEntity2ToDbEntity2WithoutId(appEntity2),
+  };
+}
+
+export function appEntity2ToDbEntity2WithoutId(
+  appEntity2: Except<AppEntity2, 'id'>
+): Except<DbEntity2, '_id'> {
+  return {
+    field: appEntity2.field,
+    fieldRefFromOtherCollection: appSubEntity1ToDbSubEntity1(
+      appEntity2.fieldRefFromOtherCollection
+    ),
+  };
+}
+
+export function appSubEntity1ToDbSubEntity1(
+  appSubEntity1: AppSubEntity1
+): DbSubEntity1 {
+  return {
+    subfield11: appSubEntity1.subfield11,
+    subfield12: appSubEntity1.subfield12,
+    subfield13: new Date(appSubEntity1.subfield13),
+    subfield14: appSubEntity11ToDbSubEntity11(appSubEntity1.subfield14),
+  };
+}
+
+export function appSubEntity11ToDbSubEntity11(
+  appSubEntity11: AppSubEntity11
+): DbSubEntity11 {
+  return {
+    subfield111: appSubEntity11.subfield111,
+  };
+}
+
+export function appEntity2ToDbEntity2WithoutIdPartial(
+  appEntity2: Partial<Except<AppEntity2, 'id'>>
+): Partial<Except<DbEntity2, '_id'>> {
+  return objectRemoveUndefined({
+    field: appEntity2.field,
+    fieldRefFromOtherCollection: transformIfExists(
+      appEntity2.fieldRefFromOtherCollection,
+      appSubEntity1ToDbSubEntity1,
+      undefined
+    ),
+  });
+}

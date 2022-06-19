@@ -1,0 +1,12 @@
+import { Module } from '@nestjs/common';
+import { Entity2Repository } from './entity2.repository';
+import { Entity2Service } from './entity2.service';
+import { Entity2Controller } from './entity2.controller';
+
+@Module({
+  imports: [],
+  controllers: [Entity2Controller],
+  providers: [Entity2Service, Entity2Repository],
+  exports: [Entity2Service, Entity2Repository],
+})
+export class Entity2Module {}

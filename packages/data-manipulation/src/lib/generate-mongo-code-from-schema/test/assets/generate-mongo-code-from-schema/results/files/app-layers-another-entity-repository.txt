@@ -1,0 +1,52 @@
+import { Injectable } from '@nestjs/common';
+import { Collection, ObjectId, OptionalId } from 'mongodb';
+import { Except } from 'type-fest';
+import { MongoDatabaseService, valueOrThrow } from '@gmjs/nest-util';
+import { DbCollectionName, DbAnotherEntity } from '@gmjs-apps/example-shared';
+
+@Injectable()
+export class AnotherEntityRepository {
+  public constructor(
+    private readonly mongoDatabaseService: MongoDatabaseService
+  ) {}
+
+  private get collection(): Collection<OptionalId<DbAnotherEntity>> {
+    return this.mongoDatabaseService.db.collection(
+      DbCollectionName.AnotherEntity
+    );
+  }
+
+  public async getAll(): Promise<readonly DbAnotherEntity[]> {
+    return this.collection.find({}).toArray();
+  }
+
+  public async getById(id: ObjectId): Promise<DbAnotherEntity | undefined> {
+    return this.collection.findOne({ _id: id });
+  }
+
+  public async create(
+    dbAnotherEntity: Except<DbAnotherEntity, '_id'>
+  ): Promise<DbAnotherEntity> {
+    const { insertedId } = await this.collection.insertOne(dbAnotherEntity);
+    const result = await this.collection.findOne<DbAnotherEntity>({
+      _id: insertedId,
+    });
+    return valueOrThrow(result);
+  }
+
+  public async update(
+    id: ObjectId,
+    dbAnotherEntity: Partial<Except<DbAnotherEntity, '_id'>>
+  ): Promise<DbAnotherEntity> {
+    const result = await this.collection.findOneAndUpdate(
+      { _id: id },
+      { $set: dbAnotherEntity },
+      { returnDocument: 'after' }
+    );
+    return valueOrThrow(result.value);
+  }
+
+  public async remove(id: ObjectId): Promise<void> {
+    await this.collection.deleteOne({ _id: id });
+  }
+}

@@ -90,5 +90,37 @@
   {
     "testFile": "app-layers-entity-module.txt",
     "path": "apps/example-be/src/app/entity/entity.module.ts"
+  },
+  {
+    "testFile": "app-layers-entity2-repository.txt",
+    "path": "apps/example-be/src/app/entity2/entity2.repository.ts"
+  },
+  {
+    "testFile": "app-layers-entity2-service.txt",
+    "path": "apps/example-be/src/app/entity2/entity2.service.ts"
+  },
+  {
+    "testFile": "app-layers-entity2-controller.txt",
+    "path": "apps/example-be/src/app/entity2/entity2.controller.ts"
+  },
+  {
+    "testFile": "app-layers-entity2-module.txt",
+    "path": "apps/example-be/src/app/entity2/entity2.module.ts"
+  },
+  {
+    "testFile": "app-layers-another-entity-repository.txt",
+    "path": "apps/example-be/src/app/another-entity/another-entity.repository.ts"
+  },
+  {
+    "testFile": "app-layers-another-entity-service.txt",
+    "path": "apps/example-be/src/app/another-entity/another-entity.service.ts"
+  },
+  {
+    "testFile": "app-layers-another-entity-controller.txt",
+    "path": "apps/example-be/src/app/another-entity/another-entity.controller.ts"
+  },
+  {
+    "testFile": "app-layers-another-entity-module.txt",
+    "path": "apps/example-be/src/app/another-entity/another-entity.module.ts"
   }
 ]

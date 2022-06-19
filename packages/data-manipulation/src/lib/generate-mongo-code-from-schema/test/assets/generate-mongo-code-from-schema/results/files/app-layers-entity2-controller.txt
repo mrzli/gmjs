@@ -1,0 +1,39 @@
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import type { Except } from 'type-fest';
+import { AppEntity2 } from '@gmjs-apps/example-shared';
+import { Entity2Service } from './entity2.service';
+
+@Controller({ path: 'entity2' })
+export class Entity2Controller {
+  public constructor(private readonly entity2Service: Entity2Service) {}
+
+  @Get('/find-all')
+  public async getAll(): Promise<readonly AppEntity2[]> {
+    return this.entity2Service.getAll();
+  }
+
+  @Get('/find/:id')
+  public async getById(@Param('id') id: string): Promise<AppEntity2> {
+    return this.entity2Service.getById(id);
+  }
+
+  @Post('/create')
+  public async create(
+    @Body() entity2: Except<AppEntity2, 'id'>
+  ): Promise<AppEntity2> {
+    return this.entity2Service.create(entity2);
+  }
+
+  @Post('/update/:id')
+  public async update(
+    @Param('id') id: string,
+    @Body() entity2: Partial<Except<AppEntity2, 'id'>>
+  ): Promise<AppEntity2> {
+    return this.entity2Service.update(id, entity2);
+  }
+
+  @Delete('/remove/:id')
+  public async remove(@Param('id') id: string): Promise<void> {
+    await this.entity2Service.remove(id);
+  }
+}

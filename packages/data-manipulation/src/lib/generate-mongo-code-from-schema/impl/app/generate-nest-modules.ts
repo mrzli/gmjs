@@ -17,7 +17,6 @@ export function generateNestModules(
   const appDir = optionsHelper.resolveAppProjectAppDir();
   for (const schema of input.schemas) {
     generateNestModule(input, project, optionsHelper, schema, appDir);
-    break;
   }
 }
 
