@@ -1,6 +1,6 @@
 import path from 'path';
 import { pathWithoutExtension } from '@gmjs/fs-util';
-import { MongoJsonSchemaBsonType } from '../../../data-model/mongo-json-schema';
+import { MongoJsonSchemaBsonType } from '../../../data-model-to-schema/mongo-json-schema';
 import { invariant } from '@gmjs/util';
 
 export function getRelativeImportPath(

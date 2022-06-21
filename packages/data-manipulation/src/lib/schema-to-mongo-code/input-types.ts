@@ -1,4 +1,4 @@
-import { MongoJsonSchemaTypeObject } from '../data-model/mongo-json-schema';
+import { MongoJsonSchemaTypeObject } from '../data-model-to-schema/mongo-json-schema';
 
 export interface SchemaToMongoCodeInput {
   readonly schemas: readonly MongoJsonSchemaTypeObject[];

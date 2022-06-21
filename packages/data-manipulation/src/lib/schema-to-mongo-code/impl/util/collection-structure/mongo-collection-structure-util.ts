@@ -3,7 +3,7 @@ import {
   MongoJsonSchemaBsonType,
   MongoJsonSchemaTypeArray,
   MongoJsonSchemaTypeObject,
-} from '../../../../data-model/mongo-json-schema';
+} from '../../../../data-model-to-schema/mongo-json-schema';
 import {
   MongoAllCollectionsStructure,
   MongoCollectionStructure,

@@ -1,6 +1,6 @@
 import { Project } from 'ts-morph';
 import { OptionsHelper } from '../util/options-helper';
-import { MongoJsonSchemaTypeObject } from '../../../data-model/mongo-json-schema';
+import { MongoJsonSchemaTypeObject } from '../../../data-model-to-schema/mongo-json-schema';
 import { kebabCase, pascalCase } from '@gmjs/lib-util';
 import path from 'path';
 import { PLACEHOLDER_MODULE_NAME_NESTJS_COMMON } from '../util/placeholders';

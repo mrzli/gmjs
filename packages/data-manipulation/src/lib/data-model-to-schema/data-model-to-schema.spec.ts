@@ -1,12 +1,12 @@
 import path from 'path';
-import { generateMongoJsonSchemas } from './generate-mongo-json-schemas';
+import { dataModelToSchema } from './data-model-to-schema';
 import {
   createFileSystemExampleTest,
   ExampleMappingFn,
   getFileSystemTestExamples,
 } from '@gmjs/test-util';
 
-describe('generate-mongo-json-schemas', () => {
+describe('data-model-to-schema', () => {
   describe('parseYaml()', () => {
     interface TestInput {
       readonly dataModelYaml: string;
@@ -23,7 +23,7 @@ describe('generate-mongo-json-schemas', () => {
     };
 
     const PARSE_YAML_EXAMPLES = getFileSystemTestExamples<TestInput>(
-      path.join(__dirname, 'test-assets/generate-mongo-json-schemas'),
+      path.join(__dirname, 'test-assets/data-model-to-schema'),
       exampleMapping
     );
 
@@ -31,7 +31,7 @@ describe('generate-mongo-json-schemas', () => {
       it(
         example.description,
         createFileSystemExampleTest(example, () =>
-          generateMongoJsonSchemas(example.input.dataModelYaml)
+          dataModelToSchema(example.input.dataModelYaml)
         )
       );
     });

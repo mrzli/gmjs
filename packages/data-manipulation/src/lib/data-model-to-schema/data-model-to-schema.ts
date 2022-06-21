@@ -20,7 +20,7 @@ const DATA_MODEL_JSON_SCHEMA = readJsonSync(
   path.join(__dirname, '../../assets/data-model-json-schema.json')
 );
 
-export function generateMongoJsonSchemas(
+export function dataModelToSchema(
   dataModelYamlContent: string
 ): readonly MongoJsonSchemaTypeObject[] {
   const dataModel = parseYaml(dataModelYamlContent, {

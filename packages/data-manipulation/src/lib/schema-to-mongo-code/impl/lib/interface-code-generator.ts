@@ -12,7 +12,7 @@ import {
 import { OptionsHelper } from '../util/options-helper';
 import { kebabCase, pascalCase } from '@gmjs/lib-util';
 import path from 'path';
-import { MongoJsonSchemaBsonType } from '../../../data-model/mongo-json-schema';
+import { MongoJsonSchemaBsonType } from '../../../data-model-to-schema/mongo-json-schema';
 import { asChainable, invariant, sortArrayByStringAsc } from '@gmjs/util';
 import {
   MongoAllCollectionsStructure,

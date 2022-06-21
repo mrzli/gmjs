@@ -3,7 +3,7 @@ import path from 'path';
 import { SchemaToMongoCodeInput } from './input-types';
 import { createTestOptions } from './test/test-util';
 import { readJsonSync, readTextFilesInDirSync } from '@gmjs/fs-util';
-import { MongoJsonSchemaTypeObject } from '../data-model/mongo-json-schema';
+import { MongoJsonSchemaTypeObject } from '../data-model-to-schema/mongo-json-schema';
 import { flatMap, ImmutableMap, ImmutableSet } from '@gmjs/util';
 
 describe('schema-to-mongo-code', () => {
