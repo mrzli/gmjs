@@ -1,4 +1,3 @@
-import path from 'path';
 import {
   AnyValue,
   invariant,
@@ -7,25 +6,18 @@ import {
   mapGetOrThrow,
   ReadonlyRecord,
 } from '@gmjs/util';
-import { parseYaml } from '@gmjs/lib-util';
-import { readJsonSync } from '@gmjs/fs-util';
 import {
   MongoJsonSchemaAnyType,
   MongoJsonSchemaTypeNumberBase,
   MongoJsonSchemaTypeObject,
 } from './mongo-json-schema';
 import { Except } from 'type-fest';
-
-const DATA_MODEL_JSON_SCHEMA = readJsonSync(
-  path.join(__dirname, '../../assets/data-model-json-schema.json')
-);
+import { parseDataModelYaml } from '../data-model-shared/data-model-util';
 
 export function dataModelToSchema(
   dataModelYamlContent: string
 ): readonly MongoJsonSchemaTypeObject[] {
-  const dataModel = parseYaml(dataModelYamlContent, {
-    jsonSchema: DATA_MODEL_JSON_SCHEMA,
-  });
+  const dataModel = parseDataModelYaml(dataModelYamlContent);
 
   const collections: readonly AnyValue[] = dataModel.collections;
   const objectReferences = new Map<string, MongoJsonSchemaTypeObject>();

@@ -1,4 +1,4 @@
-import { SchemaToMongoCodeInput } from '../../input-types';
+import { SchemaToMongoCodeInput } from '../../schema-to-mongo-code-input';
 import {
   ImportDeclarationStructure,
   OptionalKind,

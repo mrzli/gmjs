@@ -7,7 +7,7 @@ import {
 } from '@gmjs/test-util';
 
 describe('data-model-to-schema', () => {
-  describe('parseYaml()', () => {
+  describe('dataModelToSchema()', () => {
     interface TestInput {
       readonly dataModelYaml: string;
     }

@@ -1,6 +1,6 @@
 import { Project, SourceFile } from 'ts-morph';
 import prettier from 'prettier';
-import { SchemaToMongoCodeInput } from './input-types';
+import { SchemaToMongoCodeInput } from './schema-to-mongo-code-input';
 import { OptionsHelper } from './impl/util/options-helper';
 import { addInitialFiles } from './impl/add-initial-files';
 import { generateSharedLibCode } from './impl/lib/generate-shared-lib-code';

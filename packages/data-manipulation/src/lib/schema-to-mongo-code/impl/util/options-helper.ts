@@ -1,4 +1,4 @@
-import { SchemaToMongoCodeOptions } from '../../input-types';
+import { SchemaToMongoCodeOptions } from '../../schema-to-mongo-code-input';
 import path from 'path';
 
 export class OptionsHelper {
