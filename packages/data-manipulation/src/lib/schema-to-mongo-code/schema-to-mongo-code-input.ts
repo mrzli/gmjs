@@ -1,4 +1,5 @@
 import { MongoJsonSchemaTypeObject } from '../data-model-to-schema/mongo-json-schema';
+import { Project } from 'ts-morph';
 
 export interface SchemaToMongoCodeInput {
   readonly schemas: readonly MongoJsonSchemaTypeObject[];
@@ -7,7 +8,6 @@ export interface SchemaToMongoCodeInput {
 
 export interface SchemaToMongoCodeOptions {
   readonly rootDir: string;
-  readonly isTest: boolean;
   readonly libsMonorepoNames: SchemaToMongoCodeLibsMonorepoNamesOptions;
   readonly appsMonorepo: SchemaToMongoCodeAppsMonorepoOptions;
 }
@@ -42,4 +42,9 @@ export interface SchemaToMongoCodeSharedProjectOptions {
 export interface SchemaToMongoCodeAppProjectOptions {
   readonly projectName: string;
   readonly appDir: string;
+}
+
+export interface SchemaToMongoCodeTestOverrides {
+  readonly getInitialFilePath: (basePath: string) => string;
+  readonly saveTsMorphProject: (project: Project) => void;
 }

@@ -1,10 +1,13 @@
 import { schemaToMongoCode } from './schema-to-mongo-code';
 import path from 'path';
-import { SchemaToMongoCodeInput } from './schema-to-mongo-code-input';
-import { createTestOptions } from './test/test-util';
+import {
+  SchemaToMongoCodeInput,
+  SchemaToMongoCodeOptions,
+  SchemaToMongoCodeTestOverrides,
+} from './schema-to-mongo-code-input';
 import { readJsonSync, readTextFilesInDirSync } from '@gmjs/fs-util';
 import { MongoJsonSchemaTypeObject } from '../data-model-to-schema/mongo-json-schema';
-import { flatMap, ImmutableMap, ImmutableSet } from '@gmjs/util';
+import { emptyFn, flatMap, ImmutableMap, ImmutableSet } from '@gmjs/util';
 
 describe('schema-to-mongo-code', () => {
   it('schemaToMongoCode()', () => {
@@ -34,7 +37,7 @@ describe('schema-to-mongo-code', () => {
       return contentParts.join('\n');
     }
 
-    const testDir = path.join(__dirname, 'test/assets/schema-to-mongo-code');
+    const testDir = path.join(__dirname, 'test-assets/schema-to-mongo-code');
 
     const testProjDir = path.join(testDir, 'input/proj-root');
     const schemas = readJsonSync<readonly MongoJsonSchemaTypeObject[]>(
@@ -44,6 +47,11 @@ describe('schema-to-mongo-code', () => {
     const INPUT: SchemaToMongoCodeInput = {
       schemas,
       options: createTestOptions(testProjDir),
+    };
+
+    const TEST_OVERRIDES: SchemaToMongoCodeTestOverrides = {
+      getInitialFilePath: (basePath: string) => basePath + '_',
+      saveTsMorphProject: emptyFn,
     };
 
     const testResultsDir = path.join(testDir, 'results');
@@ -61,7 +69,7 @@ describe('schema-to-mongo-code', () => {
       }));
 
     const actualPathAndContentList: readonly PathAndContent[] =
-      schemaToMongoCode(INPUT).map((sf) => ({
+      schemaToMongoCode(INPUT, TEST_OVERRIDES).map((sf) => ({
         path: sf.getFilePath(),
         content: sf.getFullText(),
       }));
@@ -95,3 +103,38 @@ describe('schema-to-mongo-code', () => {
     expect(actual).toEqual(expected);
   });
 });
+
+export const TEST_OPTIONS: SchemaToMongoCodeOptions = {
+  rootDir: '/root-dir',
+  libsMonorepoNames: {
+    npmScope: 'gmjs',
+    utilProjectName: 'util',
+    nestUtilProjectName: 'nest-util',
+  },
+  appsMonorepo: {
+    npmScope: 'gmjs-apps',
+    libsDir: 'libs',
+    appsDir: 'apps',
+    dbInterfaceOptions: {
+      dir: 'db',
+      prefix: 'db',
+    },
+    appInterfaceOptions: {
+      dir: 'app',
+      prefix: 'app',
+    },
+    sharedProject: {
+      projectName: 'example-shared',
+      sharedInterfacesDir: 'src/lib/mongo',
+      indexFilePath: 'src/index.ts',
+    },
+    appProject: {
+      projectName: 'example-be',
+      appDir: 'src/app',
+    },
+  },
+};
+
+export function createTestOptions(rootDir: string): SchemaToMongoCodeOptions {
+  return { ...TEST_OPTIONS, rootDir };
+}

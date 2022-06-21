@@ -1,7 +1,9 @@
-import { SchemaToMongoCodeInput } from '../schema-to-mongo-code-input';
+import {
+  SchemaToMongoCodeInput,
+  SchemaToMongoCodeTestOverrides,
+} from '../schema-to-mongo-code-input';
 import { Project } from 'ts-morph';
 import { OptionsHelper } from './util/options-helper';
-import { TEST_FILE_SUFFIX } from '../test/test-util';
 import { readTextSync } from '@gmjs/fs-util';
 
 interface PathAndContent {
@@ -12,7 +14,8 @@ interface PathAndContent {
 export function addInitialFiles(
   input: SchemaToMongoCodeInput,
   project: Project,
-  optionsHelper: OptionsHelper
+  optionsHelper: OptionsHelper,
+  testOverrides: SchemaToMongoCodeTestOverrides
 ): void {
   const initialFilePaths: readonly string[] = [
     optionsHelper.resolveSharedProjectIndexFile(),
@@ -22,7 +25,7 @@ export function addInitialFiles(
   const initialFileContents: readonly PathAndContent[] = initialFilePaths.map(
     (p) => ({
       path: p,
-      content: readTextSync(p + (input.options.isTest ? TEST_FILE_SUFFIX : '')),
+      content: readTextSync(testOverrides.getInitialFilePath(p)),
     })
   );
 

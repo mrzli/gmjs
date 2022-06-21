@@ -1,19 +1,31 @@
 import { Project, SourceFile } from 'ts-morph';
 import prettier from 'prettier';
-import { SchemaToMongoCodeInput } from './schema-to-mongo-code-input';
+import {
+  SchemaToMongoCodeInput,
+  SchemaToMongoCodeTestOverrides,
+} from './schema-to-mongo-code-input';
 import { OptionsHelper } from './impl/util/options-helper';
 import { addInitialFiles } from './impl/add-initial-files';
 import { generateSharedLibCode } from './impl/lib/generate-shared-lib-code';
 import { generateAppCode } from './impl/app/generate-app-code';
 import { PLACEHOLDER_MAP } from './impl/util/placeholders';
+import { identifyFn } from '@gmjs/util';
 
 export function schemaToMongoCode(
-  input: SchemaToMongoCodeInput
+  input: SchemaToMongoCodeInput,
+  testOverrides?: SchemaToMongoCodeTestOverrides
 ): readonly SourceFile[] {
   const optionsHelper = new OptionsHelper(input.options);
   const project = new Project();
 
-  addInitialFiles(input, project, optionsHelper);
+  testOverrides ??= {
+    getInitialFilePath: identifyFn,
+    saveTsMorphProject: (project) => {
+      project.saveSync();
+    },
+  };
+
+  addInitialFiles(input, project, optionsHelper, testOverrides);
   generateSharedLibCode(input, project, optionsHelper);
   generateAppCode(input, project, optionsHelper);
 
@@ -35,9 +47,7 @@ export function schemaToMongoCode(
     });
   });
 
-  if (!input.options.isTest) {
-    project.saveSync();
-  }
+  testOverrides.saveTsMorphProject(project);
 
   return project.getSourceFiles();
 }
