@@ -1,4 +1,4 @@
-import { GenerateMongoCodeFromSchemaInput } from '../../input-types';
+import { SchemaToMongoCodeInput } from '../../input-types';
 import { Project } from 'ts-morph';
 import { OptionsHelper } from '../util/options-helper';
 import { MongoJsonSchemaTypeObject } from '../../../data-model/mongo-json-schema';
@@ -10,7 +10,7 @@ import { generateController } from './generate-controller';
 import { generateModule } from './generate-module';
 
 export function generateNestModules(
-  input: GenerateMongoCodeFromSchemaInput,
+  input: SchemaToMongoCodeInput,
   project: Project,
   optionsHelper: OptionsHelper
 ): void {
@@ -21,7 +21,7 @@ export function generateNestModules(
 }
 
 function generateNestModule(
-  input: GenerateMongoCodeFromSchemaInput,
+  input: SchemaToMongoCodeInput,
   project: Project,
   optionsHelper: OptionsHelper,
   schema: MongoJsonSchemaTypeObject,

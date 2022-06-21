@@ -1,4 +1,4 @@
-import { GenerateMongoCodeFromSchemaInput } from '../../input-types';
+import { SchemaToMongoCodeInput } from '../../input-types';
 import {
   ImportDeclarationStructure,
   OptionalKind,
@@ -11,7 +11,7 @@ import { invariant, sortArrayByStringAsc } from '@gmjs/util';
 import { kebabCase, pascalCase } from '@gmjs/lib-util';
 
 export function addEntityModulesToAppModule(
-  input: GenerateMongoCodeFromSchemaInput,
+  input: SchemaToMongoCodeInput,
   project: Project,
   optionsHelper: OptionsHelper
 ): void {

@@ -1,4 +1,4 @@
-import { GenerateMongoCodeFromSchemaInput } from '../input-types';
+import { SchemaToMongoCodeInput } from '../input-types';
 import { Project } from 'ts-morph';
 import { OptionsHelper } from './util/options-helper';
 import { TEST_FILE_SUFFIX } from '../test/test-util';
@@ -10,7 +10,7 @@ interface PathAndContent {
 }
 
 export function addInitialFiles(
-  input: GenerateMongoCodeFromSchemaInput,
+  input: SchemaToMongoCodeInput,
   project: Project,
   optionsHelper: OptionsHelper
 ): void {

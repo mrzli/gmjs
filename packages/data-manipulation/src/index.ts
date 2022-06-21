@@ -1,4 +1,4 @@
 export { generateMongoJsonSchemas } from './lib/data-model/generate-mongo-json-schemas';
 export * from './lib/data-model/mongo-json-schema';
-export { generateMongoCodeFromSchema } from './lib/generate-mongo-code-from-schema/generate-mongo-code-from-schema';
-export * from './lib/generate-mongo-code-from-schema/input-types';
+export { schemaToMongoCode } from './lib/schema-to-mongo-code/schema-to-mongo-code';
+export * from './lib/schema-to-mongo-code/input-types';

@@ -1,8 +1,8 @@
-import { GenerateMongoCodeFromSchemaOptions } from '../input-types';
+import { SchemaToMongoCodeOptions } from '../input-types';
 
 export const TEST_FILE_SUFFIX = '_';
 
-export const TEST_OPTIONS: GenerateMongoCodeFromSchemaOptions = {
+export const TEST_OPTIONS: SchemaToMongoCodeOptions = {
   rootDir: '/root-dir',
   isTest: true,
   libsMonorepoNames: {
@@ -34,8 +34,6 @@ export const TEST_OPTIONS: GenerateMongoCodeFromSchemaOptions = {
   },
 };
 
-export function createTestOptions(
-  rootDir: string
-): GenerateMongoCodeFromSchemaOptions {
+export function createTestOptions(rootDir: string): SchemaToMongoCodeOptions {
   return { ...TEST_OPTIONS, rootDir };
 }

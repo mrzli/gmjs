@@ -1,13 +1,13 @@
-import { generateMongoCodeFromSchema } from './generate-mongo-code-from-schema';
+import { schemaToMongoCode } from './schema-to-mongo-code';
 import path from 'path';
-import { GenerateMongoCodeFromSchemaInput } from './input-types';
+import { SchemaToMongoCodeInput } from './input-types';
 import { createTestOptions } from './test/test-util';
 import { readJsonSync, readTextFilesInDirSync } from '@gmjs/fs-util';
 import { MongoJsonSchemaTypeObject } from '../data-model/mongo-json-schema';
 import { flatMap, ImmutableMap, ImmutableSet } from '@gmjs/util';
 
-describe('generate-mongo-code-from-schema', () => {
-  it('generateMongoCodeFromSchema()', () => {
+describe('schema-to-mongo-code', () => {
+  it('schemaToMongoCode()', () => {
     interface PathAndContent {
       readonly path: string;
       readonly content: string | undefined;
@@ -34,17 +34,14 @@ describe('generate-mongo-code-from-schema', () => {
       return contentParts.join('\n');
     }
 
-    const testDir = path.join(
-      __dirname,
-      'test/assets/generate-mongo-code-from-schema'
-    );
+    const testDir = path.join(__dirname, 'test/assets/schema-to-mongo-code');
 
     const testProjDir = path.join(testDir, 'input/proj-root');
     const schemas = readJsonSync<readonly MongoJsonSchemaTypeObject[]>(
       path.join(testDir, 'input/schemas.json')
     );
 
-    const INPUT: GenerateMongoCodeFromSchemaInput = {
+    const INPUT: SchemaToMongoCodeInput = {
       schemas,
       options: createTestOptions(testProjDir),
     };
@@ -64,7 +61,7 @@ describe('generate-mongo-code-from-schema', () => {
       }));
 
     const actualPathAndContentList: readonly PathAndContent[] =
-      generateMongoCodeFromSchema(INPUT).map((sf) => ({
+      schemaToMongoCode(INPUT).map((sf) => ({
         path: sf.getFilePath(),
         content: sf.getFullText(),
       }));

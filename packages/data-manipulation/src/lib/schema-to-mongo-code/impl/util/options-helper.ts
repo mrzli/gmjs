@@ -1,12 +1,10 @@
-import { GenerateMongoCodeFromSchemaOptions } from '../../input-types';
+import { SchemaToMongoCodeOptions } from '../../input-types';
 import path from 'path';
 
 export class OptionsHelper {
   private readonly rootDir: string;
 
-  public constructor(
-    private readonly options: GenerateMongoCodeFromSchemaOptions
-  ) {
+  public constructor(private readonly options: SchemaToMongoCodeOptions) {
     this.rootDir = path.resolve(process.cwd(), options.rootDir);
   }
 

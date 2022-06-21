@@ -1,14 +1,14 @@
 import { Project, SourceFile } from 'ts-morph';
 import prettier from 'prettier';
-import { GenerateMongoCodeFromSchemaInput } from './input-types';
+import { SchemaToMongoCodeInput } from './input-types';
 import { OptionsHelper } from './impl/util/options-helper';
 import { addInitialFiles } from './impl/add-initial-files';
 import { generateSharedLibCode } from './impl/lib/generate-shared-lib-code';
 import { generateAppCode } from './impl/app/generate-app-code';
 import { PLACEHOLDER_MAP } from './impl/util/placeholders';
 
-export function generateMongoCodeFromSchema(
-  input: GenerateMongoCodeFromSchemaInput
+export function schemaToMongoCode(
+  input: SchemaToMongoCodeInput
 ): readonly SourceFile[] {
   const optionsHelper = new OptionsHelper(input.options);
   const project = new Project();

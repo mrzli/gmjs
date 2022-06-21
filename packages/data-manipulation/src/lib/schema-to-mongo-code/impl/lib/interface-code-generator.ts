@@ -1,6 +1,6 @@
 import {
-  GenerateMongoCodeFromSchemaInput,
-  GenerateMongoCodeFromSchemaInterfaceOptions,
+  SchemaToMongoCodeInput,
+  SchemaToMongoCodeInterfaceOptions,
 } from '../../input-types';
 import {
   ExportDeclarationStructure,
@@ -32,7 +32,7 @@ export interface InterfaceCodeGenerator {
 }
 
 export function createInterfaceCodeGenerator(
-  input: GenerateMongoCodeFromSchemaInput,
+  input: SchemaToMongoCodeInput,
   project: Project,
   optionsHelper: OptionsHelper,
   isDb: boolean
@@ -46,7 +46,7 @@ export function createInterfaceCodeGenerator(
 
 abstract class InterfaceCodeGeneratorBase implements InterfaceCodeGenerator {
   protected constructor(
-    protected readonly input: GenerateMongoCodeFromSchemaInput,
+    protected readonly input: SchemaToMongoCodeInput,
     protected readonly project: Project,
     protected readonly optionsHelper: OptionsHelper
   ) {}
@@ -216,7 +216,7 @@ abstract class InterfaceCodeGeneratorBase implements InterfaceCodeGenerator {
     }
   }
 
-  protected abstract get interfaceOptions(): GenerateMongoCodeFromSchemaInterfaceOptions;
+  protected abstract get interfaceOptions(): SchemaToMongoCodeInterfaceOptions;
 
   protected abstract getMongoImportTypes(
     bsonTypes: readonly MongoJsonSchemaBsonType[]
@@ -231,14 +231,14 @@ abstract class InterfaceCodeGeneratorBase implements InterfaceCodeGenerator {
 
 class InterfaceCodeGeneratorDb extends InterfaceCodeGeneratorBase {
   public constructor(
-    input: GenerateMongoCodeFromSchemaInput,
+    input: SchemaToMongoCodeInput,
     project: Project,
     optionsHelper: OptionsHelper
   ) {
     super(input, project, optionsHelper);
   }
 
-  protected get interfaceOptions(): GenerateMongoCodeFromSchemaInterfaceOptions {
+  protected get interfaceOptions(): SchemaToMongoCodeInterfaceOptions {
     return this.input.options.appsMonorepo.dbInterfaceOptions;
   }
 
@@ -275,14 +275,14 @@ class InterfaceCodeGeneratorDb extends InterfaceCodeGeneratorBase {
 
 class InterfaceCodeGeneratorApp extends InterfaceCodeGeneratorBase {
   public constructor(
-    input: GenerateMongoCodeFromSchemaInput,
+    input: SchemaToMongoCodeInput,
     project: Project,
     optionsHelper: OptionsHelper
   ) {
     super(input, project, optionsHelper);
   }
 
-  protected get interfaceOptions(): GenerateMongoCodeFromSchemaInterfaceOptions {
+  protected get interfaceOptions(): SchemaToMongoCodeInterfaceOptions {
     return this.input.options.appsMonorepo.appInterfaceOptions;
   }
 

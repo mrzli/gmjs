@@ -1,4 +1,4 @@
-import { GenerateMongoCodeFromSchemaInput } from '../../input-types';
+import { SchemaToMongoCodeInput } from '../../input-types';
 import { Project } from 'ts-morph';
 import { OptionsHelper } from '../util/options-helper';
 import path from 'path';
@@ -8,7 +8,7 @@ import { createInterfaceCodeGenerator } from './interface-code-generator';
 import { invariant } from '@gmjs/util';
 
 export function generateSharedLibCode(
-  input: GenerateMongoCodeFromSchemaInput,
+  input: SchemaToMongoCodeInput,
   project: Project,
   optionsHelper: OptionsHelper
 ): void {
@@ -30,7 +30,7 @@ export function generateSharedLibCode(
 }
 
 function addSharedProjectExportDeclarations(
-  input: GenerateMongoCodeFromSchemaInput,
+  input: SchemaToMongoCodeInput,
   project: Project,
   optionsHelper: OptionsHelper
 ): void {
