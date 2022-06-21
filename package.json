@@ -7,6 +7,7 @@
   },
   "private": true,
   "dependencies": {
+    "@faker-js/faker": "7.3.0",
     "@nestjs/common": "8.4.5",
     "@nestjs/core": "8.4.5",
     "@types/fs-extra": "9.0.13",
@@ -52,4 +53,3 @@
     "ts-node": "10.8.1"
   }
 }
-

@@ -1,131 +1,122 @@
 collections:
-  - name: Entity
+  - name: Example
     properties:
-      - name: fieldString1
+      - name: name
         type: string
-      - name: fieldString2
+  - name: Currency
+    properties:
+      - name: code
         type: string
-        pattern: '^somepattern$'
-      - name: fieldInt1
-        type: int
-      - name: fieldInt2
-        type: int
-        minimum: 0
-      - name: fieldInt3
-        type: int
-        maximum: 10
-      - name: fieldInt4
-        type: int
-        minimum: 0
-        maximum: 10
-      - name: fieldInt5
-        type: int
-        exclusiveMinimum: 0
-      - name: fieldInt6
-        type: int
-        exclusiveMaximum: 10
-      - name: fieldInt7
-        type: int
-        exclusiveMinimum: 0
-        exclusiveMaximum: 10
-      - name: fieldLong
-        type: long
-      - name: fieldDecimal
-        type: decimal
-      - name: fieldBool
-        type: bool
-      - name: fieldObjectId
+        pattern: '^[A-Z]{3}$'
+  - name: ExchangeRate
+    properties:
+      - name: from
         type: objectId
-      - name: fieldDate
-        type: date
-      - name: fieldEnumString
+      - name: to
+        type: objectId
+      - name: value
+        type: decimal
+        exclusiveMinimum: 0
+  - name: GlobalSetting
+    properties:
+      - name: vatPercent
+        type: decimal
+      - name: surtaxPercent
+        type: decimal
+  - name: Periodicity
+    properties:
+      - name: type
         type: enumString
-        enumValues: [ 'value-1', 'value-2' ]
-      - name: fieldArrayString
-        items:
-          type: string
-      - name: fieldArrayInt1
-        items:
-          type: int
-      - name: fieldArrayInt2
-        items:
-          type: int
-          minimum: 0
-      - name: fieldArrayLong
-        items:
-          type: long
-      - name: fieldArrayBool
-        items:
-          type: bool
-      - name: fieldArrayDecimal
-        items:
-          type: decimal
-      - name: fieldArrayObjectId
-        items:
-          type: objectId
-      - name: fieldArrayDate
-        items:
-          type: date
-      - name: fieldArrayEnumString
-        items:
-          type: enumString
-          enumValues: [ 'value-a', 'value-b' ]
-      - name: fieldObject
-        type:
-          name: SubEntity1
-          properties:
-            - name: subfield11
-              type: string
-            - name: subfield12
-              type: int
-            - name: subfield13
-              type: date
-            - name: subfield14
-              type:
-                name: SubEntity11
-                properties:
-                  - name: subfield111
-                    type: string
-      - name: fieldArrayOfObjects
+        enumValues: ['Day', 'Week', 'Month', 'Year']
+  - name: EarningsSetting
+    properties:
+      - name: workingDaysPerYear
+        type: int
+        minimum: 0
+        maximum: 366
+      - name: workingHoursPerDay
+        type: int
+        minimum: 0
+        maximum: 24
+      - name: hourlyRate
+        type: decimal
+        exclusiveMinimum: 0
+  - name: BusinessExpense
+    properties:
+      - name: name
+        type: string
+      - name: baseAmount
+        type: decimal
+        exclusiveMinimum: 0
+      - name: currency
+        type: objectId
+      - name: addVat
+        type: bool
+      - name: periodicity
+        type: objectId
+      - name: quantity
+        type: int
+        minimum: 1
+  - name: SalarySetting
+    properties:
+      - name: healthInsurancePercent
+        type: decimal
+        minimum: 0
+      - name: retirementFirstPillarPercent
+        type: decimal
+        minimum: 0
+      - name: retirementSecondPillarPercent
+        type: decimal
+        minimum: 0
+      - name: nonTaxableAmount
+        type: decimal
+        minimum: 0
+      - name: taxBrackets
         items:
           type:
-            name: SubEntity2
+            name: TaxBracket
             properties:
-              - name: subfield21
-                type: string
-              - name: subfield22
-                type: int
-              - name: subfield23
-                type: date
-      - name: fieldOptionalString
-        type: string
-      - name: fieldOptionalDate
-        type: date
-      - name: fieldOptionalArrayString
-        items:
-          type: string
-      - name: fieldOptionalArrayDate
-        items:
-          type: date
-      - name: fieldOptionalObject
-        ref: SubEntity1
-      - name: fieldOptionalArrayOfObjects
-        items:
-          ref: SubEntity2
-    optional:
-      - fieldOptionalString
-      - fieldOptionalDate
-      - fieldOptionalArrayString
-      - fieldOptionalArrayDate
-      - fieldOptionalObject
-      - fieldOptionalArrayOfObjects
-  - name: Entity2
+              - name: amountRange
+                type: decimal
+                minimum: 0
+              - name: isInfiniteRange
+                type: bool
+              - name: taxPercent
+                type: decimal
+                exclusiveMinimum: 0
+  - name: Salary
     properties:
-      - name: field
-        type: string
-      - name: fieldRefFromOtherCollection
-        ref: SubEntity1
-  - name: AnotherEntity
+      - name: gross1
+        type: decimal
+        exclusiveMinimum: 0
+      - name: outgoingTransactionsPerSalary
+        type: int
+        minimum: 0
+  - name: BankExpense
     properties:
-      - name: field
+      - name: monthlyFee
+        type: decimal
+        minimum: 0
+      - name: incomingTransactionFee
+        type: decimal
+        minimum: 0
+      - name: outgoingTransactionFee
+        type: decimal
+        minimum: 0
+      - name: incomingTransactionsPerYear
+        type: int
+        minimum: 0
+  - name: PersonalExpense
+    properties:
+      - name: name
         type: string
+      - name: amount
+        type: decimal
+        exclusiveMinimum: 0
+      - name: currency
+        type: objectId
+      - name: periodicity
+        type: objectId
+      - name: quantity
+        type: int
+        minimum: 1

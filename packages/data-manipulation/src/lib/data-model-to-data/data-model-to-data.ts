@@ -1,8 +1,15 @@
 import { MongoDataToDataResult } from './mongo-data-to-data-result';
-import { MongoDataToDataInput } from './mongo-data-to-data-input';
+import {
+  MongoDataToDataInput,
+  MongoDataToDataTestOverrides,
+} from './mongo-data-to-data-input';
+import { ObjectId } from 'mongodb';
 
 export function dataModelToData(
-  input: MongoDataToDataInput
+  input: MongoDataToDataInput,
+  testOverrides?: MongoDataToDataTestOverrides
 ): MongoDataToDataResult {
+  testOverrides ??= { generateObjectId: () => new ObjectId() };
+
   return {};
 }
