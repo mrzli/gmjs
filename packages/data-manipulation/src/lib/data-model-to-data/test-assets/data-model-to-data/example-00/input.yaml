@@ -1,0 +1,131 @@
+collections:
+  - name: Entity
+    properties:
+      - name: fieldString1
+        type: string
+      - name: fieldString2
+        type: string
+        pattern: '^somepattern$'
+      - name: fieldInt1
+        type: int
+      - name: fieldInt2
+        type: int
+        minimum: 0
+      - name: fieldInt3
+        type: int
+        maximum: 10
+      - name: fieldInt4
+        type: int
+        minimum: 0
+        maximum: 10
+      - name: fieldInt5
+        type: int
+        exclusiveMinimum: 0
+      - name: fieldInt6
+        type: int
+        exclusiveMaximum: 10
+      - name: fieldInt7
+        type: int
+        exclusiveMinimum: 0
+        exclusiveMaximum: 10
+      - name: fieldLong
+        type: long
+      - name: fieldDecimal
+        type: decimal
+      - name: fieldBool
+        type: bool
+      - name: fieldObjectId
+        type: objectId
+      - name: fieldDate
+        type: date
+      - name: fieldEnumString
+        type: enumString
+        enumValues: [ 'value-1', 'value-2' ]
+      - name: fieldArrayString
+        items:
+          type: string
+      - name: fieldArrayInt1
+        items:
+          type: int
+      - name: fieldArrayInt2
+        items:
+          type: int
+          minimum: 0
+      - name: fieldArrayLong
+        items:
+          type: long
+      - name: fieldArrayBool
+        items:
+          type: bool
+      - name: fieldArrayDecimal
+        items:
+          type: decimal
+      - name: fieldArrayObjectId
+        items:
+          type: objectId
+      - name: fieldArrayDate
+        items:
+          type: date
+      - name: fieldArrayEnumString
+        items:
+          type: enumString
+          enumValues: [ 'value-a', 'value-b' ]
+      - name: fieldObject
+        type:
+          name: SubEntity1
+          properties:
+            - name: subfield11
+              type: string
+            - name: subfield12
+              type: int
+            - name: subfield13
+              type: date
+            - name: subfield14
+              type:
+                name: SubEntity11
+                properties:
+                  - name: subfield111
+                    type: string
+      - name: fieldArrayOfObjects
+        items:
+          type:
+            name: SubEntity2
+            properties:
+              - name: subfield21
+                type: string
+              - name: subfield22
+                type: int
+              - name: subfield23
+                type: date
+      - name: fieldOptionalString
+        type: string
+      - name: fieldOptionalDate
+        type: date
+      - name: fieldOptionalArrayString
+        items:
+          type: string
+      - name: fieldOptionalArrayDate
+        items:
+          type: date
+      - name: fieldOptionalObject
+        ref: SubEntity1
+      - name: fieldOptionalArrayOfObjects
+        items:
+          ref: SubEntity2
+    optional:
+      - fieldOptionalString
+      - fieldOptionalDate
+      - fieldOptionalArrayString
+      - fieldOptionalArrayDate
+      - fieldOptionalObject
+      - fieldOptionalArrayOfObjects
+  - name: Entity2
+    properties:
+      - name: field
+        type: string
+      - name: fieldRefFromOtherCollection
+        ref: SubEntity1
+  - name: AnotherEntity
+    properties:
+      - name: field
+        type: string
