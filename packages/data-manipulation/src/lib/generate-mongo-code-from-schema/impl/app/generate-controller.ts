@@ -55,7 +55,7 @@ export function generateController(
     decorators: [
       {
         name: 'Controller',
-        arguments: [`{ path: '${variableName}' }`],
+        arguments: [`{ path: '${entityFsName}' }`],
       },
     ],
     ctors: [

@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import {
   MongoDatabaseConfigOptions,
   MongoDatabaseModule,
 } from '@gmjs/nest-util';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 const MONGO_CONFIG_OPTIONS: MongoDatabaseConfigOptions = {
   host: 'localhost',

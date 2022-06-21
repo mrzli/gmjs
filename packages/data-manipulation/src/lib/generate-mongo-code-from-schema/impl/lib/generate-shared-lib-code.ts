@@ -5,6 +5,7 @@ import path from 'path';
 import { getRelativeImportPath } from '../util/util';
 import { pascalCase } from '@gmjs/lib-util';
 import { createInterfaceCodeGenerator } from './interface-code-generator';
+import { invariant } from '@gmjs/util';
 
 export function generateSharedLibCode(
   input: GenerateMongoCodeFromSchemaInput,
@@ -48,6 +49,11 @@ function addSharedProjectExportDeclarations(
   );
 
   const libIndexSf = project.addSourceFileAtPath(libIndexPath);
+  invariant(
+    libIndexSf !== undefined,
+    `Shared lib index file not added to project`
+  );
+
   libIndexSf.addExportDeclarations(
     [
       getDbCollectionNameFilePath(optionsHelper),

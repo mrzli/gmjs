@@ -32,6 +32,11 @@ export interface ObjectEntry<T extends AnyObject, K extends keyof T = keyof T> {
   readonly value: T[K];
 }
 
+export interface Pair<K, V> {
+  readonly key: K;
+  readonly value: V;
+}
+
 export type StringEnumLike = ReadonlyRecord<string, string>;
 
 export type KeyOf<T> = keyof T;

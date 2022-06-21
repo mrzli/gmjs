@@ -122,5 +122,9 @@
   {
     "testFile": "app-layers-another-entity-module.txt",
     "path": "apps/example-be/src/app/another-entity/another-entity.module.ts"
+  },
+  {
+    "testFile": "app-module.txt",
+    "path": "apps/example-be/src/app/app.module.ts"
   }
 ]

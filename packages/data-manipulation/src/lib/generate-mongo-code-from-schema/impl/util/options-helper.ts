@@ -49,6 +49,10 @@ export class OptionsHelper {
     );
   }
 
+  public resolveAppProjectAppModuleFile(): string {
+    return path.join(this.resolveAppProjectAppDir(), 'app.module.ts');
+  }
+
   public getDbInterfacePrefix(): string {
     return this.options.appsMonorepo.dbInterfaceOptions.prefix;
   }

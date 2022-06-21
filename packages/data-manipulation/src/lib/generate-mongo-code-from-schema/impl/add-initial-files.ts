@@ -2,22 +2,31 @@ import { GenerateMongoCodeFromSchemaInput } from '../input-types';
 import { Project } from 'ts-morph';
 import { OptionsHelper } from './util/options-helper';
 import { TEST_FILE_SUFFIX } from '../test/test-util';
+import { readTextSync } from '@gmjs/fs-util';
+
+interface PathAndContent {
+  readonly path: string;
+  readonly content: string;
+}
 
 export function addInitialFiles(
   input: GenerateMongoCodeFromSchemaInput,
   project: Project,
   optionsHelper: OptionsHelper
 ): void {
-  const initialFiles: readonly string[] = [
+  const initialFilePaths: readonly string[] = [
     optionsHelper.resolveSharedProjectIndexFile(),
+    optionsHelper.resolveAppProjectAppModuleFile(),
   ];
 
-  for (const initialFile of initialFiles) {
-    if (input.options.isTest) {
-      const sf = project.addSourceFileAtPath(initialFile + TEST_FILE_SUFFIX);
-      sf.move(initialFile);
-    } else {
-      project.addSourceFileAtPath(initialFile);
-    }
-  }
+  const initialFileContents: readonly PathAndContent[] = initialFilePaths.map(
+    (p) => ({
+      path: p,
+      content: readTextSync(p + (input.options.isTest ? TEST_FILE_SUFFIX : '')),
+    })
+  );
+
+  initialFileContents.forEach((file) => {
+    project.createSourceFile(file.path, file.content, { overwrite: true });
+  });
 }

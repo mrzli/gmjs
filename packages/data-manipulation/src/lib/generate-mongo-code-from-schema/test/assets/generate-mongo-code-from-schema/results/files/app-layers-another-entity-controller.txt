@@ -3,7 +3,7 @@ import type { Except } from 'type-fest';
 import { AppAnotherEntity } from '@gmjs-apps/example-shared';
 import { AnotherEntityService } from './another-entity.service';
 
-@Controller({ path: 'anotherEntity' })
+@Controller({ path: 'another-entity' })
 export class AnotherEntityController {
   public constructor(
     private readonly anotherEntityService: AnotherEntityService
