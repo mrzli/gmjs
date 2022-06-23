@@ -1,6 +1,5 @@
 import path from 'path';
-import { AnyValue, Fn0, ReadonlyRecord } from '@gmjs/util';
-import { toTestJsonFileContent } from './internal-utils';
+import { Fn0, ReadonlyRecord } from '@gmjs/util';
 import { expect } from '@jest/globals';
 import { findDirsShallowSync, readTextFilesInDirSync } from '@gmjs/fs-util';
 
@@ -40,19 +39,22 @@ function getFileSystemTestExamplesInternal(
   });
 }
 
-export function createFileSystemExampleTest<TExampleInput>(
+export function createFileSystemExampleTest<TExampleInput, TFunctionResult>(
   example: TestFileSystemExample<TExampleInput>,
-  testedFunctionCall: () => AnyValue
+  testedFunctionCall: () => TFunctionResult,
+  testResultTransformer: (result: TFunctionResult) => string
 ): Fn0<Promise<void>> {
-  return () => doFileSystemExampleTest(example, testedFunctionCall);
+  return () =>
+    doFileSystemExampleTest(example, testedFunctionCall, testResultTransformer);
 }
 
-async function doFileSystemExampleTest<TExampleInput>(
+async function doFileSystemExampleTest<TExampleInput, TFunctionResult>(
   example: TestFileSystemExample<TExampleInput>,
-  testedFunctionCall: () => string
+  testedFunctionCall: () => TFunctionResult,
+  testResultTransformer: (result: TFunctionResult) => string
 ): Promise<void> {
   if (example.expected) {
-    const actual = toTestJsonFileContent(testedFunctionCall());
+    const actual = testResultTransformer(testedFunctionCall());
     expect(actual).toEqual(example.expected);
   } else {
     expect(testedFunctionCall).toThrow();

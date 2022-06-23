@@ -8,6 +8,24 @@ export function jsonToText<T extends AnyValue = AnyValue>(json: T): string {
   return JSON.stringify(json);
 }
 
-export function jsonToPretty<T = AnyValue>(json: T): string {
-  return `${JSON.stringify(json, null, 2)}\n`;
+export interface JsonToPrettyOptions {
+  readonly newLineAtEnd?: boolean;
+}
+
+export function jsonToPretty<T = AnyValue>(
+  json: T,
+  options?: JsonToPrettyOptions
+): string {
+  const finalOptions = getFinalJsonToPrettyOptions(options);
+  const newLineCharacter = finalOptions.newLineAtEnd ? '\n' : '';
+
+  return `${JSON.stringify(json, null, 2)}${newLineCharacter}`;
+}
+
+function getFinalJsonToPrettyOptions(
+  options?: JsonToPrettyOptions
+): Required<JsonToPrettyOptions> {
+  return {
+    newLineAtEnd: options?.newLineAtEnd ?? true,
+  };
 }

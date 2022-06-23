@@ -4,10 +4,8 @@ export interface PostmanCollection {
 }
 
 export interface PostmanCollectionInfo {
-  readonly _postman_id: string;
   readonly name: string;
   readonly schema: string;
-  readonly _exporter_id: string;
 }
 
 export interface PostmanCollectionItemBase {
@@ -26,19 +24,40 @@ export interface PostmanCollectionItemRequest
 
 export interface PostmanCollectionRequest {
   readonly method: 'GET' | 'POST' | 'DELETE';
-  readonly header: readonly PostmanCollectionHeader[];
   readonly url: PostmanCollectionUrl;
+  readonly header: readonly PostmanCollectionHeader[];
+  readonly body?: PostmanCollectionBody;
 }
 
 export interface PostmanCollectionHeader {
   readonly key: string;
-  readonly name: string;
+  readonly value: string;
 }
 
 export interface PostmanCollectionUrl {
   readonly raw: string;
   readonly host: readonly string[];
   readonly path: readonly string[];
+  readonly variable?: readonly PostmanCollectionUrlVariable[];
+}
+
+export interface PostmanCollectionUrlVariable {
+  readonly key: string;
+  readonly value: string;
+}
+
+export interface PostmanCollectionBody {
+  readonly mode: 'raw';
+  readonly raw: '';
+  readonly options: PostmanCollectionBodyOptions;
+}
+
+export interface PostmanCollectionBodyOptions {
+  readonly raw: PostmanCollectionBodyOptionsRaw;
+}
+
+export interface PostmanCollectionBodyOptionsRaw {
+  readonly language: 'json';
 }
 
 export type PostmanCollectionResponse = [];

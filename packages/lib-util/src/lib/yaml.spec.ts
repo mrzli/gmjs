@@ -6,6 +6,7 @@ import {
 } from '@gmjs/test-util';
 import { parseYaml } from './yaml';
 import { JsonObject } from 'type-fest';
+import { jsonToPretty } from '@gmjs/lib-util';
 
 describe('yaml', () => {
   describe('parseYaml()', () => {
@@ -34,10 +35,13 @@ describe('yaml', () => {
     PARSE_YAML_EXAMPLES.forEach((example) => {
       it(
         example.description,
-        createFileSystemExampleTest(example, () =>
-          parseYaml(example.input.yaml, {
-            jsonSchema: example.input.jsonSchema,
-          })
+        createFileSystemExampleTest(
+          example,
+          () =>
+            parseYaml(example.input.yaml, {
+              jsonSchema: example.input.jsonSchema,
+            }),
+          jsonToPretty
         )
       );
     });

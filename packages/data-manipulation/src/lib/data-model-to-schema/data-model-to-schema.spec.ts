@@ -5,6 +5,7 @@ import {
   ExampleMappingFn,
   getFileSystemTestExamples,
 } from '@gmjs/test-util';
+import { jsonToPretty } from '@gmjs/lib-util';
 
 describe('data-model-to-schema', () => {
   describe('dataModelToSchema()', () => {
@@ -30,8 +31,10 @@ describe('data-model-to-schema', () => {
     PARSE_YAML_EXAMPLES.forEach((example) => {
       it(
         example.description,
-        createFileSystemExampleTest(example, () =>
-          dataModelToSchema(example.input.dataModelYaml)
+        createFileSystemExampleTest(
+          example,
+          () => dataModelToSchema(example.input.dataModelYaml),
+          jsonToPretty
         )
       );
     });

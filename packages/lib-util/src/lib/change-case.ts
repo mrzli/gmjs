@@ -3,6 +3,7 @@ import {
   camelCase as _camelCase,
   paramCase as _paramCase,
   pascalCase as _pascalCase,
+  capitalCase as _capitalCase,
 } from 'change-case';
 
 export function kebabCase<T extends string>(value: T): KebabCase<T> {
@@ -23,4 +24,8 @@ export function camelCase<T extends string>(
   value: T
 ): string /* CamelCase<T> */ {
   return _camelCase(value) as CamelCase<T>;
+}
+
+export function capitalCase(value: string): string {
+  return _capitalCase(value);
 }
