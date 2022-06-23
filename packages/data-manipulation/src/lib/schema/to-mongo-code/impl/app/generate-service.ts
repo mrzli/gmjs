@@ -5,7 +5,7 @@ import {
   Scope,
 } from 'ts-morph';
 import { OptionsHelper } from '../util/options-helper';
-import { MongoJsonSchemaTypeObject } from '../../../data-model-to-schema/mongo-json-schema';
+import { MongoJsonSchemaTypeObject } from '../../../../data-model/to-schema/mongo-json-schema';
 import { camelCase, kebabCase, pascalCase } from '@gmjs/lib-util';
 import path from 'path';
 import {

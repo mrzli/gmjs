@@ -1,5 +1,5 @@
 import { MongoCollectionStructure } from '../../util/collection-structure/mongo-collection-structure';
-import { MongoJsonSchemaBsonType } from '../../../../data-model-to-schema/mongo-json-schema';
+import { MongoJsonSchemaBsonType } from '../../../../../data-model/to-schema/mongo-json-schema';
 import { asChainable, distinctItems, sortArrayByStringAsc } from '@gmjs/util';
 import { mongoBsonTypeToMongoJsType } from '../../util/util';
 import { pascalCase } from '@gmjs/lib-util';

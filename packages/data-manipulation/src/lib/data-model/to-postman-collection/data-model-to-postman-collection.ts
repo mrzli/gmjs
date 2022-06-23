@@ -8,7 +8,7 @@ import {
   PostmanCollectionUrlVariable,
 } from './postman-collection';
 import { DataModelToPostmanCollectionInput } from './data-model-to-postman-collection-input';
-import { parseDataModelYaml } from '../data-model-shared/data-model-util';
+import { parseDataModelYaml } from '../shared/data-model-util';
 import { AnyValue } from '@gmjs/util';
 import { capitalCase, jsonToPretty, kebabCase } from '@gmjs/lib-util';
 

@@ -12,7 +12,7 @@ import {
   MongoJsonSchemaTypeObject,
 } from './mongo-json-schema';
 import { Except } from 'type-fest';
-import { parseDataModelYaml } from '../data-model-shared/data-model-util';
+import { parseDataModelYaml } from '../shared/data-model-util';
 
 export function dataModelToSchema(
   dataModelYamlContent: string

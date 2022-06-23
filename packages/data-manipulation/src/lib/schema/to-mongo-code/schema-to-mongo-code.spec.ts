@@ -6,7 +6,7 @@ import {
   SchemaToMongoCodeTestOverrides,
 } from './schema-to-mongo-code-input';
 import { readJsonSync, readTextFilesInDirSync } from '@gmjs/fs-util';
-import { MongoJsonSchemaTypeObject } from '../data-model-to-schema/mongo-json-schema';
+import { MongoJsonSchemaTypeObject } from '../../data-model/to-schema/mongo-json-schema';
 import { emptyFn, flatMap, ImmutableMap, ImmutableSet } from '@gmjs/util';
 
 describe('schema-to-mongo-code', () => {
