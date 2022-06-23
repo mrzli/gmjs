@@ -7,6 +7,7 @@ import path from 'path';
 import { DataModelToPostmanCollectionInput } from './data-model-to-postman-collection-input';
 import { dataModelToPostmanCollection } from './data-model-to-postman-collection';
 import { jsonToPretty } from '@gmjs/lib-util';
+import { identifyFn } from '@gmjs/util';
 
 describe('data-model-to-postman-collection', () => {
   describe('dataModelToPostmanCollection()', () => {
@@ -14,7 +15,7 @@ describe('data-model-to-postman-collection', () => {
       readonly dataModelYamlContent: string;
     }
 
-    const exampleMapping: ExampleMappingFn<TestInput> = (te) => {
+    const exampleMapping: ExampleMappingFn<TestInput, string> = (te) => {
       return {
         description: te.dir,
         input: {
@@ -24,12 +25,12 @@ describe('data-model-to-postman-collection', () => {
       };
     };
 
-    const PARSE_YAML_EXAMPLES = getFileSystemTestExamples<TestInput>(
+    const EXAMPLES = getFileSystemTestExamples<TestInput, string>(
       path.join(__dirname, 'test-assets'),
       exampleMapping
     );
 
-    PARSE_YAML_EXAMPLES.forEach((example) => {
+    EXAMPLES.forEach((example) => {
       it(
         example.description,
         createFileSystemExampleTest(
@@ -41,7 +42,8 @@ describe('data-model-to-postman-collection', () => {
             };
             return dataModelToPostmanCollection(input);
           },
-          jsonToPretty
+          jsonToPretty,
+          identifyFn
         )
       );
     });

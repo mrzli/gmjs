@@ -6,6 +6,7 @@ import {
   getFileSystemTestExamples,
 } from '@gmjs/test-util';
 import { jsonToPretty } from '@gmjs/lib-util';
+import { identifyFn } from '@gmjs/util';
 
 describe('data-model-to-schema', () => {
   describe('dataModelToSchema()', () => {
@@ -13,7 +14,7 @@ describe('data-model-to-schema', () => {
       readonly dataModelYaml: string;
     }
 
-    const exampleMapping: ExampleMappingFn<TestInput> = (te) => {
+    const exampleMapping: ExampleMappingFn<TestInput, string> = (te) => {
       return {
         description: te.dir,
         input: {
@@ -23,18 +24,19 @@ describe('data-model-to-schema', () => {
       };
     };
 
-    const PARSE_YAML_EXAMPLES = getFileSystemTestExamples<TestInput>(
+    const EXAMPLES = getFileSystemTestExamples<TestInput, string>(
       path.join(__dirname, 'test-assets'),
       exampleMapping
     );
 
-    PARSE_YAML_EXAMPLES.forEach((example) => {
+    EXAMPLES.forEach((example) => {
       it(
         example.description,
         createFileSystemExampleTest(
           example,
           () => dataModelToSchema(example.input.dataModelYaml),
-          jsonToPretty
+          jsonToPretty,
+          identifyFn
         )
       );
     });

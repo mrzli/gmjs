@@ -15,8 +15,8 @@ import {
   OBJECT_REMOVE_UNDEFINED_FN_NAME,
   TRANSFORM_IF_EXISTS_FN_NAME,
 } from './constants';
-import { getAppInterfacePropertyName } from '../../util/util';
 import { invariant } from '@gmjs/util';
+import { getAppInterfacePropertyName } from '../../../../shared/mongo-schema-util';
 
 export function getAppToDbMapperFunctionName(entityName: string): string {
   const typeName = pascalCase(entityName);

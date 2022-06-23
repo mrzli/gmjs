@@ -3,10 +3,10 @@ import { Fn0, ReadonlyRecord } from '@gmjs/util';
 import { expect } from '@jest/globals';
 import { findDirsShallowSync, readTextFilesInDirSync } from '@gmjs/fs-util';
 
-export interface TestFileSystemExample<TExampleInput> {
+export interface TestFileSystemExample<TExampleInput, TExampleExpected> {
   readonly description: string;
   readonly input: TExampleInput;
-  readonly expected: string | undefined;
+  readonly expected: TExampleExpected | undefined;
 }
 
 export interface TestFileSystemExampleFileData {
@@ -14,14 +14,14 @@ export interface TestFileSystemExampleFileData {
   readonly files: ReadonlyRecord<string, string>;
 }
 
-export type ExampleMappingFn<TExampleInput> = (
+export type ExampleMappingFn<TExampleInput, TExampleExpected> = (
   fileData: TestFileSystemExampleFileData
-) => TestFileSystemExample<TExampleInput>;
+) => TestFileSystemExample<TExampleInput, TExampleExpected>;
 
-export function getFileSystemTestExamples<TExampleInput>(
+export function getFileSystemTestExamples<TExampleInput, TExampleExpected>(
   examplesRootDir: string,
-  exampleMapping: ExampleMappingFn<TExampleInput>
-): readonly TestFileSystemExample<TExampleInput>[] {
+  exampleMapping: ExampleMappingFn<TExampleInput, TExampleExpected>
+): readonly TestFileSystemExample<TExampleInput, TExampleExpected>[] {
   const testExamples = getFileSystemTestExamplesInternal(examplesRootDir);
   return testExamples.map(exampleMapping);
 }
@@ -39,23 +39,38 @@ function getFileSystemTestExamplesInternal(
   });
 }
 
-export function createFileSystemExampleTest<TExampleInput, TFunctionResult>(
-  example: TestFileSystemExample<TExampleInput>,
-  testedFunctionCall: () => TFunctionResult,
-  testResultTransformer: (result: TFunctionResult) => string
+export function createFileSystemExampleTest<
+  TExampleInput,
+  TExampleExpected,
+  TActualResult
+>(
+  example: TestFileSystemExample<TExampleInput, TExampleExpected>,
+  testedFunctionCall: () => TActualResult,
+  actualResultTransformer: (actual: TActualResult) => string,
+  exampleExpectedTransformer: (expected: TExampleExpected) => string
 ): Fn0<Promise<void>> {
   return () =>
-    doFileSystemExampleTest(example, testedFunctionCall, testResultTransformer);
+    doFileSystemExampleTest(
+      example,
+      testedFunctionCall,
+      actualResultTransformer,
+      exampleExpectedTransformer
+    );
 }
 
-async function doFileSystemExampleTest<TExampleInput, TFunctionResult>(
-  example: TestFileSystemExample<TExampleInput>,
-  testedFunctionCall: () => TFunctionResult,
-  testResultTransformer: (result: TFunctionResult) => string
+async function doFileSystemExampleTest<
+  TExampleInput,
+  TExampleExpected,
+  TActualResult
+>(
+  example: TestFileSystemExample<TExampleInput, TExampleExpected>,
+  testedFunctionCall: () => TActualResult,
+  actualResultTransformer: (actual: TActualResult) => string,
+  exampleExpectedTransformer: (expected: TExampleExpected) => string
 ): Promise<void> {
   if (example.expected) {
-    const actual = testResultTransformer(testedFunctionCall());
-    expect(actual).toEqual(example.expected);
+    const actual = actualResultTransformer(testedFunctionCall());
+    expect(actual).toEqual(exampleExpectedTransformer(example.expected));
   } else {
     expect(testedFunctionCall).toThrow();
   }

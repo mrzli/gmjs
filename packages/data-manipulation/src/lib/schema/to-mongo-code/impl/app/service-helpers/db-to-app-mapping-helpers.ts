@@ -11,9 +11,9 @@ import {
   WriterFunction,
 } from 'ts-morph';
 import { camelCase, pascalCase } from '@gmjs/lib-util';
-import { getAppInterfacePropertyName } from '../../util/util';
 import { invariant } from '@gmjs/util';
 import { TRANSFORM_IF_EXISTS_FN_NAME } from './constants';
+import { getAppInterfacePropertyName } from '../../../../shared/mongo-schema-util';
 
 export function getDbToAppMapperFunctionName(entityName: string): string {
   const typeName = pascalCase(entityName);
