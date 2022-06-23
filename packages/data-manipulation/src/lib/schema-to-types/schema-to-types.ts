@@ -1,4 +1,4 @@
-import { AnyValue, ImmutableMap, invariant } from '@gmjs/util';
+import { ImmutableMap, invariant } from '@gmjs/util';
 import { SchemaToTypesInput } from './schema-to-types-input';
 
 export type JsonSchemaVersion = '04' | '06' | '07' | '2019-09' | '2020-12';
@@ -11,7 +11,7 @@ export function schemaToTypes(input: SchemaToTypesInput): string {
     'Currently only supporting schema version 04.'
   );
 
-  parseDefinitions(schema);
+  // parseDefinitions(schema);
 
   return '';
 }
@@ -20,7 +20,7 @@ export function schemaToTypes(input: SchemaToTypesInput): string {
 //
 // }
 
-function parseDefinitions(schema: AnyValue): void {}
+// function parseDefinitions(_schema: AnyValue): void {}
 
 const SCHEMA_ID_TO_VERSION_MAP = ImmutableMap.fromTupleArray<
   string,

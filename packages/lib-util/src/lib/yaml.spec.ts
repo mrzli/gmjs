@@ -6,7 +6,7 @@ import {
 } from '@gmjs/test-util';
 import { parseYaml } from './yaml';
 import { JsonObject } from 'type-fest';
-import { jsonToPretty } from '@gmjs/lib-util';
+import { jsonToPretty } from './transformations';
 
 describe('yaml', () => {
   describe('parseYaml()', () => {

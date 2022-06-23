@@ -24,7 +24,7 @@ describe('data-model-to-schema', () => {
     };
 
     const PARSE_YAML_EXAMPLES = getFileSystemTestExamples<TestInput>(
-      path.join(__dirname, 'test-assets/data-model-to-schema'),
+      path.join(__dirname, 'test-assets'),
       exampleMapping
     );
 

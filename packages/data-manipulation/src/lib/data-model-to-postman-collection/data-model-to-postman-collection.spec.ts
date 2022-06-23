@@ -25,7 +25,7 @@ describe('data-model-to-postman-collection', () => {
     };
 
     const PARSE_YAML_EXAMPLES = getFileSystemTestExamples<TestInput>(
-      path.join(__dirname, 'test-assets/data-model-to-postman-collection'),
+      path.join(__dirname, 'test-assets'),
       exampleMapping
     );
 

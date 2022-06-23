@@ -24,7 +24,7 @@ describe.skip('schema-to-types', () => {
     };
 
     const PARSE_YAML_EXAMPLES = getFileSystemTestExamples<TestInput>(
-      path.join(__dirname, 'test-assets/schema-to-types'),
+      path.join(__dirname, 'test-assets'),
       exampleMapping
     );
 

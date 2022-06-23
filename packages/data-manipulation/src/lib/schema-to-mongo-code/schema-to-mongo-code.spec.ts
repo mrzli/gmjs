@@ -37,7 +37,7 @@ describe('schema-to-mongo-code', () => {
       return contentParts.join('\n');
     }
 
-    const testDir = path.join(__dirname, 'test-assets/schema-to-mongo-code');
+    const testDir = path.join(__dirname, 'test-assets');
 
     const testProjDir = path.join(testDir, 'input/proj-root');
     const schemas = readJsonSync<readonly MongoJsonSchemaTypeObject[]>(
