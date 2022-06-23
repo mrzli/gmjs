@@ -7,19 +7,19 @@ import {
   PostmanCollectionUrl,
   PostmanCollectionUrlVariable,
 } from './postman-collection';
-import { DataModelToPostmanCollectionInput } from './data-model-to-postman-collection-input';
-import { parseDataModelYaml } from '../shared/data-model-util';
-import { AnyValue } from '@gmjs/util';
+import { SchemaToPostmanCollectionInput } from './schema-to-postman-collection-input';
 import { capitalCase, jsonToPretty, kebabCase } from '@gmjs/lib-util';
+import { MongoJsonSchemaTypeObject } from '@gmjs/data-manipulation';
+import { schemaToJsonData } from '../to-data/schema-to-data';
+import { objectOmitFields } from '@gmjs/util';
 
-export function dataModelToPostmanCollection(
-  input: DataModelToPostmanCollectionInput
+export function schemaToPostmanCollection(
+  input: SchemaToPostmanCollectionInput
 ): PostmanCollection {
-  const dataModel = parseDataModelYaml(input.dataModelYamlContent);
+  const schemas = input.schemas;
 
   const postmanCollectionDisplayName = capitalCase(input.postmanCollectionName);
-  const entities: readonly AnyValue[] = dataModel.collections;
-  const postmanFolders = entities.map(getEntityPostmanFolder);
+  const postmanFolders = schemas.map(getEntityPostmanFolder);
 
   const result: PostmanCollection = {
     info: {
@@ -45,103 +45,114 @@ const URL_VAR_NAME = 'base_url';
 const URL_VAR_STRING = `{{${URL_VAR_NAME}}}`;
 const API_PREFIX = 'api';
 
-function getEntityPostmanFolder(entity: AnyValue): PostmanCollectionItemFolder {
-  const displayName = getEntityDisplayName(entity);
+function getEntityPostmanFolder(
+  schema: MongoJsonSchemaTypeObject
+): PostmanCollectionItemFolder {
+  const displayName = getEntityDisplayName(schema);
 
   return {
     name: displayName,
     item: [
-      createFindAllRequest(entity),
-      createFindRequest(entity),
-      createCreateRequest(entity),
-      createUpdateRequest(entity),
-      createDeleteRequest(entity),
+      createFindAllRequest(schema),
+      createFindRequest(schema),
+      createCreateRequest(schema),
+      createUpdateRequest(schema),
+      createDeleteRequest(schema),
     ],
   };
 }
 
-function createFindAllRequest(entity: AnyValue): PostmanCollectionItemRequest {
-  const entityDisplayName = getEntityDisplayName(entity);
+function createFindAllRequest(
+  schema: MongoJsonSchemaTypeObject
+): PostmanCollectionItemRequest {
+  const entityDisplayName = getEntityDisplayName(schema);
 
   return {
     name: `${entityDisplayName} - Find All`,
     request: {
       method: 'GET',
-      url: createUrl(entity, ['find-all']),
+      url: createUrl(schema, ['find-all']),
       header: [],
     },
     response: [],
   };
 }
 
-function createFindRequest(entity: AnyValue): PostmanCollectionItemRequest {
-  const entityDisplayName = getEntityDisplayName(entity);
+function createFindRequest(
+  schema: MongoJsonSchemaTypeObject
+): PostmanCollectionItemRequest {
+  const entityDisplayName = getEntityDisplayName(schema);
 
   return {
     name: `${entityDisplayName} - Find`,
     request: {
       method: 'GET',
-      url: createUrl(entity, ['find', ':id']),
+      url: createUrl(schema, ['find', ':id']),
       header: [],
     },
     response: [],
   };
 }
 
-function createCreateRequest(entity: AnyValue): PostmanCollectionItemRequest {
-  const entityDisplayName = getEntityDisplayName(entity);
+function createCreateRequest(
+  schema: MongoJsonSchemaTypeObject
+): PostmanCollectionItemRequest {
+  const entityDisplayName = getEntityDisplayName(schema);
 
   return {
     name: `${entityDisplayName} - Create`,
     request: {
       method: 'POST',
-      url: createUrl(entity, ['create']),
+      url: createUrl(schema, ['create']),
       header: [],
-      body: createBody(entity),
+      body: createBody(schema, false),
     },
     response: [],
   };
 }
 
-function createUpdateRequest(entity: AnyValue): PostmanCollectionItemRequest {
-  const entityDisplayName = getEntityDisplayName(entity);
+function createUpdateRequest(
+  schema: MongoJsonSchemaTypeObject
+): PostmanCollectionItemRequest {
+  const entityDisplayName = getEntityDisplayName(schema);
 
   return {
     name: `${entityDisplayName} - Update`,
     request: {
       method: 'POST',
-      url: createUrl(entity, ['update', ':id']),
+      url: createUrl(schema, ['update', ':id']),
       header: [],
-      body: createBody(entity),
+      body: createBody(schema, true),
     },
     response: [],
   };
 }
 
-function createDeleteRequest(entity: AnyValue): PostmanCollectionItemRequest {
-  const entityDisplayName = getEntityDisplayName(entity);
+function createDeleteRequest(
+  schema: MongoJsonSchemaTypeObject
+): PostmanCollectionItemRequest {
+  const entityDisplayName = getEntityDisplayName(schema);
 
   return {
     name: `${entityDisplayName} - Delete`,
     request: {
       method: 'DELETE',
-      url: createUrl(entity, ['remove', ':id']),
+      url: createUrl(schema, ['remove', ':id']),
       header: [],
-      body: createBody(entity),
     },
     response: [],
   };
 }
 
-function getEntityDisplayName(entity: AnyValue): string {
-  return capitalCase(entity.name);
+function getEntityDisplayName(schema: MongoJsonSchemaTypeObject): string {
+  return capitalCase(schema.title);
 }
 
 function createUrl(
-  entity: AnyValue,
+  schema: MongoJsonSchemaTypeObject,
   pathSegments: readonly string[]
 ): PostmanCollectionUrl {
-  const entityPathName = kebabCase(entity.name);
+  const entityPathName = kebabCase(schema.title);
 
   const path: readonly string[] = [
     API_PREFIX,
@@ -165,10 +176,16 @@ function createUrl(
   };
 }
 
-function createBody(_entity: AnyValue): PostmanCollectionBody {
+function createBody(
+  schema: MongoJsonSchemaTypeObject,
+  omitId: boolean
+): PostmanCollectionBody {
+  const bodyJson = schemaToJsonData(schema);
+  const finalBodyJson = omitId ? objectOmitFields(bodyJson, ['id']) : bodyJson;
+
   return {
     mode: 'raw',
-    raw: '',
+    raw: jsonToPretty(finalBodyJson),
     options: {
       raw: {
         language: 'json',

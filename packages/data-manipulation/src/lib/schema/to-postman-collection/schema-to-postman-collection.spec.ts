@@ -4,22 +4,22 @@ import {
   getFileSystemTestExamples,
 } from '@gmjs/test-util';
 import path from 'path';
-import { DataModelToPostmanCollectionInput } from './data-model-to-postman-collection-input';
-import { dataModelToPostmanCollection } from './data-model-to-postman-collection';
+import { SchemaToPostmanCollectionInput } from './schema-to-postman-collection-input';
+import { schemaToPostmanCollection } from './schema-to-postman-collection';
 import { jsonToPretty } from '@gmjs/lib-util';
 import { identifyFn } from '@gmjs/util';
 
-describe('data-model-to-postman-collection', () => {
-  describe('dataModelToPostmanCollection()', () => {
+describe('schema-to-postman-collection', () => {
+  describe('schemaToPostmanCollection()', () => {
     interface TestInput {
-      readonly dataModelYamlContent: string;
+      readonly schemas: string;
     }
 
     const exampleMapping: ExampleMappingFn<TestInput, string> = (te) => {
       return {
         description: te.dir,
         input: {
-          dataModelYamlContent: te.files['input.yaml'],
+          schemas: te.files['input.json'],
         },
         expected: te.files['result.json'],
       };
@@ -36,11 +36,11 @@ describe('data-model-to-postman-collection', () => {
         createFileSystemExampleTest(
           example,
           () => {
-            const input: DataModelToPostmanCollectionInput = {
-              dataModelYamlContent: example.input.dataModelYamlContent,
+            const input: SchemaToPostmanCollectionInput = {
+              schemas: JSON.parse(example.input.schemas),
               postmanCollectionName: 'TestProject',
             };
-            return dataModelToPostmanCollection(input);
+            return schemaToPostmanCollection(input);
           },
           jsonToPretty,
           identifyFn

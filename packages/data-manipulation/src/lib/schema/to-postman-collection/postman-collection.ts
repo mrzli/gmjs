@@ -48,7 +48,7 @@ export interface PostmanCollectionUrlVariable {
 
 export interface PostmanCollectionBody {
   readonly mode: 'raw';
-  readonly raw: '';
+  readonly raw: string;
   readonly options: PostmanCollectionBodyOptions;
 }
 

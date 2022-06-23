@@ -1,0 +1,19 @@
+[
+  {
+    "title": "Example",
+    "bsonType": "object",
+    "properties": {
+      "_id": {
+        "bsonType": "objectId"
+      },
+      "name": {
+        "bsonType": "string"
+      }
+    },
+    "required": [
+      "_id",
+      "name"
+    ],
+    "additionalProperties": false
+  }
+]

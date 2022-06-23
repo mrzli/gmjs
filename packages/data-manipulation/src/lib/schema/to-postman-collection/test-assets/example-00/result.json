@@ -75,7 +75,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "",
+                  "raw": "{\n  \"id\": \"000000000000000000000000\",\n  \"name\": \"\"\n}\n",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -110,7 +110,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "",
+                  "raw": "{\n  \"name\": \"\"\n}\n",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -142,16 +142,7 @@
                     }
                   ]
                 },
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                }
+                "header": []
               },
               "response": []
             }
