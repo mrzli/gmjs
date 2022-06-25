@@ -1,0 +1,96 @@
+import { Db, Decimal128, ObjectId } from 'mongodb';
+import {
+  executeMongo,
+  insertMany,
+  MongoConnectionParameters,
+} from '@gmjs/mongo-util';
+import { DbCollectionName } from '@gmjs-apps/example-shared';
+
+export async function seedDb(
+  mongoParams: MongoConnectionParameters
+): Promise<void> {
+  await executeMongo(mongoParams, async (db: Db) => {
+    await insertMany(db, DbCollectionName.Entity, [
+      {
+        fieldString1: '',
+        fieldString2: '',
+        fieldInt1: 0,
+        fieldInt2: 0,
+        fieldInt3: 0,
+        fieldInt4: 0,
+        fieldInt5: 0,
+        fieldInt6: 0,
+        fieldInt7: 0,
+        fieldLong: 0,
+        fieldDecimal: new Decimal128('0'),
+        fieldBool: false,
+        fieldObjectId: new ObjectId('000000000000000000000000'),
+        fieldDate: new Date('2020-01-02T00:00:00.000Z'),
+        fieldEnumString: '',
+        fieldArrayString: [''],
+        fieldArrayInt1: [0],
+        fieldArrayInt2: [0],
+        fieldArrayLong: [0],
+        fieldArrayBool: [false],
+        fieldArrayDecimal: [new Decimal128('0')],
+        fieldArrayObjectId: [new ObjectId('000000000000000000000000')],
+        fieldArrayDate: [new Date('2020-01-02T00:00:00.000Z')],
+        fieldArrayEnumString: [''],
+        fieldObject: {
+          subfield11: '',
+          subfield12: 0,
+          subfield13: new Date('2020-01-02T00:00:00.000Z'),
+          subfield14: {
+            subfield111: '',
+          },
+        },
+        fieldArrayOfObjects: [
+          {
+            subfield21: '',
+            subfield22: 0,
+            subfield23: new Date('2020-01-02T00:00:00.000Z'),
+          },
+        ],
+        fieldOptionalString: '',
+        fieldOptionalDate: new Date('2020-01-02T00:00:00.000Z'),
+        fieldOptionalArrayString: [''],
+        fieldOptionalArrayDate: [new Date('2020-01-02T00:00:00.000Z')],
+        fieldOptionalObject: {
+          subfield11: '',
+          subfield12: 0,
+          subfield13: new Date('2020-01-02T00:00:00.000Z'),
+          subfield14: {
+            subfield111: '',
+          },
+        },
+        fieldOptionalArrayOfObjects: [
+          {
+            subfield21: '',
+            subfield22: 0,
+            subfield23: new Date('2020-01-02T00:00:00.000Z'),
+          },
+        ],
+      },
+    ]);
+
+    await insertMany(db, DbCollectionName.Entity2, [
+      {
+        field: '',
+        fieldRefFromOtherCollection: {
+          subfield11: '',
+          subfield12: 0,
+          subfield13: new Date('2020-01-02T00:00:00.000Z'),
+          subfield14: {
+            subfield111: '',
+          },
+        },
+      },
+    ]);
+
+    await insertMany(db, DbCollectionName.AnotherEntity, [
+      {
+        field: '',
+      },
+    ]);
+  });
+}

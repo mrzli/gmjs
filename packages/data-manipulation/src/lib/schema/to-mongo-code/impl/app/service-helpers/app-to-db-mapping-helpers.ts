@@ -164,7 +164,8 @@ export function createAppToDbMapperFunctionDeclarationInternal(
         const propertiesToOmitSet = new Set<string>(propertiesToOmit);
 
         const properties = entity.properties;
-        for (const property of properties) {
+        for (let i = 0; i < properties.length; i++) {
+          const property = properties[i];
           if (propertiesToOmitSet.has(property.name)) {
             continue;
           }
@@ -175,9 +176,7 @@ export function createAppToDbMapperFunctionDeclarationInternal(
             appVariableName,
             isPartial
           );
-          writer.conditionalNewLine(
-            property !== properties[properties.length - 1]
-          );
+          writer.conditionalNewLine(i !== properties.length - 1);
         }
       })
       .write(isPartial ? ');' : ';');

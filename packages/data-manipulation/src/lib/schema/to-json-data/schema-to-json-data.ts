@@ -5,9 +5,7 @@ import {
 } from '../../shared/mongo-json-schema';
 import { AnyValue, objectGetEntries } from '@gmjs/util';
 import { getAppInterfacePropertyName } from '../shared/mongo-schema-util';
-
-const DEFAULT_OBJECT_ID = '0'.repeat(24);
-const DEFAULT_DATE = '2020-01-02T00:00:00.000Z';
+import { DEFAULT_DATE, DEFAULT_OBJECT_ID } from '../shared/constants';
 
 export function schemaToJsonData(schema: MongoJsonSchemaTypeObject): AnyValue {
   return parseObject(schema);
