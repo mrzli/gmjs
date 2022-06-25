@@ -1,0 +1,63 @@
+object
+objectId, _id, 0, 33
+string, fieldString1, 1, 33
+string, fieldString2, 2, 33
+int, fieldInt1, 3, 33
+int, fieldInt2, 4, 33
+int, fieldInt3, 5, 33
+int, fieldInt4, 6, 33
+int, fieldInt5, 7, 33
+int, fieldInt6, 8, 33
+int, fieldInt7, 9, 33
+long, fieldLong, 10, 33
+decimal, fieldDecimal, 11, 33
+bool, fieldBool, 12, 33
+objectId, fieldObjectId, 13, 33
+date, fieldDate, 14, 33
+string, fieldEnumString, 15, 33
+array, fieldArrayString, 16, 33
+string
+array, fieldArrayInt1, 17, 33
+int
+array, fieldArrayInt2, 18, 33
+int
+array, fieldArrayLong, 19, 33
+long
+array, fieldArrayBool, 20, 33
+bool
+array, fieldArrayDecimal, 21, 33
+decimal
+array, fieldArrayObjectId, 22, 33
+objectId
+array, fieldArrayDate, 23, 33
+date
+array, fieldArrayEnumString, 24, 33
+string
+object, fieldObject, 25, 33
+string, subfield11, 0, 4
+int, subfield12, 1, 4
+date, subfield13, 2, 4
+object, subfield14, 3, 4
+string, subfield111, 0, 1
+array, fieldArrayOfObjects, 26, 33
+object
+string, subfield21, 0, 3
+int, subfield22, 1, 3
+date, subfield23, 2, 3
+string, fieldOptionalString, 27, 33
+date, fieldOptionalDate, 28, 33
+array, fieldOptionalArrayString, 29, 33
+string
+array, fieldOptionalArrayDate, 30, 33
+date
+object, fieldOptionalObject, 31, 33
+string, subfield11, 0, 4
+int, subfield12, 1, 4
+date, subfield13, 2, 4
+object, subfield14, 3, 4
+string, subfield111, 0, 1
+array, fieldOptionalArrayOfObjects, 32, 33
+object
+string, subfield21, 0, 3
+int, subfield22, 1, 3
+date, subfield23, 2, 3
