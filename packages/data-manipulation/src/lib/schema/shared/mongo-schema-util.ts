@@ -1,4 +1,4 @@
-import { MongoJsonSchemaBsonType } from '@gmjs/data-manipulation';
+import { MongoJsonSchemaBsonType } from '../../shared/mongo-json-schema';
 import { invariant } from '@gmjs/util';
 
 const MONGO_BSON_TYPES: readonly MongoJsonSchemaBsonType[] = [

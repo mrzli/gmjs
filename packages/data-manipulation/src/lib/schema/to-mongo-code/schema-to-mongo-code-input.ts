@@ -1,4 +1,4 @@
-import { MongoJsonSchemaTypeObject } from '../../data-model/to-schema/mongo-json-schema';
+import { MongoJsonSchemaTypeObject } from '../../shared/mongo-json-schema';
 import { Project } from 'ts-morph';
 
 export interface SchemaToMongoCodeInput {

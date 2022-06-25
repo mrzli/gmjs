@@ -2,7 +2,7 @@ import {
   MongoJsonSchemaAnyType,
   MongoJsonSchemaTypeArray,
   MongoJsonSchemaTypeObject,
-} from '@gmjs/data-manipulation';
+} from '../../shared/mongo-json-schema';
 import { AnyValue, objectGetEntries } from '@gmjs/util';
 import { getAppInterfacePropertyName } from '../shared/mongo-schema-util';
 

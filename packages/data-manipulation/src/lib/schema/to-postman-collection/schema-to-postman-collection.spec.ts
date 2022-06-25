@@ -8,7 +8,7 @@ import { SchemaToPostmanCollectionInput } from './schema-to-postman-collection-i
 import { schemaToPostmanCollection } from './schema-to-postman-collection';
 import { jsonToPretty, textToJson } from '@gmjs/lib-util';
 import { identifyFn } from '@gmjs/util';
-import { MongoJsonSchemaTypeObject } from '@gmjs/data-manipulation';
+import { MongoJsonSchemaTypeObject } from '../../shared/mongo-json-schema';
 
 describe('schema-to-postman-collection', () => {
   describe('schemaToPostmanCollection()', () => {

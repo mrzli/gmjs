@@ -1,7 +1,7 @@
 import { SchemaToMongoCodeInput } from '../../schema-to-mongo-code-input';
 import { Project } from 'ts-morph';
 import { OptionsHelper } from '../util/options-helper';
-import { MongoJsonSchemaTypeObject } from '../../../../data-model/to-schema/mongo-json-schema';
+import { MongoJsonSchemaTypeObject } from '../../../../shared/mongo-json-schema';
 import { kebabCase } from '@gmjs/lib-util';
 import path from 'path';
 import { generateRepository } from './generate-repository';

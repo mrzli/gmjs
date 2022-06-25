@@ -1,4 +1,4 @@
-import { MongoJsonSchemaBsonType } from '../../../../../data-model/to-schema/mongo-json-schema';
+import { MongoJsonSchemaBsonType } from '../../../../../shared/mongo-json-schema';
 
 export interface MongoAllCollectionsStructure {
   readonly collectionTypes: readonly MongoEntityStructure[];
