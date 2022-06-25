@@ -1,6 +1,5 @@
 import {
   MongoJsonSchemaAnyType,
-  MongoJsonSchemaBsonType,
   MongoJsonSchemaTypeArray,
   MongoJsonSchemaTypeObject,
 } from '../../../../../shared/mongo-json-schema';
@@ -17,6 +16,7 @@ import {
   objectGetEntries,
 } from '@gmjs/util';
 import { mongoSchemaUtil } from '../../../../shared/mongo-schema-util';
+import { MongoBsonType } from '../../../../../shared/mongo-bson-type';
 
 export function schemasToAllCollectionStructures(
   schemas: readonly MongoJsonSchemaTypeObject[]
@@ -146,7 +146,7 @@ function getFinalValueType(schema: MongoJsonSchemaAnyType): FinalValueType {
 
 function getMongoValueTypes(
   finalValueTypes: readonly FinalValueType[]
-): readonly MongoJsonSchemaBsonType[] {
+): readonly MongoBsonType[] {
   return asChainable(finalValueTypes)
     .map((v) => v.bsonType)
     .filter(mongoSchemaUtil)

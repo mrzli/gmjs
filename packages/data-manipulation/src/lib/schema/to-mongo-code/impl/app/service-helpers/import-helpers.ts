@@ -1,8 +1,8 @@
 import { MongoCollectionStructure } from '../../util/collection-structure/mongo-collection-structure';
-import { MongoJsonSchemaBsonType } from '../../../../../shared/mongo-json-schema';
 import { asChainable, distinctItems, sortArrayByStringAsc } from '@gmjs/util';
 import { pascalCase } from '@gmjs/lib-util';
 import { mongoBsonTypeToMongoJsType } from '../../../../shared/mongo-schema-util';
+import { MongoBsonType } from '../../../../../shared/mongo-bson-type';
 
 export function getMongoImports(
   collectionStructure: MongoCollectionStructure
@@ -11,7 +11,7 @@ export function getMongoImports(
     /* 'Collection', 'OptionalId' */
   ];
 
-  const allMongoBsonTypes: MongoJsonSchemaBsonType[] = [];
+  const allMongoBsonTypes: MongoBsonType[] = [];
   allMongoBsonTypes.push(...collectionStructure.collectionType.mongoTypes);
   for (const embeddedType of collectionStructure.embeddedTypes) {
     allMongoBsonTypes.push(...embeddedType.mongoTypes);

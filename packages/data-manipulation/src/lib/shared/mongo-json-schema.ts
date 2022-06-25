@@ -1,18 +1,8 @@
 import { ReadonlyRecord } from '@gmjs/util';
-
-export type MongoJsonSchemaBsonType =
-  | 'object'
-  | 'array'
-  | 'string'
-  | 'int'
-  | 'long'
-  | 'decimal'
-  | 'bool'
-  | 'objectId'
-  | 'date';
+import { MongoBsonType } from './mongo-bson-type';
 
 export interface MongoJsonSchemaTypeBase {
-  readonly bsonType: MongoJsonSchemaBsonType;
+  readonly bsonType: MongoBsonType;
 }
 
 export interface MongoJsonSchemaTypeObject extends MongoJsonSchemaTypeBase {

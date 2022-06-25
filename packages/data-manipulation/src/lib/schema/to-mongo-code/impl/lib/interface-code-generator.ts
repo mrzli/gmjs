@@ -12,7 +12,6 @@ import {
 import { OptionsHelper } from '../util/options-helper';
 import { kebabCase, pascalCase } from '@gmjs/lib-util';
 import path from 'path';
-import { MongoJsonSchemaBsonType } from '../../../../shared/mongo-json-schema';
 import { asChainable, invariant, sortArrayByStringAsc } from '@gmjs/util';
 import {
   MongoAllCollectionsStructure,
@@ -26,6 +25,7 @@ import {
   mongoSchemaUtil,
   mongoBsonTypeToMongoJsType,
 } from '../../../shared/mongo-schema-util';
+import { MongoBsonType } from '../../../../shared/mongo-bson-type';
 
 export interface InterfaceCodeGenerator {
   generate(): void;
@@ -219,14 +219,12 @@ abstract class InterfaceCodeGeneratorBase implements InterfaceCodeGenerator {
   protected abstract get interfaceOptions(): SchemaToMongoCodeInterfaceOptions;
 
   protected abstract getMongoImportTypes(
-    bsonTypes: readonly MongoJsonSchemaBsonType[]
+    bsonTypes: readonly MongoBsonType[]
   ): readonly string[];
 
   protected abstract getPropertyName(initialPropertyName: string): string;
 
-  protected abstract getSimpleValueTypeMapping(
-    type: MongoJsonSchemaBsonType
-  ): string;
+  protected abstract getSimpleValueTypeMapping(type: MongoBsonType): string;
 }
 
 class InterfaceCodeGeneratorDb extends InterfaceCodeGeneratorBase {
@@ -243,7 +241,7 @@ class InterfaceCodeGeneratorDb extends InterfaceCodeGeneratorBase {
   }
 
   protected getMongoImportTypes(
-    bsonTypes: readonly MongoJsonSchemaBsonType[]
+    bsonTypes: readonly MongoBsonType[]
   ): readonly string[] {
     return bsonTypes.map((type) => this.getSimpleValueTypeMapping(type));
   }
@@ -252,7 +250,7 @@ class InterfaceCodeGeneratorDb extends InterfaceCodeGeneratorBase {
     return initialPropertyName;
   }
 
-  protected getSimpleValueTypeMapping(type: MongoJsonSchemaBsonType): string {
+  protected getSimpleValueTypeMapping(type: MongoBsonType): string {
     if (mongoSchemaUtil(type)) {
       return mongoBsonTypeToMongoJsType(type);
     }
@@ -287,7 +285,7 @@ class InterfaceCodeGeneratorApp extends InterfaceCodeGeneratorBase {
   }
 
   protected getMongoImportTypes(
-    bsonTypes: readonly MongoJsonSchemaBsonType[]
+    bsonTypes: readonly MongoBsonType[]
   ): readonly string[] {
     return [];
   }
@@ -296,7 +294,7 @@ class InterfaceCodeGeneratorApp extends InterfaceCodeGeneratorBase {
     return getAppInterfacePropertyName(initialPropertyName);
   }
 
-  protected getSimpleValueTypeMapping(type: MongoJsonSchemaBsonType): string {
+  protected getSimpleValueTypeMapping(type: MongoBsonType): string {
     switch (type) {
       case 'string':
         return 'string';

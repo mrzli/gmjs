@@ -1,4 +1,4 @@
-import { MongoJsonSchemaBsonType } from '../../../../../shared/mongo-json-schema';
+import { MongoBsonType } from '../../../../../shared/mongo-bson-type';
 
 export interface MongoAllCollectionsStructure {
   readonly collectionTypes: readonly MongoEntityStructure[];
@@ -13,7 +13,7 @@ export interface MongoCollectionStructure {
 export interface MongoEntityStructure {
   readonly name: string;
   readonly properties: readonly MongoPropertyStructure[];
-  readonly mongoTypes: readonly MongoJsonSchemaBsonType[];
+  readonly mongoTypes: readonly MongoBsonType[];
   readonly embeddedTypes: readonly string[];
 }
 
@@ -24,7 +24,7 @@ export interface MongoPropertyStructure {
 }
 
 export interface MongoValueTypeStructureBase {
-  readonly bsonType: MongoJsonSchemaBsonType;
+  readonly bsonType: MongoBsonType;
 }
 
 export interface MongoValueTypeStructureObject
