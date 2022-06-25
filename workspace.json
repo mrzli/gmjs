@@ -4,6 +4,7 @@
     "data-manipulation": "packages/data-manipulation",
     "fs-util": "packages/fs-util",
     "lib-util": "packages/lib-util",
+    "mongo-util": "packages/mongo-util",
     "nest-util": "packages/nest-util",
     "test-util": "packages/test-util",
     "util": "packages/util",
