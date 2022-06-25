@@ -5,10 +5,10 @@ import {
   getFileSystemTestExamples,
 } from '@gmjs/test-util';
 import { jsonToPretty } from '@gmjs/lib-util';
-import { schemaToJsonData } from './schema-to-data';
+import { schemaToJsonData } from './schema-to-json-data';
 import { identifyFn } from '@gmjs/util';
 
-describe('schema-to-data', () => {
+describe('schema-to-json-data', () => {
   describe('schemaToJsonData()', () => {
     interface TestInput {
       readonly schemaContent: string;

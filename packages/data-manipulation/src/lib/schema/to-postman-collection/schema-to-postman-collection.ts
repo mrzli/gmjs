@@ -10,7 +10,7 @@ import {
 import { SchemaToPostmanCollectionInput } from './schema-to-postman-collection-input';
 import { capitalCase, jsonToPretty, kebabCase } from '@gmjs/lib-util';
 import { MongoJsonSchemaTypeObject } from '@gmjs/data-manipulation';
-import { schemaToJsonData } from '../to-data/schema-to-data';
+import { schemaToJsonData } from '../to-data/schema-to-json-data';
 import { objectOmitFields } from '@gmjs/util';
 
 export function schemaToPostmanCollection(
