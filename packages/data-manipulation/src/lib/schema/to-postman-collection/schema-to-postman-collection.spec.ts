@@ -6,20 +6,23 @@ import {
 import path from 'path';
 import { SchemaToPostmanCollectionInput } from './schema-to-postman-collection-input';
 import { schemaToPostmanCollection } from './schema-to-postman-collection';
-import { jsonToPretty } from '@gmjs/lib-util';
+import { jsonToPretty, textToJson } from '@gmjs/lib-util';
 import { identifyFn } from '@gmjs/util';
+import { MongoJsonSchemaTypeObject } from '@gmjs/data-manipulation';
 
 describe('schema-to-postman-collection', () => {
   describe('schemaToPostmanCollection()', () => {
     interface TestInput {
-      readonly schemas: string;
+      readonly schemas: readonly MongoJsonSchemaTypeObject[];
     }
 
     const exampleMapping: ExampleMappingFn<TestInput, string> = (te) => {
       return {
         description: te.dir,
         input: {
-          schemas: te.files['input.json'],
+          schemas: textToJson<readonly MongoJsonSchemaTypeObject[]>(
+            te.files['input.json']
+          ),
         },
         expected: te.files['result.json'],
       };
@@ -37,7 +40,7 @@ describe('schema-to-postman-collection', () => {
           example,
           () => {
             const input: SchemaToPostmanCollectionInput = {
-              schemas: JSON.parse(example.input.schemas),
+              schemas: example.input.schemas,
               postmanCollectionName: 'TestProject',
             };
             return schemaToPostmanCollection(input);

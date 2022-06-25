@@ -6,7 +6,8 @@ import {
 } from '@gmjs/test-util';
 import { parseYaml } from './yaml';
 import { JsonObject } from 'type-fest';
-import { jsonToPretty } from './transformations';
+import { jsonToPretty, textToJson } from './transformations';
+import { identifyFn } from '@gmjs/util';
 
 describe('yaml', () => {
   describe('parseYaml()', () => {
@@ -15,19 +16,19 @@ describe('yaml', () => {
       readonly jsonSchema?: JsonObject;
     }
 
-    const exampleMapping: ExampleMappingFn<TestInput> = (te) => {
+    const exampleMapping: ExampleMappingFn<TestInput, string> = (te) => {
       const schemaFile = te.files['schema.json'];
       return {
         description: te.dir,
         input: {
           yaml: te.files['input.yaml'],
-          jsonSchema: schemaFile ? JSON.parse(schemaFile) : undefined,
+          jsonSchema: schemaFile ? textToJson(schemaFile) : undefined,
         },
         expected: te.files['result.json'],
       };
     };
 
-    const PARSE_YAML_EXAMPLES = getFileSystemTestExamples<TestInput>(
+    const PARSE_YAML_EXAMPLES = getFileSystemTestExamples<TestInput, string>(
       path.join(__dirname, 'test-assets/parse-yaml'),
       exampleMapping
     );
@@ -41,7 +42,8 @@ describe('yaml', () => {
             parseYaml(example.input.yaml, {
               jsonSchema: example.input.jsonSchema,
             }),
-          jsonToPretty
+          jsonToPretty,
+          identifyFn
         )
       );
     });

@@ -4,21 +4,22 @@ import {
   ExampleMappingFn,
   getFileSystemTestExamples,
 } from '@gmjs/test-util';
-import { jsonToPretty } from '@gmjs/lib-util';
+import { jsonToPretty, textToJson } from '@gmjs/lib-util';
 import { schemaToJsonData } from './schema-to-json-data';
 import { identifyFn } from '@gmjs/util';
+import { MongoJsonSchemaTypeObject } from '@gmjs/data-manipulation';
 
 describe('schema-to-json-data', () => {
   describe('schemaToJsonData()', () => {
     interface TestInput {
-      readonly schemaContent: string;
+      readonly schema: MongoJsonSchemaTypeObject;
     }
 
     const exampleMapping: ExampleMappingFn<TestInput, string> = (te) => {
       return {
         description: te.dir,
         input: {
-          schemaContent: te.files['input.json'],
+          schema: textToJson<MongoJsonSchemaTypeObject>(te.files['input.json']),
         },
         expected: te.files['result.json'],
       };
@@ -34,10 +35,7 @@ describe('schema-to-json-data', () => {
         example.description,
         createFileSystemExampleTest(
           example,
-          () => {
-            const schema = JSON.parse(example.input.schemaContent);
-            return schemaToJsonData(schema);
-          },
+          () => schemaToJsonData(example.input.schema),
           jsonToPretty,
           identifyFn
         )

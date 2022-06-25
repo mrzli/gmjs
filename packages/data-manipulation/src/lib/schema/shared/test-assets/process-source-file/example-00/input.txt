@@ -1,0 +1,12 @@
+import { something } from 'lib'
+
+
+export function doSomething(input: SomeInputType<GenericParam >
+): SomeReturnType {
+  const value3 = "<<some-value>>";
+  return {
+    field1: "value1",
+    field2: 0 + something( ),
+    field3: value3
+  }
+}

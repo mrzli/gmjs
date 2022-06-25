@@ -5,19 +5,21 @@ import {
 } from '@gmjs/test-util';
 import path from 'path';
 import { schemaToTypes } from './schema-to-types';
-import { identifyFn } from '@gmjs/util';
+import { AnyValue, identifyFn } from '@gmjs/util';
+import { textToJson } from '@gmjs/lib-util';
+import { SchemaToTypesInput } from './schema-to-types-input';
 
 describe.skip('schema-to-types', () => {
   describe('schemaToTypes()', () => {
     interface TestInput {
-      readonly schemaContent: string;
+      readonly schema: AnyValue;
     }
 
     const exampleMapping: ExampleMappingFn<TestInput, string> = (te) => {
       return {
         description: te.dir,
         input: {
-          schemaContent: te.files['input.json'],
+          schema: textToJson(te.files['input.json']),
         },
         expected: te.files['result.txt'],
       };
@@ -34,11 +36,11 @@ describe.skip('schema-to-types', () => {
         createFileSystemExampleTest(
           example,
           () => {
-            const schema = JSON.parse(example.input.schemaContent);
-            return schemaToTypes({
+            const input: SchemaToTypesInput = {
               prefix: 'PostmanCollection',
-              schema,
-            });
+              schema: example.input.schema,
+            };
+            return schemaToTypes(input);
           },
           identifyFn,
           identifyFn
