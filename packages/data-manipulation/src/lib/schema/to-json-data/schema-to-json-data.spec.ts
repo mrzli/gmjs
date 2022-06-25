@@ -6,7 +6,6 @@ import {
 } from '@gmjs/test-util';
 import { jsonToPretty, textToJson } from '@gmjs/lib-util';
 import { schemaToJsonData } from './schema-to-json-data';
-import { identifyFn } from '@gmjs/util';
 import { MongoJsonSchemaTypeObject } from '../../shared/mongo-json-schema';
 
 describe('schema-to-json-data', () => {
@@ -15,7 +14,7 @@ describe('schema-to-json-data', () => {
       readonly schema: MongoJsonSchemaTypeObject;
     }
 
-    const exampleMapping: ExampleMappingFn<TestInput, string> = (te) => {
+    const exampleMapping: ExampleMappingFn<TestInput> = (te) => {
       return {
         description: te.dir,
         input: {
@@ -25,7 +24,7 @@ describe('schema-to-json-data', () => {
       };
     };
 
-    const EXAMPLES = getFileSystemTestExamples<TestInput, string>(
+    const EXAMPLES = getFileSystemTestExamples<TestInput>(
       path.join(__dirname, 'test-assets'),
       exampleMapping
     );
@@ -36,8 +35,7 @@ describe('schema-to-json-data', () => {
         createFileSystemExampleTest(
           example,
           () => schemaToJsonData(example.input.schema),
-          jsonToPretty,
-          identifyFn
+          jsonToPretty
         )
       );
     });

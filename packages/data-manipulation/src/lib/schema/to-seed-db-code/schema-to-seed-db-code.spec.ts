@@ -16,7 +16,7 @@ describe('schema-to-seed-db-code', () => {
       readonly schemas: readonly MongoJsonSchemaTypeObject[];
     }
 
-    const exampleMapping: ExampleMappingFn<TestInput, string> = (te) => {
+    const exampleMapping: ExampleMappingFn<TestInput> = (te) => {
       return {
         description: te.dir,
         input: {
@@ -28,7 +28,7 @@ describe('schema-to-seed-db-code', () => {
       };
     };
 
-    const EXAMPLES = getFileSystemTestExamples<TestInput, string>(
+    const EXAMPLES = getFileSystemTestExamples<TestInput>(
       path.join(__dirname, 'test-assets'),
       exampleMapping
     );
@@ -52,7 +52,6 @@ describe('schema-to-seed-db-code', () => {
             };
             return schemaToSeedDbCode(input);
           },
-          identifyFn,
           identifyFn
         )
       );

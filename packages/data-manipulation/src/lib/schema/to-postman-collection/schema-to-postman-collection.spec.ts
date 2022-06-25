@@ -7,7 +7,6 @@ import path from 'path';
 import { SchemaToPostmanCollectionInput } from './schema-to-postman-collection-input';
 import { schemaToPostmanCollection } from './schema-to-postman-collection';
 import { jsonToPretty, textToJson } from '@gmjs/lib-util';
-import { identifyFn } from '@gmjs/util';
 import { MongoJsonSchemaTypeObject } from '../../shared/mongo-json-schema';
 
 describe('schema-to-postman-collection', () => {
@@ -16,7 +15,7 @@ describe('schema-to-postman-collection', () => {
       readonly schemas: readonly MongoJsonSchemaTypeObject[];
     }
 
-    const exampleMapping: ExampleMappingFn<TestInput, string> = (te) => {
+    const exampleMapping: ExampleMappingFn<TestInput> = (te) => {
       return {
         description: te.dir,
         input: {
@@ -28,7 +27,7 @@ describe('schema-to-postman-collection', () => {
       };
     };
 
-    const EXAMPLES = getFileSystemTestExamples<TestInput, string>(
+    const EXAMPLES = getFileSystemTestExamples<TestInput>(
       path.join(__dirname, 'test-assets'),
       exampleMapping
     );
@@ -45,8 +44,7 @@ describe('schema-to-postman-collection', () => {
             };
             return schemaToPostmanCollection(input);
           },
-          jsonToPretty,
-          identifyFn
+          jsonToPretty
         )
       );
     });

@@ -9,7 +9,7 @@ import { processSourceFile } from './code-util';
 
 describe('code-util', () => {
   describe('processSourceFile()', () => {
-    const exampleMapping: ExampleMappingFn<string, string> = (te) => {
+    const exampleMapping: ExampleMappingFn<string> = (te) => {
       return {
         description: te.dir,
         input: te.files['input.txt'],
@@ -17,7 +17,7 @@ describe('code-util', () => {
       };
     };
 
-    const EXAMPLES = getFileSystemTestExamples<string, string>(
+    const EXAMPLES = getFileSystemTestExamples<string>(
       path.join(__dirname, 'test-assets/process-source-file'),
       exampleMapping
     );
@@ -32,7 +32,6 @@ describe('code-util', () => {
         createFileSystemExampleTest(
           example,
           () => processSourceFile(example.input, PLACEHOLDER_MAP),
-          identifyFn,
           identifyFn
         )
       );

@@ -15,7 +15,7 @@ describe.skip('schema-to-types', () => {
       readonly schema: AnyValue;
     }
 
-    const exampleMapping: ExampleMappingFn<TestInput, string> = (te) => {
+    const exampleMapping: ExampleMappingFn<TestInput> = (te) => {
       return {
         description: te.dir,
         input: {
@@ -25,7 +25,7 @@ describe.skip('schema-to-types', () => {
       };
     };
 
-    const EXAMPLES = getFileSystemTestExamples<TestInput, string>(
+    const EXAMPLES = getFileSystemTestExamples<TestInput>(
       path.join(__dirname, 'test-assets'),
       exampleMapping
     );
@@ -42,7 +42,6 @@ describe.skip('schema-to-types', () => {
             };
             return schemaToTypes(input);
           },
-          identifyFn,
           identifyFn
         )
       );
