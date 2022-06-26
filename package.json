@@ -18,7 +18,7 @@
     "js-yaml": "4.1.0",
     "jsonschema": "1.4.1",
     "klaw-sync": "6.0.0",
-    "mongodb": "4.6.0",
+    "mongodb": "4.7.0",
     "prettier": "2.7.1",
     "ts-morph": "15.0.0",
     "tslib": "^2.3.0",
