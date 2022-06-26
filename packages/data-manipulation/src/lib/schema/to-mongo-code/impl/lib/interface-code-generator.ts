@@ -22,7 +22,7 @@ import {
 import { schemasToAllCollectionStructures } from '../util/collection-structure/mongo-collection-structure-util';
 import {
   getAppInterfacePropertyName,
-  mongoSchemaUtil,
+  isMongoValueType,
   mongoBsonTypeToMongoJsType,
 } from '../../../shared/mongo-schema-util';
 import { MongoBsonType } from '../../../../shared/mongo-bson-type';
@@ -251,7 +251,7 @@ class InterfaceCodeGeneratorDb extends InterfaceCodeGeneratorBase {
   }
 
   protected getSimpleValueTypeMapping(type: MongoBsonType): string {
-    if (mongoSchemaUtil(type)) {
+    if (isMongoValueType(type)) {
       return mongoBsonTypeToMongoJsType(type);
     }
 

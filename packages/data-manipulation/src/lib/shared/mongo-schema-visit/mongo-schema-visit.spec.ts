@@ -14,7 +14,6 @@ import {
   getFileSystemTestExamples,
 } from '@gmjs/test-util';
 import { textToJson } from '@gmjs/lib-util';
-import fs from 'fs-extra';
 
 describe('mongo-schema-visit', () => {
   describe('mongoSchemaVisit()', () => {
@@ -64,10 +63,6 @@ describe('mongo-schema-visit', () => {
           () => {
             const result: string[] = [];
             mongoSchemaVisit(example.input.schema, VISITOR, result);
-            // fs.writeFileSync(
-            //   path.join(__dirname, 'test-assets', 'result2.txt'),
-            //   result.join('\n')
-            // );
             return result;
           },
           (result: string[]) => {

@@ -15,7 +15,7 @@ import {
   invariant,
   objectGetEntries,
 } from '@gmjs/util';
-import { mongoSchemaUtil } from '../../../../shared/mongo-schema-util';
+import { isMongoValueType } from '../../../../shared/mongo-schema-util';
 import { MongoBsonType } from '../../../../../shared/mongo-bson-type';
 
 export function schemasToAllCollectionStructures(
@@ -149,7 +149,7 @@ function getMongoValueTypes(
 ): readonly MongoBsonType[] {
   return asChainable(finalValueTypes)
     .map((v) => v.bsonType)
-    .filter(mongoSchemaUtil)
+    .filter(isMongoValueType)
     .apply(distinctItems)
     .getValue();
 }

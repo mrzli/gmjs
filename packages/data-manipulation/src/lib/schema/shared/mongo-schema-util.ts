@@ -3,7 +3,7 @@ import { MongoBsonType } from '../../shared/mongo-bson-type';
 
 const MONGO_BSON_TYPES: readonly MongoBsonType[] = ['decimal', 'objectId'];
 
-export function mongoSchemaUtil(type: MongoBsonType): boolean {
+export function isMongoValueType(type: MongoBsonType): boolean {
   return MONGO_BSON_TYPES.includes(type);
 }
 
