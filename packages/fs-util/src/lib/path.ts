@@ -9,3 +9,8 @@ export function pathWithoutExtension(fullPath: string): string {
   const pathInfo = path.parse(fullPath);
   return path.join(pathInfo.dir, pathInfo.name);
 }
+
+export function pathExtension(fullPath: string): string {
+  const pathInfo = path.parse(fullPath);
+  return pathInfo.ext.replace(/^\.+|\.+$/g, '');
+}
