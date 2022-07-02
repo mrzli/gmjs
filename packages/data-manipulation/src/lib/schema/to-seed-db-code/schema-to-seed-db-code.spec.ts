@@ -7,7 +7,7 @@ import {
 import { textToJson } from '@gmjs/lib-util';
 import { identifyFn } from '@gmjs/util';
 import { schemaToSeedDbCode } from './schema-to-seed-db-code';
-import { MongoJsonSchemaTypeObject } from '../../shared/mongo-json-schema';
+import { MongoJsonSchemaTypeObject } from '../../shared/mongo/mongo-json-schema';
 import { SchemaToSeedDbCodeInput } from './schema-to-seed-db-code-input';
 
 describe('schema-to-seed-db-code', () => {

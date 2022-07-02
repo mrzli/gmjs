@@ -6,7 +6,7 @@ import {
 } from '@gmjs/test-util';
 import { jsonToPretty, textToJson } from '@gmjs/lib-util';
 import { schemaToJsonData } from './schema-to-json-data';
-import { MongoJsonSchemaTypeObject } from '../../shared/mongo-json-schema';
+import { MongoJsonSchemaTypeObject } from '../../shared/mongo/mongo-json-schema';
 
 describe('schema-to-json-data', () => {
   describe('schemaToJsonData()', () => {

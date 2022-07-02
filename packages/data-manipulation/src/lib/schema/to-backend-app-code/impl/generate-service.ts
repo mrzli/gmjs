@@ -1,5 +1,5 @@
 import { FunctionDeclarationStructure, OptionalKind, Scope } from 'ts-morph';
-import { MongoJsonSchemaTypeObject } from '../../../shared/mongo-json-schema';
+import { MongoJsonSchemaTypeObject } from '../../../shared/mongo/mongo-json-schema';
 import { camelCase, kebabCase, pascalCase } from '@gmjs/lib-util';
 import path from 'path';
 import {
@@ -7,11 +7,11 @@ import {
   PLACEHOLDER_MODULE_NAME_NESTJS_COMMON,
   PLACEHOLDER_MODULE_NAME_TYPE_FEST,
 } from './placeholders';
-import { schemaToCollectionStructure } from '../../shared/collection-structure/mongo-collection-structure-util';
+import { schemaToCollectionStructure } from '../../../shared/collection-structure/mongo-collection-structure-util';
 import {
   MongoCollectionStructure,
   MongoEntityStructure,
-} from '../../shared/collection-structure/mongo-collection-structure';
+} from '../../../shared/collection-structure/mongo-collection-structure';
 import { compareFnStringAsc, sortArray } from '@gmjs/util';
 import {
   getMongoImports,
@@ -34,7 +34,7 @@ import {
   createAppToDbWithoutIdPartialMapperFunctionDeclaration,
   getAppToDbMapperFunctionName,
 } from './service-helpers/app-to-db-mapping-helpers';
-import { createTsSourceFile } from '../../shared/code-util';
+import { createTsSourceFile } from '../../../shared/code-util';
 import { SchemaToBackendAppCodeInput } from '../schema-to-backend-app-code-input';
 import { PathContentPair } from '@gmjs/fs-util';
 

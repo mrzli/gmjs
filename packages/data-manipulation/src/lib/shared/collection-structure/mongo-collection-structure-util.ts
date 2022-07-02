@@ -2,7 +2,7 @@ import {
   MongoJsonSchemaAnyType,
   MongoJsonSchemaTypeArray,
   MongoJsonSchemaTypeObject,
-} from '../../../shared/mongo-json-schema';
+} from '../mongo/mongo-json-schema';
 import {
   MongoAllCollectionsStructure,
   MongoCollectionStructure,
@@ -16,7 +16,7 @@ import {
   objectGetEntries,
 } from '@gmjs/util';
 import { isMongoValueType } from '../mongo-schema-util';
-import { MongoBsonType } from '../../../shared/mongo-bson-type';
+import { MongoBsonType } from '../mongo/mongo-bson-type';
 
 export function schemasToAllCollectionStructures(
   schemas: readonly MongoJsonSchemaTypeObject[]

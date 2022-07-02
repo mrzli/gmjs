@@ -43,7 +43,7 @@ export function createCodeFileComparisonText(
   return contentParts.join('\n');
 }
 
-export interface CodeFileComparisonStrings {
+export interface FileComparisonStrings {
   readonly actualString: string;
   readonly expectedString: string;
 }
@@ -53,7 +53,7 @@ const MISSING_FILE_TEXT = '<MISSING_FILE>';
 export function createCodeFileComparisonStrings(
   actual: readonly PathContentPair[],
   expected: readonly PathContentPair[]
-): CodeFileComparisonStrings {
+): FileComparisonStrings {
   const expectedPathsSet = ImmutableSet.fromArrayWithFieldMapping(
     expected,
     'path'

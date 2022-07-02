@@ -1,5 +1,5 @@
 import { invariant } from '@gmjs/util';
-import { MongoBsonType } from '../../shared/mongo-bson-type';
+import { MongoBsonType } from './mongo/mongo-bson-type';
 
 const MONGO_BSON_TYPES: readonly MongoBsonType[] = ['decimal', 'objectId'];
 

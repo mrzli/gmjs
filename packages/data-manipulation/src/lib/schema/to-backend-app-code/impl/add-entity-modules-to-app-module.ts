@@ -5,10 +5,14 @@ import {
   SourceFile,
   SyntaxKind,
 } from 'ts-morph';
-import { invariant, sortArrayByStringAsc } from '@gmjs/util';
+import { sortArrayByStringAsc } from '@gmjs/util';
 import { kebabCase, pascalCase } from '@gmjs/lib-util';
-import { createTsSourceFile } from '../../shared/code-util';
+import { createTsSourceFile } from '../../../shared/code-util';
 import { PathContentPair } from '@gmjs/fs-util';
+import {
+  addImports,
+  addNestModuleImports,
+} from '../../../shared/ts-morph/code-modifiers';
 
 export function addEntityModulesToAppModule(
   input: SchemaToBackendAppCodeInput
@@ -19,8 +23,8 @@ export function addEntityModulesToAppModule(
       input.schemas.map((schema) => schema.title)
     );
 
-    addImports(sf, entityNames);
-    addModuleImports(sf, entityNames);
+    addAppModuleImports(sf, entityNames);
+    addNestModuleImports(sf, 'AppModule', entityNames.map(getModuleName));
   }, input.initialFiles.appModule);
 
   return {
@@ -29,18 +33,10 @@ export function addEntityModulesToAppModule(
   };
 }
 
-function addImports(
-  appModuleSf: SourceFile,
+function addAppModuleImports(
+  sf: SourceFile,
   entityNames: readonly string[]
 ): void {
-  const statements = appModuleSf.getStatements();
-
-  // new imports will go before first non-import statement
-  const importIndex = statements.findIndex(
-    (s) => !s.isKind(SyntaxKind.ImportDeclaration)
-  );
-  const actualImportIndex = importIndex >= 0 ? importIndex : 0;
-
   const importDeclarations: readonly OptionalKind<ImportDeclarationStructure>[] =
     entityNames.map((name) => {
       const entityFsName = kebabCase(name);
@@ -50,29 +46,7 @@ function addImports(
       };
     });
 
-  appModuleSf.insertImportDeclarations(actualImportIndex, importDeclarations);
-}
-
-function addModuleImports(
-  appModuleSf: SourceFile,
-  entityNames: readonly string[]
-): void {
-  const entityModuleNames = entityNames.map(getModuleName);
-
-  const importsArray = appModuleSf
-    .getClass('AppModule')
-    ?.getDecoratorOrThrow('Module')
-    ?.getArguments()?.[0]
-    ?.asKind(SyntaxKind.ObjectLiteralExpression)
-    ?.getProperty('imports')
-    ?.asKind(SyntaxKind.PropertyAssignment)
-    ?.getInitializer()
-    ?.asKind(SyntaxKind.ArrayLiteralExpression);
-  invariant(
-    importsArray !== undefined,
-    'Error getting AppModule imports array.'
-  );
-  importsArray.addElements(entityModuleNames);
+  addImports(sf, importDeclarations);
 }
 
 function getModuleName(entityName: string): string {

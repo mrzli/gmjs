@@ -5,11 +5,11 @@ import {
   SchemaToBackendAppCodeInput,
 } from './schema-to-backend-app-code-input';
 import { readJsonSync, readTextSync } from '@gmjs/fs-util';
-import { MongoJsonSchemaTypeObject } from '../../shared/mongo-json-schema';
+import { MongoJsonSchemaTypeObject } from '../../shared/mongo/mongo-json-schema';
 import {
   createCodeFileComparisonStrings,
   createCodeFileExpected,
-} from '../shared/test-util';
+} from '../../shared/test-util';
 
 describe('schema-to-backend-app-code', () => {
   it('schemaToBackendAppCode()', () => {
@@ -33,7 +33,7 @@ function createInput(testDir: string): SchemaToBackendAppCodeInput {
     path.join(testDir, 'input/schemas.json')
   );
   const initialFiles: SchemaToBackendAppCodeInitialFiles = {
-    appModule: readTextSync(path.join(testDir, 'input/app.module.ts_')),
+    appModule: readTextSync(path.join(testDir, 'input/app.module.ts.txt')),
   };
 
   return {

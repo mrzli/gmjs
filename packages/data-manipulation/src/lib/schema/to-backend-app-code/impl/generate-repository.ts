@@ -1,5 +1,5 @@
 import { Scope } from 'ts-morph';
-import { MongoJsonSchemaTypeObject } from '../../../shared/mongo-json-schema';
+import { MongoJsonSchemaTypeObject } from '../../../shared/mongo/mongo-json-schema';
 import { camelCase, kebabCase, pascalCase } from '@gmjs/lib-util';
 import path from 'path';
 import {
@@ -7,7 +7,7 @@ import {
   PLACEHOLDER_MODULE_NAME_NESTJS_COMMON,
   PLACEHOLDER_MODULE_NAME_TYPE_FEST,
 } from './placeholders';
-import { createTsSourceFile } from '../../shared/code-util';
+import { createTsSourceFile } from '../../../shared/code-util';
 import { SchemaToBackendAppCodeInput } from '../schema-to-backend-app-code-input';
 import {
   getNestUtilModuleSpecifier,

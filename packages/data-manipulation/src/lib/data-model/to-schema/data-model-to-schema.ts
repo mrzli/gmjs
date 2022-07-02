@@ -10,7 +10,7 @@ import {
   MongoJsonSchemaAnyType,
   MongoJsonSchemaTypeNumberBase,
   MongoJsonSchemaTypeObject,
-} from '../../shared/mongo-json-schema';
+} from '../../shared/mongo/mongo-json-schema';
 import { Except } from 'type-fest';
 import { parseDataModelYaml } from '../shared/data-model-util';
 

@@ -2,7 +2,7 @@ import {
   MongoJsonSchemaAnyType,
   MongoJsonSchemaTypeArray,
   MongoJsonSchemaTypeObject,
-} from '../../shared/mongo-json-schema';
+} from '../../shared/mongo/mongo-json-schema';
 import {
   asChainable,
   objectGetEntries,
@@ -18,18 +18,18 @@ import {
   WriterFunction,
 } from 'ts-morph';
 import { pascalCase } from '@gmjs/lib-util';
-import { DEFAULT_DATE, DEFAULT_OBJECT_ID } from '../shared/constants';
-import { createTsSourceFile } from '../shared/code-util';
+import { DEFAULT_DATE, DEFAULT_OBJECT_ID } from '../../shared/constants';
+import { createTsSourceFile } from '../../shared/code-util';
 import {
   MongoJsonSchemaPropertyContext,
   MongoJsonSchemaVisitor,
   mongoSchemaVisit,
-} from '../../shared/mongo-schema-visit/mongo-schema-visit';
+} from '../../shared/mongo/mongo-schema-visit/mongo-schema-visit';
 import {
   isMongoValueType,
   mongoBsonTypeToMongoJsType,
-} from '../shared/mongo-schema-util';
-import { MongoBsonType } from '../../shared/mongo-bson-type';
+} from '../../shared/mongo-schema-util';
+import { MongoBsonType } from '../../shared/mongo/mongo-bson-type';
 
 export function schemaToSeedDbCode(input: SchemaToSeedDbCodeInput): string {
   return createTsSourceFile((sf) => {

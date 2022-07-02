@@ -2,10 +2,10 @@ import {
   MongoJsonSchemaAnyType,
   MongoJsonSchemaTypeArray,
   MongoJsonSchemaTypeObject,
-} from '../../shared/mongo-json-schema';
+} from '../../shared/mongo/mongo-json-schema';
 import { AnyValue, objectGetEntries } from '@gmjs/util';
-import { getAppInterfacePropertyName } from '../shared/mongo-schema-util';
-import { DEFAULT_DATE, DEFAULT_OBJECT_ID } from '../shared/constants';
+import { getAppInterfacePropertyName } from '../../shared/mongo-schema-util';
+import { DEFAULT_DATE, DEFAULT_OBJECT_ID } from '../../shared/constants';
 
 export function schemaToJsonData(schema: MongoJsonSchemaTypeObject): AnyValue {
   return parseObject(schema);

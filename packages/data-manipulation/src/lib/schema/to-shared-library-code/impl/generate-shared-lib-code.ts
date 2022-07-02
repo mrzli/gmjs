@@ -5,7 +5,7 @@ import { createInterfaceCodeGenerator } from './interface-code-generator';
 import {
   createTsSourceFile,
   getRelativeImportPath,
-} from '../../shared/code-util';
+} from '../../../shared/code-util';
 import { PathContentPair } from '@gmjs/fs-util';
 
 export function generateSharedLibCode(

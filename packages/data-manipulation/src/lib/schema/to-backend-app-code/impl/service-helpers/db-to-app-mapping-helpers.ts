@@ -3,7 +3,7 @@ import {
   MongoPropertyStructure,
   MongoValueTypeStructureArray,
   MongoValueTypeStructureObject,
-} from '../../../shared/collection-structure/mongo-collection-structure';
+} from '../../../../shared/collection-structure/mongo-collection-structure';
 import {
   CodeBlockWriter,
   FunctionDeclarationStructure,
@@ -13,7 +13,7 @@ import {
 import { camelCase, pascalCase } from '@gmjs/lib-util';
 import { invariant } from '@gmjs/util';
 import { TRANSFORM_IF_EXISTS_FN_NAME } from './constants';
-import { getAppInterfacePropertyName } from '../../../shared/mongo-schema-util';
+import { getAppInterfacePropertyName } from '../../../../shared/mongo-schema-util';
 
 export function getDbToAppMapperFunctionName(entityName: string): string {
   const typeName = pascalCase(entityName);

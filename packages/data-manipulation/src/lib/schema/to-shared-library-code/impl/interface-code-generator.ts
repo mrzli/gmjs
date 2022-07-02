@@ -16,15 +16,15 @@ import {
   MongoEntityStructure,
   MongoPropertyStructure,
   MongoValueTypeStructureAny,
-} from '../../shared/collection-structure/mongo-collection-structure';
-import { schemasToAllCollectionStructures } from '../../shared/collection-structure/mongo-collection-structure-util';
+} from '../../../shared/collection-structure/mongo-collection-structure';
+import { schemasToAllCollectionStructures } from '../../../shared/collection-structure/mongo-collection-structure-util';
 import {
   getAppInterfacePropertyName,
   isMongoValueType,
   mongoBsonTypeToMongoJsType,
-} from '../../shared/mongo-schema-util';
-import { MongoBsonType } from '../../../shared/mongo-bson-type';
-import { createTsSourceFile } from '../../shared/code-util';
+} from '../../../shared/mongo-schema-util';
+import { MongoBsonType } from '../../../shared/mongo/mongo-bson-type';
+import { createTsSourceFile } from '../../../shared/code-util';
 import { PathContentPair } from '@gmjs/fs-util';
 
 export interface InterfaceCodeGenerator {

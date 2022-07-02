@@ -1,11 +1,11 @@
-import { MongoJsonSchemaTypeObject } from '../../../shared/mongo-json-schema';
+import { MongoJsonSchemaTypeObject } from '../../../shared/mongo/mongo-json-schema';
 import { kebabCase, pascalCase } from '@gmjs/lib-util';
 import path from 'path';
 import {
   PLACEHOLDER_MAP,
   PLACEHOLDER_MODULE_NAME_NESTJS_COMMON,
 } from './placeholders';
-import { createTsSourceFile } from '../../shared/code-util';
+import { createTsSourceFile } from '../../../shared/code-util';
 import { SchemaToBackendAppCodeInput } from '../schema-to-backend-app-code-input';
 import { PathContentPair } from '@gmjs/fs-util';
 

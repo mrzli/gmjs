@@ -5,11 +5,11 @@ import {
   SchemaToSharedLibraryCodeInput,
 } from './schema-to-shared-library-code-input';
 import { readJsonSync, readTextSync } from '@gmjs/fs-util';
-import { MongoJsonSchemaTypeObject } from '../../shared/mongo-json-schema';
+import { MongoJsonSchemaTypeObject } from '../../shared/mongo/mongo-json-schema';
 import {
   createCodeFileComparisonStrings,
   createCodeFileExpected,
-} from '../shared/test-util';
+} from '../../shared/test-util';
 
 describe('schema-to-shared-library-code', () => {
   it('schemaToSharedLibraryCode()', () => {
@@ -33,7 +33,7 @@ function createInput(testDir: string): SchemaToSharedLibraryCodeInput {
     path.join(testDir, 'input/schemas.json')
   );
   const initialFiles: SchemaToSharedLibraryCodeInitialFiles = {
-    index: readTextSync(path.join(testDir, 'input/index.ts_')),
+    index: readTextSync(path.join(testDir, 'input/index.ts.txt')),
   };
 
   return {
