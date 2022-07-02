@@ -8,7 +8,7 @@ import {
   PLACEHOLDER_MODULE_NAME_TYPE_FEST,
 } from './placeholders';
 import { CodeFileResult, createTsSourceFile } from '../../shared/code-util';
-import { SchemaToBackendAppCodeInput } from '@gmjs/data-manipulation';
+import { SchemaToBackendAppCodeInput } from '../schema-to-backend-app-code-input';
 import { getSharedLibraryModuleSpecifier } from './service-helpers/import-helpers';
 
 export function generateController(

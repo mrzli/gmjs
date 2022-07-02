@@ -6,7 +6,7 @@ import {
   PLACEHOLDER_MODULE_NAME_NESTJS_COMMON,
 } from './placeholders';
 import { CodeFileResult, createTsSourceFile } from '../../shared/code-util';
-import { SchemaToBackendAppCodeInput } from '@gmjs/data-manipulation';
+import { SchemaToBackendAppCodeInput } from '../schema-to-backend-app-code-input';
 
 export function generateModule(
   input: SchemaToBackendAppCodeInput,

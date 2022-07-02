@@ -35,7 +35,7 @@ import {
   getAppToDbMapperFunctionName,
 } from './service-helpers/app-to-db-mapping-helpers';
 import { CodeFileResult, createTsSourceFile } from '../../shared/code-util';
-import { SchemaToBackendAppCodeInput } from '@gmjs/data-manipulation';
+import { SchemaToBackendAppCodeInput } from '../schema-to-backend-app-code-input';
 
 export function generateService(
   input: SchemaToBackendAppCodeInput,

@@ -1,4 +1,7 @@
-import { SchemaToSharedLibraryCodeInput } from '../schema-to-shared-library-code-input';
+import {
+  SchemaToSharedLibraryCodeInput,
+  SchemaToSharedLibraryCodeInterfaceOptions,
+} from '../schema-to-shared-library-code-input';
 import {
   ExportDeclarationStructure,
   ImportDeclarationStructure,
@@ -22,7 +25,6 @@ import {
 } from '../../shared/mongo-schema-util';
 import { MongoBsonType } from '../../../shared/mongo-bson-type';
 import { CodeFileResult, createTsSourceFile } from '../../shared/code-util';
-import { SchemaToMongoCodeInterfaceOptions } from '@gmjs/data-manipulation';
 
 export interface InterfaceCodeGenerator {
   generate(): readonly CodeFileResult[];
@@ -238,7 +240,7 @@ abstract class InterfaceCodeGeneratorBase implements InterfaceCodeGenerator {
     }
   }
 
-  protected abstract get interfaceOptions(): SchemaToMongoCodeInterfaceOptions;
+  protected abstract get interfaceOptions(): SchemaToSharedLibraryCodeInterfaceOptions;
 
   protected abstract getMongoImportTypes(
     bsonTypes: readonly MongoBsonType[]
@@ -254,7 +256,7 @@ class InterfaceCodeGeneratorDb extends InterfaceCodeGeneratorBase {
     super(input);
   }
 
-  protected get interfaceOptions(): SchemaToMongoCodeInterfaceOptions {
+  protected get interfaceOptions(): SchemaToSharedLibraryCodeInterfaceOptions {
     return this.input.options.dbInterfaceOptions;
   }
 
@@ -294,12 +296,12 @@ class InterfaceCodeGeneratorApp extends InterfaceCodeGeneratorBase {
     super(input);
   }
 
-  protected get interfaceOptions(): SchemaToMongoCodeInterfaceOptions {
+  protected get interfaceOptions(): SchemaToSharedLibraryCodeInterfaceOptions {
     return this.input.options.appInterfaceOptions;
   }
 
   protected getMongoImportTypes(
-    bsonTypes: readonly MongoBsonType[]
+    _bsonTypes: readonly MongoBsonType[]
   ): readonly string[] {
     return [];
   }
