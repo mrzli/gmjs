@@ -1,4 +1,3 @@
-import * as fs from 'fs-extra';
 import {
   PostmanCollection,
   PostmanCollectionBody,
@@ -21,7 +20,7 @@ export function schemaToPostmanCollection(
   const postmanCollectionDisplayName = capitalCase(input.postmanCollectionName);
   const postmanFolders = schemas.map(getEntityPostmanFolder);
 
-  const result: PostmanCollection = {
+  return {
     info: {
       name: postmanCollectionDisplayName,
       schema:
@@ -34,11 +33,6 @@ export function schemaToPostmanCollection(
       },
     ],
   };
-
-  fs.ensureDirSync('output');
-  fs.writeFileSync('output/postman.json', jsonToPretty(result));
-
-  return result;
 }
 
 const URL_VAR_NAME = 'base_url';
