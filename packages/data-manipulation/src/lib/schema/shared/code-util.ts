@@ -1,7 +1,23 @@
 import prettier from 'prettier';
 import { ImmutableMap } from '@gmjs/util';
+import { IndentationText, Project, SourceFile } from 'ts-morph';
 
-export function processSourceFile(
+export function createTsSourceFile(
+  writer: (sf: SourceFile) => void,
+  initialText?: string,
+  placeholderMap?: ImmutableMap<string, string>
+): string {
+  const project = new Project({
+    manipulationSettings: {
+      indentationText: IndentationText.TwoSpaces,
+    },
+  });
+  const sf = project.createSourceFile('source-file.ts', initialText);
+  writer(sf);
+  return processTsSourceFile(sf.getFullText(), placeholderMap);
+}
+
+export function processTsSourceFile(
   sourceFileText: string,
   placeholderMap?: ImmutableMap<string, string>
 ): string {
@@ -16,4 +32,9 @@ export function processSourceFile(
     singleQuote: true,
     parser: 'typescript',
   });
+}
+
+export interface CodeFileResult {
+  readonly path: string;
+  readonly content: string;
 }

@@ -9,7 +9,7 @@ import { generateSharedLibCode } from './impl/lib/generate-shared-lib-code';
 import { generateAppCode } from './impl/app/generate-app-code';
 import { PLACEHOLDER_MAP } from './impl/util/placeholders';
 import { identifyFn } from '@gmjs/util';
-import { processSourceFile } from '../shared/code-util';
+import { processTsSourceFile } from '../shared/code-util';
 
 export function schemaToMongoCode(
   input: SchemaToMongoCodeInput,
@@ -33,7 +33,7 @@ export function schemaToMongoCode(
   project.getSourceFiles().forEach((sf) => {
     return project.createSourceFile(
       sf.getFilePath(),
-      processSourceFile(sf.getFullText(), PLACEHOLDER_MAP),
+      processTsSourceFile(sf.getFullText(), PLACEHOLDER_MAP),
       {
         overwrite: true,
       }

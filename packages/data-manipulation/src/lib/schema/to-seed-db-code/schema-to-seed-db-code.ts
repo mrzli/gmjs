@@ -13,15 +13,13 @@ import {
   CodeBlockWriter,
   FunctionDeclarationStructure,
   ImportDeclarationStructure,
-  IndentationText,
   OptionalKind,
-  Project,
   SourceFile,
   WriterFunction,
 } from 'ts-morph';
 import { pascalCase } from '@gmjs/lib-util';
 import { DEFAULT_DATE, DEFAULT_OBJECT_ID } from '../shared/constants';
-import { processSourceFile } from '../shared/code-util';
+import { createTsSourceFile } from '../shared/code-util';
 import {
   MongoJsonSchemaPropertyContext,
   MongoJsonSchemaVisitor,
@@ -34,14 +32,9 @@ import {
 import { MongoBsonType } from '../../shared/mongo-bson-type';
 
 export function schemaToSeedDbCode(input: SchemaToSeedDbCodeInput): string {
-  const project = new Project({
-    manipulationSettings: {
-      indentationText: IndentationText.TwoSpaces,
-    },
+  return createTsSourceFile((sf) => {
+    createSeedDbCode(input, sf);
   });
-  const sf = project.createSourceFile('seed-db.ts');
-  createSeedDbCode(input, sf);
-  return processSourceFile(sf.getFullText());
 }
 
 const MONGO_COLLECTION_PARAMETERS_TYPE_NAME = 'MongoConnectionParameters';

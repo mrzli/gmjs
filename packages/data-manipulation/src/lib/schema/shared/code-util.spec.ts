@@ -5,7 +5,7 @@ import {
 } from '@gmjs/test-util';
 import path from 'path';
 import { identifyFn, ImmutableMap } from '@gmjs/util';
-import { processSourceFile } from './code-util';
+import { processTsSourceFile } from './code-util';
 
 describe('code-util', () => {
   describe('processSourceFile()', () => {
@@ -31,7 +31,7 @@ describe('code-util', () => {
         example.description,
         createFileSystemExampleTest(
           example,
-          () => processSourceFile(example.input, PLACEHOLDER_MAP),
+          () => processTsSourceFile(example.input, PLACEHOLDER_MAP),
           identifyFn
         )
       );

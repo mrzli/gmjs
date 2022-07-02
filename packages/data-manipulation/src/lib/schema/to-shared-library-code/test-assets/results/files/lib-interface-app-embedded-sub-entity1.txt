@@ -1,0 +1,8 @@
+import { AppSubEntity11 } from './app-sub-entity11';
+
+export interface AppSubEntity1 {
+  readonly subfield11: string;
+  readonly subfield12: number;
+  readonly subfield13: string;
+  readonly subfield14: AppSubEntity11;
+}

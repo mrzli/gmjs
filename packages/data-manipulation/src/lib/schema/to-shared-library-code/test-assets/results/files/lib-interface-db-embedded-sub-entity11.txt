@@ -1,0 +1,3 @@
+export interface DbSubEntity11 {
+  readonly subfield111: string;
+}

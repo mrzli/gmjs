@@ -1,0 +1,4 @@
+export interface AppAnotherEntity {
+  readonly id: string;
+  readonly field: string;
+}
