@@ -5,14 +5,15 @@ import {
   PLACEHOLDER_MAP,
   PLACEHOLDER_MODULE_NAME_NESTJS_COMMON,
 } from './placeholders';
-import { CodeFileResult, createTsSourceFile } from '../../shared/code-util';
+import { createTsSourceFile } from '../../shared/code-util';
 import { SchemaToBackendAppCodeInput } from '../schema-to-backend-app-code-input';
+import { PathContentPair } from '@gmjs/fs-util';
 
 export function generateModule(
   input: SchemaToBackendAppCodeInput,
   schema: MongoJsonSchemaTypeObject,
   moduleDir: string
-): CodeFileResult {
+): PathContentPair {
   const entityFsName = kebabCase(schema.title);
   const typeName = pascalCase(schema.title);
 

@@ -24,10 +24,11 @@ import {
   mongoBsonTypeToMongoJsType,
 } from '../../shared/mongo-schema-util';
 import { MongoBsonType } from '../../../shared/mongo-bson-type';
-import { CodeFileResult, createTsSourceFile } from '../../shared/code-util';
+import { createTsSourceFile } from '../../shared/code-util';
+import { PathContentPair } from '@gmjs/fs-util';
 
 export interface InterfaceCodeGenerator {
-  generate(): readonly CodeFileResult[];
+  generate(): readonly PathContentPair[];
 }
 
 export function createInterfaceCodeGenerator(
@@ -46,7 +47,7 @@ abstract class InterfaceCodeGeneratorBase implements InterfaceCodeGenerator {
     protected readonly input: SchemaToSharedLibraryCodeInput
   ) {}
 
-  public generate(): readonly CodeFileResult[] {
+  public generate(): readonly PathContentPair[] {
     const allCollections = schemasToAllCollectionStructures(this.input.schemas);
 
     const interfaceIndexFiles =
@@ -68,13 +69,13 @@ abstract class InterfaceCodeGeneratorBase implements InterfaceCodeGenerator {
 
   private generateInterfacesIndexFiles(
     allCollections: MongoAllCollectionsStructure
-  ): readonly CodeFileResult[] {
+  ): readonly PathContentPair[] {
     const interfacesDir = this.getInterfacesDir();
 
     const hasCollections = allCollections.collectionTypes.length > 0;
     const hasEmbedded = allCollections.embeddedTypes.length > 0;
 
-    const interfaceFiles: CodeFileResult[] = [];
+    const interfaceFiles: PathContentPair[] = [];
 
     if (hasEmbedded) {
       const embeddedIndexFilePath = path.join(
@@ -129,7 +130,7 @@ abstract class InterfaceCodeGeneratorBase implements InterfaceCodeGenerator {
   private generateInterfaceFile(
     entity: MongoEntityStructure,
     isEmbedded: boolean
-  ): CodeFileResult {
+  ): PathContentPair {
     const entityName = getEntityName(this.interfaceOptions.prefix, entity.name);
 
     const filePath = getCollectionInterfaceFilePath(

@@ -7,15 +7,16 @@ import {
   PLACEHOLDER_MODULE_NAME_NESTJS_COMMON,
   PLACEHOLDER_MODULE_NAME_TYPE_FEST,
 } from './placeholders';
-import { CodeFileResult, createTsSourceFile } from '../../shared/code-util';
+import { createTsSourceFile } from '../../shared/code-util';
 import { SchemaToBackendAppCodeInput } from '../schema-to-backend-app-code-input';
 import { getSharedLibraryModuleSpecifier } from './service-helpers/import-helpers';
+import { PathContentPair } from '@gmjs/fs-util';
 
 export function generateController(
   input: SchemaToBackendAppCodeInput,
   schema: MongoJsonSchemaTypeObject,
   moduleDir: string
-): CodeFileResult {
+): PathContentPair {
   const appPrefix = input.options.appPrefix;
 
   const entityFsName = kebabCase(schema.title);

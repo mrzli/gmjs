@@ -1,6 +1,9 @@
-import { CodeFileResult } from './code-util';
 import path from 'path';
-import { readJsonSync, readTextFilesInDirSync } from '@gmjs/fs-util';
+import {
+  PathContentPair,
+  readJsonSync,
+  readTextFilesInDirSync,
+} from '@gmjs/fs-util';
 import { flatMap, ImmutableMap, ImmutableSet } from '@gmjs/util';
 
 interface TestPathMapping {
@@ -10,7 +13,7 @@ interface TestPathMapping {
 
 export function createCodeFileExpected(
   testDir: string
-): readonly CodeFileResult[] {
+): readonly PathContentPair[] {
   const testResultsDir = path.join(testDir, 'results');
   const testResultFilesDir = path.join(testResultsDir, 'files');
   const testResultFiles = readTextFilesInDirSync(testResultFilesDir);
@@ -28,7 +31,7 @@ export function createCodeFileExpected(
 const TEXT_DELIMITER = '-'.repeat(20);
 
 export function createCodeFileComparisonText(
-  codeFiles: readonly CodeFileResult[]
+  codeFiles: readonly PathContentPair[]
 ): string {
   const contentParts = flatMap(codeFiles, (item) => [
     TEXT_DELIMITER,
@@ -48,15 +51,15 @@ export interface CodeFileComparisonStrings {
 const MISSING_FILE_TEXT = '<MISSING_FILE>';
 
 export function createCodeFileComparisonStrings(
-  actual: readonly CodeFileResult[],
-  expected: readonly CodeFileResult[]
+  actual: readonly PathContentPair[],
+  expected: readonly PathContentPair[]
 ): CodeFileComparisonStrings {
   const expectedPathsSet = ImmutableSet.fromArrayWithFieldMapping(
     expected,
     'path'
   );
 
-  const finalExpected: readonly CodeFileResult[] = [
+  const finalExpected: readonly PathContentPair[] = [
     ...expected,
     ...actual
       .filter((item) => !expectedPathsSet.has(item.path))
@@ -68,7 +71,7 @@ export function createCodeFileComparisonStrings(
 
   const actualPathsMap = ImmutableMap.fromArrayWithKeyField(actual, 'path');
 
-  const finalActual: readonly CodeFileResult[] = finalExpected.map((item) => ({
+  const finalActual: readonly PathContentPair[] = finalExpected.map((item) => ({
     path: item.path,
     content: actualPathsMap.get(item.path)?.content ?? MISSING_FILE_TEXT,
   }));

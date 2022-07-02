@@ -6,19 +6,19 @@ import { generateRepository } from './generate-repository';
 import { generateService } from './generate-service';
 import { generateController } from './generate-controller';
 import { generateModule } from './generate-module';
-import { CodeFileResult } from '../../shared/code-util';
 import { flatMap } from '@gmjs/util';
+import { PathContentPair } from '@gmjs/fs-util';
 
 export function generateNestModules(
   input: SchemaToBackendAppCodeInput
-): readonly CodeFileResult[] {
+): readonly PathContentPair[] {
   return flatMap(input.schemas, (schema) => generateNestModule(input, schema));
 }
 
 function generateNestModule(
   input: SchemaToBackendAppCodeInput,
   schema: MongoJsonSchemaTypeObject
-): readonly CodeFileResult[] {
+): readonly PathContentPair[] {
   const entityFsName = kebabCase(schema.title);
   const moduleDir = path.join('app', entityFsName);
   return [

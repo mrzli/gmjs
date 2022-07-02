@@ -34,14 +34,15 @@ import {
   createAppToDbWithoutIdPartialMapperFunctionDeclaration,
   getAppToDbMapperFunctionName,
 } from './service-helpers/app-to-db-mapping-helpers';
-import { CodeFileResult, createTsSourceFile } from '../../shared/code-util';
+import { createTsSourceFile } from '../../shared/code-util';
 import { SchemaToBackendAppCodeInput } from '../schema-to-backend-app-code-input';
+import { PathContentPair } from '@gmjs/fs-util';
 
 export function generateService(
   input: SchemaToBackendAppCodeInput,
   schema: MongoJsonSchemaTypeObject,
   moduleDir: string
-): CodeFileResult {
+): PathContentPair {
   const collectionStructure = schemaToCollectionStructure(schema);
   const dbPrefix = input.options.dbPrefix;
   const appPrefix = input.options.appPrefix;

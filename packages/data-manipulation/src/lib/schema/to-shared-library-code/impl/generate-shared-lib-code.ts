@@ -3,14 +3,14 @@ import path from 'path';
 import { pascalCase } from '@gmjs/lib-util';
 import { createInterfaceCodeGenerator } from './interface-code-generator';
 import {
-  CodeFileResult,
   createTsSourceFile,
   getRelativeImportPath,
 } from '../../shared/code-util';
+import { PathContentPair } from '@gmjs/fs-util';
 
 export function generateSharedLibCode(
   input: SchemaToSharedLibraryCodeInput
-): readonly CodeFileResult[] {
+): readonly PathContentPair[] {
   const indexFile = createIndexFile(input);
   const collectionNameFile = createCollectionNameFile(input);
 
@@ -30,7 +30,7 @@ export function generateSharedLibCode(
 
 function createIndexFile(
   input: SchemaToSharedLibraryCodeInput
-): CodeFileResult {
+): PathContentPair {
   const options = input.options;
   const dbInterfacesIndexPath = path.join(
     options.mongoInterfacesDir,
@@ -63,7 +63,7 @@ function createIndexFile(
 
 function createCollectionNameFile(
   input: SchemaToSharedLibraryCodeInput
-): CodeFileResult {
+): PathContentPair {
   const content = createTsSourceFile((sf) => {
     const collectionNames = input.schemas.map((s) => pascalCase(s.title));
 

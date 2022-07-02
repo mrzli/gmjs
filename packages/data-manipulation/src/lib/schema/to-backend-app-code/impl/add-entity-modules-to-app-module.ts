@@ -7,11 +7,12 @@ import {
 } from 'ts-morph';
 import { invariant, sortArrayByStringAsc } from '@gmjs/util';
 import { kebabCase, pascalCase } from '@gmjs/lib-util';
-import { CodeFileResult, createTsSourceFile } from '../../shared/code-util';
+import { createTsSourceFile } from '../../shared/code-util';
+import { PathContentPair } from '@gmjs/fs-util';
 
 export function addEntityModulesToAppModule(
   input: SchemaToBackendAppCodeInput
-): CodeFileResult {
+): PathContentPair {
   const appModuleFilePath = 'app/app.module.ts';
   const content = createTsSourceFile((sf) => {
     const entityNames = sortArrayByStringAsc(

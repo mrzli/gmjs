@@ -1,9 +1,9 @@
 import { SchemaToSharedLibraryCodeInput } from './schema-to-shared-library-code-input';
 import { generateSharedLibCode } from './impl/generate-shared-lib-code';
-import { CodeFileResult } from '../shared/code-util';
+import { PathContentPair } from '@gmjs/fs-util';
 
 export function schemaToSharedLibraryCode(
   input: SchemaToSharedLibraryCodeInput
-): readonly CodeFileResult[] {
+): readonly PathContentPair[] {
   return generateSharedLibCode(input);
 }

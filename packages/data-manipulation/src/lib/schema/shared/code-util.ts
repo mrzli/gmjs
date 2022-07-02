@@ -36,11 +36,6 @@ export function processTsSourceFile(
   });
 }
 
-export interface CodeFileResult {
-  readonly path: string;
-  readonly content: string;
-}
-
 export function getRelativeImportPath(
   importingFilePath: string,
   filePathToImport: string
