@@ -1,5 +1,0 @@
-export enum DbCollectionName {
-  Entity = 'Entity',
-  Entity2 = 'Entity2',
-  AnotherEntity = 'AnotherEntity',
-}

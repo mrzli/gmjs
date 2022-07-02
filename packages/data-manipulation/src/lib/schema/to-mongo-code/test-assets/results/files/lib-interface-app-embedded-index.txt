@@ -1,3 +1,0 @@
-export * from './app-sub-entity1';
-export * from './app-sub-entity11';
-export * from './app-sub-entity2';

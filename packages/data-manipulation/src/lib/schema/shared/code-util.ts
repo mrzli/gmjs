@@ -1,6 +1,8 @@
 import prettier from 'prettier';
 import { ImmutableMap } from '@gmjs/util';
 import { IndentationText, Project, SourceFile } from 'ts-morph';
+import { pathWithoutExtension } from '@gmjs/fs-util';
+import path from 'path';
 
 export function createTsSourceFile(
   writer: (sf: SourceFile) => void,
@@ -37,4 +39,17 @@ export function processTsSourceFile(
 export interface CodeFileResult {
   readonly path: string;
   readonly content: string;
+}
+
+export function getRelativeImportPath(
+  importingFilePath: string,
+  filePathToImport: string
+): string {
+  const relativePath = pathWithoutExtension(
+    path.relative(path.dirname(importingFilePath), filePathToImport)
+  );
+  const importPath = relativePath.endsWith('index')
+    ? path.dirname(relativePath)
+    : relativePath;
+  return `./${importPath}`;
 }

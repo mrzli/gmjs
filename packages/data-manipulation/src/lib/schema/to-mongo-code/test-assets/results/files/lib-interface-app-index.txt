@@ -1,4 +1,0 @@
-export * from './embedded';
-export * from './app-another-entity';
-export * from './app-entity';
-export * from './app-entity2';
