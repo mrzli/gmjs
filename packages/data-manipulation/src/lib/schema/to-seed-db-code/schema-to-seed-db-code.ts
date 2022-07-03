@@ -2,7 +2,7 @@ import {
   MongoJsonSchemaAnyType,
   MongoJsonSchemaTypeArray,
   MongoJsonSchemaTypeObject,
-} from '../../shared/mongo/mongo-json-schema';
+} from '@gmjs/mongo-util';
 import {
   asChainable,
   objectGetEntries,
@@ -29,7 +29,7 @@ import {
   isMongoValueType,
   mongoBsonTypeToMongoJsType,
 } from '../../shared/mongo-schema-util';
-import { MongoBsonType } from '../../shared/mongo/mongo-bson-type';
+import { MongoBsonType } from '@gmjs/mongo-util';
 
 export function schemaToSeedDbCode(input: SchemaToSeedDbCodeInput): string {
   return createTsSourceFile((sf) => {

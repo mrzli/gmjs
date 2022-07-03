@@ -1,5 +1,5 @@
 import { FunctionDeclarationStructure, OptionalKind, Scope } from 'ts-morph';
-import { MongoJsonSchemaTypeObject } from '../../../shared/mongo/mongo-json-schema';
+import { MongoJsonSchemaTypeObject } from '@gmjs/mongo-util';
 import { camelCase, kebabCase, pascalCase } from '@gmjs/lib-util';
 import path from 'path';
 import {

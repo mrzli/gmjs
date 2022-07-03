@@ -7,7 +7,7 @@ import path from 'path';
 import { SchemaToPostmanCollectionInput } from './schema-to-postman-collection-input';
 import { schemaToPostmanCollection } from './schema-to-postman-collection';
 import { jsonToPretty, textToJson } from '@gmjs/lib-util';
-import { MongoJsonSchemaTypeObject } from '../../shared/mongo/mongo-json-schema';
+import { MongoJsonSchemaTypeObject } from '@gmjs/mongo-util';
 
 describe('schema-to-postman-collection', () => {
   describe('schemaToPostmanCollection()', () => {

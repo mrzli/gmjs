@@ -23,7 +23,7 @@ import {
   isMongoValueType,
   mongoBsonTypeToMongoJsType,
 } from '../../../shared/mongo-schema-util';
-import { MongoBsonType } from '../../../shared/mongo/mongo-bson-type';
+import { MongoBsonType } from '@gmjs/mongo-util';
 import { createTsSourceFile } from '../../../shared/code-util';
 import { PathContentPair } from '@gmjs/fs-util';
 

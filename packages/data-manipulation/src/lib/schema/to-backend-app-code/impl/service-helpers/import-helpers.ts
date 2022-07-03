@@ -2,7 +2,7 @@ import { MongoCollectionStructure } from '../../../../shared/collection-structur
 import { asChainable, distinctItems, sortArrayByStringAsc } from '@gmjs/util';
 import { pascalCase } from '@gmjs/lib-util';
 import { mongoBsonTypeToMongoJsType } from '../../../../shared/mongo-schema-util';
-import { MongoBsonType } from '../../../../shared/mongo/mongo-bson-type';
+import { MongoBsonType } from '@gmjs/mongo-util';
 import { SchemaToBackendAppCodeInput } from '../../schema-to-backend-app-code-input';
 
 export function getMongoImports(

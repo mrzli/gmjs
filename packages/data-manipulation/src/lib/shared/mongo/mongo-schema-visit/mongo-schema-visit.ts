@@ -2,7 +2,7 @@ import {
   MongoJsonSchemaAnyType,
   MongoJsonSchemaTypeArray,
   MongoJsonSchemaTypeObject,
-} from '../mongo-json-schema';
+} from '@gmjs/mongo-util';
 import { objectGetEntries } from '@gmjs/util';
 
 export type MongoJsonSchemaVisitor<TVisitorParameter> = (

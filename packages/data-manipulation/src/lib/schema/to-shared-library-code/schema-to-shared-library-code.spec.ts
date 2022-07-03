@@ -5,7 +5,7 @@ import {
   SchemaToSharedLibraryCodeInput,
 } from './schema-to-shared-library-code-input';
 import { readJsonSync, readTextSync } from '@gmjs/fs-util';
-import { MongoJsonSchemaTypeObject } from '../../shared/mongo/mongo-json-schema';
+import { MongoJsonSchemaTypeObject } from '@gmjs/mongo-util';
 import {
   createCodeFileComparisonStrings,
   createCodeFileExpected,

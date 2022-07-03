@@ -1,4 +1,4 @@
-import { MongoJsonSchemaTypeObject } from '../../shared/mongo/mongo-json-schema';
+import { MongoJsonSchemaTypeObject } from '@gmjs/mongo-util';
 
 export interface SchemaToBackendAppCodeInput {
   readonly schemas: readonly MongoJsonSchemaTypeObject[];

@@ -1,5 +1,5 @@
 import { SchemaToBackendAppCodeInput } from '../schema-to-backend-app-code-input';
-import { MongoJsonSchemaTypeObject } from '../../../shared/mongo/mongo-json-schema';
+import { MongoJsonSchemaTypeObject } from '@gmjs/mongo-util';
 import { kebabCase } from '@gmjs/lib-util';
 import path from 'path';
 import { generateRepository } from './generate-repository';

@@ -2,7 +2,7 @@ import {
   MongoJsonSchemaAnyType,
   MongoJsonSchemaTypeArray,
   MongoJsonSchemaTypeObject,
-} from '../../shared/mongo/mongo-json-schema';
+} from '@gmjs/mongo-util';
 import { AnyValue, objectGetEntries } from '@gmjs/util';
 import { getAppInterfacePropertyName } from '../../shared/mongo-schema-util';
 import { DEFAULT_DATE, DEFAULT_OBJECT_ID } from '../../shared/constants';

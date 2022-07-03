@@ -6,7 +6,7 @@ import {
 import {
   MongoJsonSchemaAnyType,
   MongoJsonSchemaTypeObject,
-} from '../mongo-json-schema';
+} from '@gmjs/mongo-util';
 import path from 'path';
 import {
   createFileSystemExampleTest,

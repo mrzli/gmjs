@@ -1,4 +1,4 @@
-import { MongoBsonType } from '../mongo/mongo-bson-type';
+import { MongoBsonType } from '@gmjs/mongo-util';
 
 export interface MongoAllCollectionsStructure {
   readonly collectionTypes: readonly MongoEntityStructure[];
