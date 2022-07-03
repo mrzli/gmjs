@@ -1,0 +1,46 @@
+import { invariant } from '@gmjs/util';
+import {
+  createDb,
+  dropDb,
+  getSchemasFromDir,
+  MongoConnectionParameters,
+} from '@gmjs/mongo-util';
+import { seedDb } from './app/mongo/seed-db';
+
+async function runCli(args: readonly string[]): Promise<void> {
+  invariant(args.length > 0, 'Missing CLI command parameter.');
+
+  const cliCommand = args[0];
+
+  const dbParams: MongoConnectionParameters = {
+    host: 'localhost',
+    port: 27017,
+    dbName: 'example',
+  };
+
+  switch (cliCommand) {
+    case 'create-db':
+      await createDb(
+        dbParams,
+        getSchemasFromDir('libs/example-data-model/assets/schemas')
+      );
+      break;
+    case 'drop-db':
+      await dropDb(dbParams);
+      break;
+    case 'seed-db':
+      await seedDb(dbParams);
+      break;
+    default:
+      invariant(false, `Invalid CLI command: '${cliCommand}'.`);
+      break;
+  }
+}
+
+runCli(process.argv.slice(2))
+  .catch((e) => {
+    console.error(e);
+  })
+  .finally(() => {
+    console.log('Finished!');
+  });

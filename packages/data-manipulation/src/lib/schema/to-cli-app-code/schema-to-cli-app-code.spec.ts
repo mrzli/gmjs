@@ -1,17 +1,14 @@
 import { schemaToCliAppCode } from './schema-to-cli-app-code';
 import path from 'path';
-import {
-  SchemaToCliAppCodeInitialFiles,
-  SchemaToCliAppCodeInput,
-} from './schema-to-cli-app-code-input';
-import { readJsonSync, readTextSync } from '@gmjs/fs-util';
+import { SchemaToCliAppCodeInput } from './schema-to-cli-app-code-input';
+import { readJsonSync } from '@gmjs/fs-util';
 import { MongoJsonSchemaTypeObject } from '@gmjs/mongo-util';
 import {
   createCodeFileComparisonStrings,
   createCodeFileExpected,
 } from '../../shared/test-util';
 
-describe.skip('schema-to-cli-app-code', () => {
+describe('schema-to-cli-app-code', () => {
   it('schemaToCliAppCode()', () => {
     const testDir = path.join(__dirname, 'test-assets');
 
@@ -32,25 +29,20 @@ function createInput(testDir: string): SchemaToCliAppCodeInput {
   const schemas = readJsonSync<readonly MongoJsonSchemaTypeObject[]>(
     path.join(testDir, 'input/schemas.json')
   );
-  const initialFiles: SchemaToCliAppCodeInitialFiles = {
-    appModule: readTextSync(path.join(testDir, 'input/app.module.ts.txt')),
-  };
 
   return {
     schemas,
-    initialFiles,
     options: {
       libsMonorepo: {
         npmScope: 'gmjs',
         utilProjectName: 'util',
-        nestUtilProjectName: 'nest-util',
+        mongoUtilProjectName: 'mongo-util',
       },
       appsMonorepo: {
         npmScope: 'gmjs-apps',
+        projectName: 'example',
         sharedProjectName: 'example-shared',
       },
-      dbPrefix: 'db',
-      appPrefix: 'app',
     },
   };
 }

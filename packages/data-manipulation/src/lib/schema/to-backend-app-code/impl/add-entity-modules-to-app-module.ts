@@ -7,12 +7,12 @@ import {
 } from 'ts-morph';
 import { sortArrayByStringAsc } from '@gmjs/util';
 import { kebabCase, pascalCase } from '@gmjs/lib-util';
-import { createTsSourceFile } from '../../../shared/code-util';
-import { PathContentPair } from '@gmjs/fs-util';
 import {
-  addImports,
-  addNestModuleImports,
-} from '../../../shared/ts-morph/code-modifiers';
+  appendImports,
+  appendNestModuleImports,
+  createTsSourceFile,
+} from '../../../shared/code-util';
+import { PathContentPair } from '@gmjs/fs-util';
 
 export function addEntityModulesToAppModule(
   input: SchemaToBackendAppCodeInput
@@ -24,7 +24,7 @@ export function addEntityModulesToAppModule(
     );
 
     addAppModuleImports(sf, entityNames);
-    addNestModuleImports(sf, 'AppModule', entityNames.map(getModuleName));
+    appendNestModuleImports(sf, 'AppModule', entityNames.map(getModuleName));
   }, input.initialFiles.appModule);
 
   return {
@@ -46,7 +46,7 @@ function addAppModuleImports(
       };
     });
 
-  addImports(sf, importDeclarations);
+  appendImports(sf, importDeclarations);
 }
 
 function getModuleName(entityName: string): string {

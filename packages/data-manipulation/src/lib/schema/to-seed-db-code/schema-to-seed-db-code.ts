@@ -3,11 +3,7 @@ import {
   MongoJsonSchemaTypeArray,
   MongoJsonSchemaTypeObject,
 } from '@gmjs/mongo-util';
-import {
-  asChainable,
-  objectGetEntries,
-  sortArrayByStringAsc,
-} from '@gmjs/util';
+import { objectGetEntries } from '@gmjs/util';
 import { SchemaToSeedDbCodeInput } from './schema-to-seed-db-code-input';
 import {
   CodeBlockWriter,
@@ -19,17 +15,10 @@ import {
 } from 'ts-morph';
 import { pascalCase } from '@gmjs/lib-util';
 import { DEFAULT_DATE, DEFAULT_OBJECT_ID } from '../../shared/constants';
-import { createTsSourceFile } from '../../shared/code-util';
 import {
-  MongoJsonSchemaPropertyContext,
-  MongoJsonSchemaVisitor,
-  mongoSchemaVisit,
-} from '../../shared/mongo/mongo-schema-visit/mongo-schema-visit';
-import {
-  isMongoValueType,
-  mongoBsonTypeToMongoJsType,
-} from '../../shared/mongo-schema-util';
-import { MongoBsonType } from '@gmjs/mongo-util';
+  createTsSourceFile,
+  getMongoTypeImports,
+} from '../../shared/code-util';
 
 export function schemaToSeedDbCode(input: SchemaToSeedDbCodeInput): string {
   return createTsSourceFile((sf) => {
@@ -61,7 +50,7 @@ function createImportDeclarations(
 
   return [
     {
-      namedImports: [...getMongoImports(input.schemas)],
+      namedImports: ['Db', ...getMongoTypeImports(input.schemas)],
       moduleSpecifier: 'mongodb',
     },
     {
@@ -77,33 +66,6 @@ function createImportDeclarations(
       moduleSpecifier: sharedLibModule,
     },
   ];
-}
-
-const GET_MONGO_BSON_TYPES_VISITOR: MongoJsonSchemaVisitor<
-  Set<MongoBsonType>
-> = (
-  schema: MongoJsonSchemaAnyType,
-  propertyContext: MongoJsonSchemaPropertyContext | undefined,
-  parameter: Set<MongoBsonType> | undefined
-) => {
-  if (isMongoValueType(schema.bsonType)) {
-    parameter?.add(schema.bsonType);
-  }
-};
-
-function getMongoImports(
-  schemas: readonly MongoJsonSchemaTypeObject[]
-): readonly string[] {
-  const mongoBsonTypesSet = new Set<MongoBsonType>();
-  for (const schema of schemas) {
-    mongoSchemaVisit(schema, GET_MONGO_BSON_TYPES_VISITOR, mongoBsonTypesSet);
-  }
-
-  return asChainable(Array.from(mongoBsonTypesSet.values()))
-    .map(mongoBsonTypeToMongoJsType)
-    .apply((items) => ['Db', ...items])
-    .apply(sortArrayByStringAsc)
-    .getValue();
 }
 
 function createSeedDbFunction(

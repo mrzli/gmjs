@@ -1,9 +1,9 @@
 import { AddMongoDatabaseToBackendInput } from './add-mongo-database-to-backend-input';
-import { createTsSourceFile } from '../../shared/code-util';
 import {
-  addImports,
-  addNestModuleImports,
-} from '../../shared/ts-morph/code-modifiers';
+  appendImports,
+  appendNestModuleImports,
+  createTsSourceFile,
+} from '../../shared/code-util';
 import { SourceFile, SyntaxKind, WriterFunction } from 'ts-morph';
 import { kebabCase } from '@gmjs/lib-util';
 
@@ -11,7 +11,7 @@ export function addMongoDatabaseToBackend(
   input: AddMongoDatabaseToBackendInput
 ): string {
   return createTsSourceFile((sf) => {
-    addImports(sf, [
+    appendImports(sf, [
       {
         namedImports: ['MongoDatabaseConfigOptions', 'MongoDatabaseModule'],
         moduleSpecifier: `@${input.options.libsMonorepoNpmScope}/${input.options.nestUtilProjectName}`,
@@ -20,7 +20,7 @@ export function addMongoDatabaseToBackend(
 
     addMongoConfigOptionStatement(sf, input);
 
-    addNestModuleImports(sf, 'AppModule', [
+    appendNestModuleImports(sf, 'AppModule', [
       'MongoDatabaseModule.register(MONGO_CONFIG_OPTIONS)',
     ]);
   }, input.appModuleFile);
