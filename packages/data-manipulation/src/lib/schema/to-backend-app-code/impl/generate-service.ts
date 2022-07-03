@@ -2,11 +2,6 @@ import { FunctionDeclarationStructure, OptionalKind, Scope } from 'ts-morph';
 import { MongoJsonSchemaTypeObject } from '@gmjs/mongo-util';
 import { camelCase, kebabCase, pascalCase } from '@gmjs/lib-util';
 import path from 'path';
-import {
-  PLACEHOLDER_MAP,
-  PLACEHOLDER_MODULE_NAME_NESTJS_COMMON,
-  PLACEHOLDER_MODULE_NAME_TYPE_FEST,
-} from './placeholders';
 import { schemaToCollectionStructure } from '../../../shared/collection-structure/mongo-collection-structure-util';
 import {
   MongoCollectionStructure,
@@ -65,162 +60,157 @@ export function generateService(
   const dbToAppMapper = getDbToAppMapperFunctionName(typeName);
   const appToDbMapper = getAppToDbMapperFunctionName(typeName);
 
-  const content = createTsSourceFile(
-    (sf) => {
-      // performance issues when not using a placeholder
-      sf.addImportDeclarations([
-        {
-          namedImports: ['Injectable'],
-          moduleSpecifier: PLACEHOLDER_MODULE_NAME_NESTJS_COMMON,
-        },
-        {
-          namedImports: [...getMongoImports(collectionStructure)],
-          moduleSpecifier: 'mongodb',
-        },
-        {
-          namedImports: ['Except'],
-          moduleSpecifier: PLACEHOLDER_MODULE_NAME_TYPE_FEST,
-        },
-        {
-          namedImports: [
-            OBJECT_REMOVE_UNDEFINED_FN_NAME,
-            TRANSFORM_IF_EXISTS_FN_NAME,
-          ],
-          moduleSpecifier: getUtilModuleSpecifier(input),
-        },
-        {
-          namedImports: [
-            ...getSharedLibraryInterfaceImports(
-              collectionStructure,
-              dbPrefix,
-              appPrefix
-            ),
-          ],
-          moduleSpecifier: getSharedLibraryModuleSpecifier(input),
-        },
-        {
-          namedImports: [repositoryType],
-          moduleSpecifier: `./${entityFsName}.repository`,
-        },
-      ]);
-
-      sf.addClass({
-        isExported: true,
-        name: `${typeName}Service`,
-        decorators: [{ name: 'Injectable', arguments: [] }],
-        ctors: [
-          {
-            scope: Scope.Public,
-            parameters: [
-              {
-                scope: Scope.Private,
-                isReadonly: true,
-                name: repositoryVariable,
-                type: repositoryType,
-              },
-            ],
-          },
+  const content = createTsSourceFile((sf) => {
+    sf.addImportDeclarations([
+      {
+        namedImports: ['Injectable'],
+        moduleSpecifier: '@nestjs/common',
+      },
+      {
+        namedImports: [...getMongoImports(collectionStructure)],
+        moduleSpecifier: 'mongodb',
+      },
+      {
+        namedImports: ['Except'],
+        moduleSpecifier: 'type-fest',
+      },
+      {
+        namedImports: [
+          OBJECT_REMOVE_UNDEFINED_FN_NAME,
+          TRANSFORM_IF_EXISTS_FN_NAME,
         ],
-        methods: [
-          {
-            scope: Scope.Public,
-            isAsync: true,
-            name: 'getAll',
-            returnType: `Promise<readonly ${appTypeName}[]>`,
-            statements: [
-              `const ${dbVariableName}List = await this.${repositoryVariable}.getAll();`,
-              `return ${dbVariableName}List.map(${dbToAppMapper})`,
-            ],
-          },
-          {
-            scope: Scope.Public,
-            isAsync: true,
-            name: 'getById',
-            parameters: [
-              {
-                name: 'id',
-                type: 'string',
-              },
-            ],
-            returnType: `Promise<${appTypeName} | undefined>`,
-            statements: [
-              `const ${dbVariableName} = await this.${repositoryVariable}.getById(new ObjectId(id));`,
-              `return ${TRANSFORM_IF_EXISTS_FN_NAME}(${dbVariableName}, ${dbToAppMapper}, undefined);`,
-            ],
-          },
-          {
-            scope: Scope.Public,
-            isAsync: true,
-            name: 'create',
-            parameters: [
-              {
-                name: appVariableName,
-                type: `Except<${appTypeName}, 'id'>`,
-              },
-            ],
-            returnType: `Promise<${appTypeName}>`,
-            statements: [
-              [
-                `const ${dbVariableName} = await this.${repositoryVariable}.create(`,
-                `  ${appToDbMapper}WithoutId(${appVariableName})`,
-                ');',
-              ].join('\n'),
-              `return ${dbToAppMapper}(${dbVariableName});`,
-            ],
-          },
-          {
-            scope: Scope.Public,
-            isAsync: true,
-            name: 'update',
-            parameters: [
-              {
-                name: 'id',
-                type: 'string',
-              },
-              {
-                name: appVariableName,
-                type: `Partial<Except<${appTypeName}, 'id'>>`,
-              },
-            ],
-            returnType: `Promise<${appTypeName}>`,
-            statements: [
-              [
-                `const ${dbVariableName} = await this.${repositoryVariable}.update(`,
-                '  new ObjectId(id),',
-                `  ${appToDbMapper}WithoutIdPartial(${appVariableName})`,
-                ');',
-              ].join('\n'),
-              `return ${dbToAppMapper}(${dbVariableName});`,
-            ],
-          },
-          {
-            scope: Scope.Public,
-            isAsync: true,
-            name: 'remove',
-            parameters: [
-              {
-                name: 'id',
-                type: 'string',
-              },
-            ],
-            returnType: 'Promise<void>',
-            statements: [
-              `await this.${repositoryVariable}.remove(new ObjectId(id));`,
-            ],
-          },
+        moduleSpecifier: getUtilModuleSpecifier(input),
+      },
+      {
+        namedImports: [
+          ...getSharedLibraryInterfaceImports(
+            collectionStructure,
+            dbPrefix,
+            appPrefix
+          ),
         ],
-      });
+        moduleSpecifier: getSharedLibraryModuleSpecifier(input),
+      },
+      {
+        namedImports: [repositoryType],
+        moduleSpecifier: `./${entityFsName}.repository`,
+      },
+    ]);
 
-      const mapperFunctionDeclarations = createMapperFunctionDeclarations(
-        collectionStructure,
-        dbPrefix,
-        appPrefix
-      );
-      sf.addFunctions(mapperFunctionDeclarations);
-    },
-    undefined,
-    PLACEHOLDER_MAP
-  );
+    sf.addClass({
+      isExported: true,
+      name: `${typeName}Service`,
+      decorators: [{ name: 'Injectable', arguments: [] }],
+      ctors: [
+        {
+          scope: Scope.Public,
+          parameters: [
+            {
+              scope: Scope.Private,
+              isReadonly: true,
+              name: repositoryVariable,
+              type: repositoryType,
+            },
+          ],
+        },
+      ],
+      methods: [
+        {
+          scope: Scope.Public,
+          isAsync: true,
+          name: 'getAll',
+          returnType: `Promise<readonly ${appTypeName}[]>`,
+          statements: [
+            `const ${dbVariableName}List = await this.${repositoryVariable}.getAll();`,
+            `return ${dbVariableName}List.map(${dbToAppMapper})`,
+          ],
+        },
+        {
+          scope: Scope.Public,
+          isAsync: true,
+          name: 'getById',
+          parameters: [
+            {
+              name: 'id',
+              type: 'string',
+            },
+          ],
+          returnType: `Promise<${appTypeName} | undefined>`,
+          statements: [
+            `const ${dbVariableName} = await this.${repositoryVariable}.getById(new ObjectId(id));`,
+            `return ${TRANSFORM_IF_EXISTS_FN_NAME}(${dbVariableName}, ${dbToAppMapper}, undefined);`,
+          ],
+        },
+        {
+          scope: Scope.Public,
+          isAsync: true,
+          name: 'create',
+          parameters: [
+            {
+              name: appVariableName,
+              type: `Except<${appTypeName}, 'id'>`,
+            },
+          ],
+          returnType: `Promise<${appTypeName}>`,
+          statements: [
+            [
+              `const ${dbVariableName} = await this.${repositoryVariable}.create(`,
+              `  ${appToDbMapper}WithoutId(${appVariableName})`,
+              ');',
+            ].join('\n'),
+            `return ${dbToAppMapper}(${dbVariableName});`,
+          ],
+        },
+        {
+          scope: Scope.Public,
+          isAsync: true,
+          name: 'update',
+          parameters: [
+            {
+              name: 'id',
+              type: 'string',
+            },
+            {
+              name: appVariableName,
+              type: `Partial<Except<${appTypeName}, 'id'>>`,
+            },
+          ],
+          returnType: `Promise<${appTypeName}>`,
+          statements: [
+            [
+              `const ${dbVariableName} = await this.${repositoryVariable}.update(`,
+              '  new ObjectId(id),',
+              `  ${appToDbMapper}WithoutIdPartial(${appVariableName})`,
+              ');',
+            ].join('\n'),
+            `return ${dbToAppMapper}(${dbVariableName});`,
+          ],
+        },
+        {
+          scope: Scope.Public,
+          isAsync: true,
+          name: 'remove',
+          parameters: [
+            {
+              name: 'id',
+              type: 'string',
+            },
+          ],
+          returnType: 'Promise<void>',
+          statements: [
+            `await this.${repositoryVariable}.remove(new ObjectId(id));`,
+          ],
+        },
+      ],
+    });
+
+    const mapperFunctionDeclarations = createMapperFunctionDeclarations(
+      collectionStructure,
+      dbPrefix,
+      appPrefix
+    );
+    sf.addFunctions(mapperFunctionDeclarations);
+  }, undefined);
 
   return {
     path: filePath,
