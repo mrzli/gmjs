@@ -31,7 +31,10 @@ describe('code-util', () => {
         example.description,
         createFileSystemExampleTest(
           example,
-          () => processTsSourceFile(example.input, PLACEHOLDER_MAP),
+          () =>
+            processTsSourceFile(example.input, {
+              placeholderMap: PLACEHOLDER_MAP,
+            }),
           identifyFn
         )
       );
