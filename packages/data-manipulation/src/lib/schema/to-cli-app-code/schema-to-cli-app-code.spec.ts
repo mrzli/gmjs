@@ -42,7 +42,7 @@ function createInput(testDir: string): SchemaToCliAppCodeInput {
         npmScope: 'gmjs-apps',
         libsDir: 'libs',
         projectName: 'example',
-        sharedProjectName: 'example-shared',
+        sharedLibProjectName: 'example-shared',
       },
     },
   };

@@ -1,11 +1,10 @@
 import { Db, Decimal128, ObjectId } from 'mongodb';
 import {
   executeMongo,
-  MongoConnectionParameters,
-  insertOne,
   insertMany,
+  MongoConnectionParameters,
 } from '@gmjs/mongo-util';
-import { DbCollectionName } from '@gmjs-apps/expenses-shared';
+import { DbCollectionName } from '@gmjs-apps/example-shared';
 
 export async function seedDb(
   mongoParams: MongoConnectionParameters
