@@ -1,0 +1,12 @@
+import { Module } from '@nestjs/common';
+import { AnotherEntityRepository } from './another-entity.repository';
+import { AnotherEntityService } from './another-entity.service';
+import { AnotherEntityController } from './another-entity.controller';
+
+@Module({
+  imports: [],
+  controllers: [AnotherEntityController],
+  providers: [AnotherEntityService, AnotherEntityRepository],
+  exports: [AnotherEntityService, AnotherEntityRepository],
+})
+export class AnotherEntityModule {}

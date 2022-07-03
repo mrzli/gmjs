@@ -1,10 +1,38 @@
 import fs from 'fs-extra';
 import { promisify } from 'util';
-import { ENCODING_UTF8 } from './util/constants';
+import { ENCODING_UTF8 } from './constants';
 import { AnyValue } from '@gmjs/util';
+import { FileSelectionPredicate, PathContentPair } from './types';
+import { findFilesShallowSync } from '../find';
+import { createExtensionPredicate } from './util';
 
 export function readTextSync(filePath: string): string {
   return fs.readFileSync(filePath, ENCODING_UTF8);
+}
+
+export function readTextsByExtensionSync(
+  dirPath: string,
+  extension: string
+): readonly PathContentPair[] {
+  return readTextsByPredicateSync(dirPath, createExtensionPredicate(extension));
+}
+
+export function readTextsByPredicateSync(
+  dirPath: string,
+  predicate: FileSelectionPredicate
+): readonly PathContentPair[] {
+  const results: PathContentPair[] = [];
+
+  const files = findFilesShallowSync(dirPath);
+  for (const file of files) {
+    const filePath = file.fullPath;
+    if (predicate(filePath)) {
+      const content = readTextSync(filePath);
+      results.push({ path: filePath, content });
+    }
+  }
+
+  return results;
 }
 
 export async function readTextAsync(filePath: string): Promise<string> {

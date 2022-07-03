@@ -1,0 +1,54 @@
+[
+  {
+    "testFile": "app-layers-entity-repository.txt",
+    "path": "app/entity/entity.repository.ts"
+  },
+  {
+    "testFile": "app-layers-entity-service.txt",
+    "path": "app/entity/entity.service.ts"
+  },
+  {
+    "testFile": "app-layers-entity-controller.txt",
+    "path": "app/entity/entity.controller.ts"
+  },
+  {
+    "testFile": "app-layers-entity-module.txt",
+    "path": "app/entity/entity.module.ts"
+  },
+  {
+    "testFile": "app-layers-entity2-repository.txt",
+    "path": "app/entity2/entity2.repository.ts"
+  },
+  {
+    "testFile": "app-layers-entity2-service.txt",
+    "path": "app/entity2/entity2.service.ts"
+  },
+  {
+    "testFile": "app-layers-entity2-controller.txt",
+    "path": "app/entity2/entity2.controller.ts"
+  },
+  {
+    "testFile": "app-layers-entity2-module.txt",
+    "path": "app/entity2/entity2.module.ts"
+  },
+  {
+    "testFile": "app-layers-another-entity-repository.txt",
+    "path": "app/another-entity/another-entity.repository.ts"
+  },
+  {
+    "testFile": "app-layers-another-entity-service.txt",
+    "path": "app/another-entity/another-entity.service.ts"
+  },
+  {
+    "testFile": "app-layers-another-entity-controller.txt",
+    "path": "app/another-entity/another-entity.controller.ts"
+  },
+  {
+    "testFile": "app-layers-another-entity-module.txt",
+    "path": "app/another-entity/another-entity.module.ts"
+  },
+  {
+    "testFile": "app-module.txt",
+    "path": "app/app.module.ts"
+  }
+]
