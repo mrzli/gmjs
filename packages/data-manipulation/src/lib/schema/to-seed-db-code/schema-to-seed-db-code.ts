@@ -15,10 +15,8 @@ import {
 } from 'ts-morph';
 import { pascalCase } from '@gmjs/lib-util';
 import { DEFAULT_DATE, DEFAULT_OBJECT_ID } from '../../shared/constants';
-import {
-  createTsSourceFile,
-  getMongoTypeImports,
-} from '../../shared/code-util';
+import { getMongoTypeImports } from '../../shared/code-util';
+import { createTsSourceFile } from '../../shared/source-file-util';
 
 export function schemaToSeedDbCode(input: SchemaToSeedDbCodeInput): string {
   return createTsSourceFile((sf) => {
@@ -96,7 +94,7 @@ function createExecuteMongoStatement(
       .write(
         `await ${EXECUTE_MONGO_FUNCTION_NAME}(${MONGO_PARAMS_PARAMETER_NAME}, async (db: Db) => `
       )
-      .block(() => {
+      .inlineBlock(() => {
         for (let i = 0; i < schemas.length; i++) {
           const schema = schemas[i];
           writeInsertMany(writer, schema);
@@ -158,7 +156,7 @@ function writeObject(
   writer: CodeBlockWriter,
   schema: MongoJsonSchemaTypeObject
 ): void {
-  writer.block(() => {
+  writer.inlineBlock(() => {
     const properties = objectGetEntries(schema.properties);
     for (let i = 0; i < properties.length; i++) {
       const { key, value } = properties[i];

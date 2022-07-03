@@ -5,7 +5,7 @@ import {
 } from '@gmjs/test-util';
 import path from 'path';
 import { identifyFn, ImmutableMap } from '@gmjs/util';
-import { processTsSourceFile } from './code-util';
+import { processTsSourceFile } from './source-file-util';
 
 describe('code-util', () => {
   describe('processSourceFile()', () => {

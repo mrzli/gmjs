@@ -29,9 +29,9 @@ import {
   createAppToDbWithoutIdPartialMapperFunctionDeclaration,
   getAppToDbMapperFunctionName,
 } from './service-helpers/app-to-db-mapping-helpers';
-import { createTsSourceFile } from '../../../shared/code-util';
 import { SchemaToBackendAppCodeInput } from '../schema-to-backend-app-code-input';
 import { PathContentPair } from '@gmjs/fs-util';
+import { createTsSourceFile } from '../../../shared/source-file-util';
 
 export function generateService(
   input: SchemaToBackendAppCodeInput,

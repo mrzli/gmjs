@@ -2,10 +2,10 @@ import { Scope } from 'ts-morph';
 import { MongoJsonSchemaTypeObject } from '@gmjs/mongo-util';
 import { camelCase, kebabCase, pascalCase } from '@gmjs/lib-util';
 import path from 'path';
-import { createTsSourceFile } from '../../../shared/code-util';
 import { SchemaToBackendAppCodeInput } from '../schema-to-backend-app-code-input';
 import { getSharedLibraryModuleSpecifier } from './service-helpers/import-helpers';
 import { PathContentPair } from '@gmjs/fs-util';
+import { createTsSourceFile } from '../../../shared/source-file-util';
 
 export function generateController(
   input: SchemaToBackendAppCodeInput,

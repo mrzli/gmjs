@@ -1,9 +1,9 @@
 import { MongoJsonSchemaTypeObject } from '@gmjs/mongo-util';
 import { kebabCase, pascalCase } from '@gmjs/lib-util';
 import path from 'path';
-import { createTsSourceFile } from '../../../shared/code-util';
 import { SchemaToBackendAppCodeInput } from '../schema-to-backend-app-code-input';
 import { PathContentPair } from '@gmjs/fs-util';
+import { createTsSourceFile } from '../../../shared/source-file-util';
 
 export function generateModule(
   input: SchemaToBackendAppCodeInput,

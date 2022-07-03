@@ -18,6 +18,7 @@ export interface SchemaToCliAppCodeLibsMonorepoOptions {
 
 export interface SchemaToCliAppCodeAppsMonorepoOptions {
   readonly npmScope: string;
+  readonly libsDir: string;
   readonly projectName: string;
   readonly sharedProjectName: string;
 }

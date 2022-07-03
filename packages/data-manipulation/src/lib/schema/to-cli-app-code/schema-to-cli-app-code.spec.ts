@@ -40,6 +40,7 @@ function createInput(testDir: string): SchemaToCliAppCodeInput {
       },
       appsMonorepo: {
         npmScope: 'gmjs-apps',
+        libsDir: 'libs',
         projectName: 'example',
         sharedProjectName: 'example-shared',
       },

@@ -24,8 +24,8 @@ import {
   mongoBsonTypeToMongoJsType,
 } from '../../../shared/mongo-schema-util';
 import { MongoBsonType } from '@gmjs/mongo-util';
-import { createTsSourceFile } from '../../../shared/code-util';
 import { PathContentPair } from '@gmjs/fs-util';
+import { createTsSourceFile } from '../../../shared/source-file-util';
 
 export interface InterfaceCodeGenerator {
   generate(): readonly PathContentPair[];

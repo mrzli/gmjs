@@ -2,11 +2,9 @@ import { SchemaToSharedLibraryCodeInput } from '../schema-to-shared-library-code
 import path from 'path';
 import { pascalCase } from '@gmjs/lib-util';
 import { createInterfaceCodeGenerator } from './interface-code-generator';
-import {
-  createTsSourceFile,
-  getRelativeImportPath,
-} from '../../../shared/code-util';
+import { getRelativeImportPath } from '../../../shared/code-util';
 import { PathContentPair } from '@gmjs/fs-util';
+import { createTsSourceFile } from '../../../shared/source-file-util';
 
 export function generateSharedLibCode(
   input: SchemaToSharedLibraryCodeInput

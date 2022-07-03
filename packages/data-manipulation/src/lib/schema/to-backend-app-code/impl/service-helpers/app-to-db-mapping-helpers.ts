@@ -61,7 +61,7 @@ export function createAppToDbMapperMainCollectionFunctionDeclaration(
   const statement: WriterFunction = (writer: CodeBlockWriter) => {
     writer
       .write('return ')
-      .block(() => {
+      .inlineBlock(() => {
         writeAppToDbConvertablePropertyAssignment(
           writer,
           '_id',
@@ -160,7 +160,7 @@ export function createAppToDbMapperFunctionDeclarationInternal(
       .write(
         isPartial ? `return ${OBJECT_REMOVE_UNDEFINED_FN_NAME}(` : 'return '
       )
-      .block(() => {
+      .inlineBlock(() => {
         const propertiesToOmitSet = new Set<string>(propertiesToOmit);
 
         const properties = entity.properties;

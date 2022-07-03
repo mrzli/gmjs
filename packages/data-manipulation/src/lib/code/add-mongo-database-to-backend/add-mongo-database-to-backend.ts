@@ -1,11 +1,8 @@
 import { AddMongoDatabaseToBackendInput } from './add-mongo-database-to-backend-input';
-import {
-  appendImports,
-  appendNestModuleImports,
-  createTsSourceFile,
-} from '../../shared/code-util';
+import { appendImports, appendNestModuleImports } from '../../shared/code-util';
 import { SourceFile, SyntaxKind, WriterFunction } from 'ts-morph';
 import { kebabCase } from '@gmjs/lib-util';
+import { createTsSourceFile } from '../../shared/source-file-util';
 
 export function addMongoDatabaseToBackend(
   input: AddMongoDatabaseToBackendInput
@@ -39,7 +36,7 @@ function addMongoConfigOptionStatement(
     writer
       .newLine()
       .write('const MONGO_CONFIG_OPTIONS: MongoDatabaseConfigOptions = ')
-      .block(() => {
+      .inlineBlock(() => {
         writer
           .writeLine("host: 'localhost',")
           .writeLine('port: 27017,')

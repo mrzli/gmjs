@@ -10,9 +10,9 @@ import { kebabCase, pascalCase } from '@gmjs/lib-util';
 import {
   appendImports,
   appendNestModuleImports,
-  createTsSourceFile,
 } from '../../../shared/code-util';
 import { PathContentPair } from '@gmjs/fs-util';
+import { createTsSourceFile } from '../../../shared/source-file-util';
 
 export function addEntityModulesToAppModule(
   input: SchemaToBackendAppCodeInput

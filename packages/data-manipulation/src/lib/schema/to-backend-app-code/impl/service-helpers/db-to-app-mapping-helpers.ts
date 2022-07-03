@@ -33,7 +33,7 @@ export function createDbToAppMapperFunctionDeclaration(
   const statement: WriterFunction = (writer: CodeBlockWriter) => {
     writer
       .write('return')
-      .block(() => {
+      .inlineBlock(() => {
         const properties = entity.properties;
         for (const property of properties) {
           writeDbToAppPropertyAssignment(writer, property, dbVariableName);

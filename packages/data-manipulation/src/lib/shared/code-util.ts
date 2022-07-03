@@ -1,15 +1,7 @@
-import prettier from 'prettier';
-import {
-  asChainable,
-  ImmutableMap,
-  invariant,
-  sortArrayByStringAsc,
-} from '@gmjs/util';
+import { asChainable, invariant, sortArrayByStringAsc } from '@gmjs/util';
 import {
   ImportDeclarationStructure,
-  IndentationText,
   OptionalKind,
-  Project,
   SourceFile,
   SyntaxKind,
 } from 'ts-morph';
@@ -29,38 +21,6 @@ import {
   isMongoValueType,
   mongoBsonTypeToMongoJsType,
 } from './mongo-schema-util';
-
-export function createTsSourceFile(
-  writer: (sf: SourceFile) => void,
-  initialText?: string,
-  placeholderMap?: ImmutableMap<string, string>
-): string {
-  const project = new Project({
-    manipulationSettings: {
-      indentationText: IndentationText.TwoSpaces,
-    },
-  });
-  const sf = project.createSourceFile('source-file.ts', initialText);
-  writer(sf);
-  return processTsSourceFile(sf.getFullText(), placeholderMap);
-}
-
-export function processTsSourceFile(
-  sourceFileText: string,
-  placeholderMap?: ImmutableMap<string, string>
-): string {
-  let replacedText = sourceFileText;
-  if (placeholderMap !== undefined) {
-    for (const { key, value } of placeholderMap.entryPairs()) {
-      replacedText = replacedText.replace(key, value);
-    }
-  }
-
-  return prettier.format(replacedText, {
-    singleQuote: true,
-    parser: 'typescript',
-  });
-}
 
 export function getRelativeImportPath(
   importingFilePath: string,
