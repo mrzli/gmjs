@@ -43,7 +43,7 @@
     "@types/jest": "27.5.1",
     "@types/js-yaml": "4.0.5",
     "@types/klaw-sync": "6.0.1",
-    "@types/node": "16.11.36",
+    "@types/node": "16.11.43",
     "@types/uuid": "8.3.4",
     "@typescript-eslint/eslint-plugin": "5.24.0",
     "@typescript-eslint/parser": "5.24.0",
