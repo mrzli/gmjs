@@ -13,6 +13,7 @@ export interface SchemaToCliAppCodeOptions {
 export interface SchemaToCliAppCodeLibsMonorepoOptions {
   readonly npmScope: string;
   readonly utilProjectName: string;
+  readonly libUtilProjectName: string;
   readonly mongoUtilProjectName: string;
 }
 

@@ -5,6 +5,7 @@ import {
   getSchemasFromDir,
   MongoConnectionParameters,
 } from '@gmjs/mongo-util';
+import { logErrorWithFullObjectAndRethrow } from '@gmjs/lib-util';
 import { seedDb } from './app/mongo/seed-db';
 
 async function runCli(args: readonly string[]): Promise<void> {
@@ -29,7 +30,7 @@ async function runCli(args: readonly string[]): Promise<void> {
       await dropDb(dbParams);
       break;
     case 'seed-db':
-      await seedDb(dbParams);
+      await seedDb(dbParams).catch(logErrorWithFullObjectAndRethrow);
       break;
     default:
       invariant(false, `Invalid CLI command: '${cliCommand}'.`);

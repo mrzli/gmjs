@@ -36,6 +36,7 @@ function createInput(testDir: string): SchemaToCliAppCodeInput {
       libsMonorepo: {
         npmScope: 'gmjs',
         utilProjectName: 'util',
+        libUtilProjectName: 'lib-util',
         mongoUtilProjectName: 'mongo-util',
       },
       appsMonorepo: {

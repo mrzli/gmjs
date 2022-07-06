@@ -48,7 +48,11 @@ export function generateMainCode(input: SchemaToCliAppCodeInput): string {
               })
               .writeLine("case 'seed-db':")
               .indent(() => {
-                writer.writeLine('await seedDb(dbParams);').writeLine('break;');
+                writer
+                  .writeLine(
+                    'await seedDb(dbParams).catch(logErrorWithFullObjectAndRethrow);'
+                  )
+                  .writeLine('break;');
               })
               .writeLine('default:')
               .indent(() => {
@@ -103,6 +107,10 @@ function createImportDeclarations(
         'MongoConnectionParameters',
       ],
       moduleSpecifier: `@${libsMonorepo.npmScope}/${libsMonorepo.mongoUtilProjectName}`,
+    },
+    {
+      namedImports: ['logErrorWithFullObjectAndRethrow'],
+      moduleSpecifier: `@${libsMonorepo.npmScope}/${libsMonorepo.libUtilProjectName}`,
     },
     {
       namedImports: ['seedDb'],
