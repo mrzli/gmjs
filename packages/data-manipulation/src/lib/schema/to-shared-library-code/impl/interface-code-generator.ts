@@ -279,8 +279,9 @@ class InterfaceCodeGeneratorDb extends InterfaceCodeGeneratorBase {
     switch (type) {
       case 'string':
         return 'string';
-      case 'long':
       case 'int':
+      case 'long':
+      case 'double':
         return 'number';
       case 'bool':
         return 'boolean';
@@ -315,8 +316,9 @@ class InterfaceCodeGeneratorApp extends InterfaceCodeGeneratorBase {
     switch (type) {
       case 'string':
         return 'string';
-      case 'long':
       case 'int':
+      case 'long':
+      case 'double':
         return 'number';
       case 'bool':
         return 'boolean';

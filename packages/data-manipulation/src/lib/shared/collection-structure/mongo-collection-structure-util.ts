@@ -125,6 +125,7 @@ function parseValueType(
       return schema;
     case 'int':
     case 'long':
+    case 'double':
     case 'decimal':
       return {
         bsonType: type,

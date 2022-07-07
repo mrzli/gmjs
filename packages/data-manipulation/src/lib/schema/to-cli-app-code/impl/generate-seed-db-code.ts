@@ -14,7 +14,7 @@ import {
 } from 'ts-morph';
 import { pascalCase } from '@gmjs/lib-util';
 import { DEFAULT_DATE, DEFAULT_OBJECT_ID } from '../../../shared/constants';
-import { objectGetEntries } from '@gmjs/util';
+import { invariant, objectGetEntries } from '@gmjs/util';
 import { getMongoTypeImports } from '../../../shared/code-util';
 
 export function generateSeedDbCode(input: SchemaToCliAppCodeInput): string {
@@ -103,7 +103,9 @@ function writeAnyValue(
   writer: CodeBlockWriter,
   schema: MongoJsonSchemaAnyType
 ): void {
-  switch (schema.bsonType) {
+  const type = schema.bsonType;
+
+  switch (type) {
     case 'string':
       writer.write("''");
       break;
@@ -113,11 +115,14 @@ function writeAnyValue(
     case 'long':
       writer.write('0');
       break;
-    case 'bool':
-      writer.write('false');
+    case 'double':
+      writer.write('0');
       break;
     case 'decimal':
       writer.write("new Decimal128('0')");
+      break;
+    case 'bool':
+      writer.write('false');
       break;
     case 'objectId':
       writer.write(`new ObjectId('${DEFAULT_OBJECT_ID}')`);
@@ -130,6 +135,9 @@ function writeAnyValue(
       break;
     case 'array':
       writeArray(writer, schema);
+      break;
+    default:
+      invariant(false, `Invalid property type: '${type}'.`);
       break;
   }
 }

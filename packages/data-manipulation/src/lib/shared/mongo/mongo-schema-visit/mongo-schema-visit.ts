@@ -35,8 +35,9 @@ function visitAnyType<TVisitorParameter>(
     case 'string':
     case 'int':
     case 'long':
-    case 'bool':
+    case 'double':
     case 'decimal':
+    case 'bool':
     case 'objectId':
     case 'date':
       visitor(schema, propertyContext, parameter);

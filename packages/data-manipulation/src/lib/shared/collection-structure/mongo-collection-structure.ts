@@ -64,6 +64,11 @@ export interface MongoValueTypeStructureLong
   readonly bsonType: 'long';
 }
 
+export interface MongoValueTypeStructureDouble
+  extends MongoValueTypeStructureNumberBase {
+  readonly bsonType: 'double';
+}
+
 export interface MongoValueTypeStructureDecimal
   extends MongoValueTypeStructureNumberBase {
   readonly bsonType: 'decimal';
@@ -90,6 +95,7 @@ export type MongoValueTypeStructureAny =
   | MongoValueTypeStructureString
   | MongoValueTypeStructureInt
   | MongoValueTypeStructureLong
+  | MongoValueTypeStructureDouble
   | MongoValueTypeStructureDecimal
   | MongoValueTypeStructureBool
   | MongoValueTypeStructureObjectId

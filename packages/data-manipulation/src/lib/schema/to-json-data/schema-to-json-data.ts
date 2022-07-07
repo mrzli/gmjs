@@ -19,10 +19,12 @@ function parseAnyType(schema: MongoJsonSchemaAnyType): AnyValue {
       return 0;
     case 'long':
       return 0;
-    case 'bool':
-      return false;
+    case 'double':
+      return 0;
     case 'decimal':
       return '0';
+    case 'bool':
+      return false;
     case 'objectId':
       return DEFAULT_OBJECT_ID;
     case 'date':

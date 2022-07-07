@@ -210,8 +210,9 @@ function writeAppToDbPropertyAssignment(
 
   switch (type) {
     case 'string':
-    case 'long':
     case 'int':
+    case 'long':
+    case 'double':
     case 'bool':
       writer.write(`${propertyName}: ${appVariableName}.${appPropertyName},`);
       break;
@@ -298,8 +299,9 @@ function writeAppToDbArrayPropertyAssignment(
 
   switch (itemType) {
     case 'string':
-    case 'long':
     case 'int':
+    case 'long':
+    case 'double':
     case 'bool':
       writer.write(`${propertyName}: ${appVariableName}.${appPropertyName},`);
       break;

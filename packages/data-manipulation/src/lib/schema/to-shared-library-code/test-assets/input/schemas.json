@@ -49,6 +49,9 @@
       "fieldLong": {
         "bsonType": "long"
       },
+      "fieldDouble": {
+        "bsonType": "double"
+      },
       "fieldDecimal": {
         "bsonType": "decimal"
       },
@@ -93,16 +96,22 @@
           "bsonType": "long"
         }
       },
-      "fieldArrayBool": {
+      "fieldArrayDouble": {
         "bsonType": "array",
         "items": {
-          "bsonType": "bool"
+          "bsonType": "double"
         }
       },
       "fieldArrayDecimal": {
         "bsonType": "array",
         "items": {
           "bsonType": "decimal"
+        }
+      },
+      "fieldArrayBool": {
+        "bsonType": "array",
+        "items": {
+          "bsonType": "bool"
         }
       },
       "fieldArrayObjectId": {
@@ -276,6 +285,7 @@
       "fieldInt6",
       "fieldInt7",
       "fieldLong",
+      "fieldDouble",
       "fieldDecimal",
       "fieldBool",
       "fieldObjectId",
@@ -285,8 +295,9 @@
       "fieldArrayInt1",
       "fieldArrayInt2",
       "fieldArrayLong",
-      "fieldArrayBool",
+      "fieldArrayDouble",
       "fieldArrayDecimal",
+      "fieldArrayBool",
       "fieldArrayObjectId",
       "fieldArrayDate",
       "fieldArrayEnumString",

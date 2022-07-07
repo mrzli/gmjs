@@ -13,6 +13,7 @@ export interface DbEntity {
   readonly fieldInt6: number;
   readonly fieldInt7: number;
   readonly fieldLong: number;
+  readonly fieldDouble: number;
   readonly fieldDecimal: Decimal128;
   readonly fieldBool: boolean;
   readonly fieldObjectId: ObjectId;
@@ -22,8 +23,9 @@ export interface DbEntity {
   readonly fieldArrayInt1: readonly number[];
   readonly fieldArrayInt2: readonly number[];
   readonly fieldArrayLong: readonly number[];
-  readonly fieldArrayBool: readonly boolean[];
+  readonly fieldArrayDouble: readonly number[];
   readonly fieldArrayDecimal: readonly Decimal128[];
+  readonly fieldArrayBool: readonly boolean[];
   readonly fieldArrayObjectId: readonly ObjectId[];
   readonly fieldArrayDate: readonly Date[];
   readonly fieldArrayEnumString: readonly string[];

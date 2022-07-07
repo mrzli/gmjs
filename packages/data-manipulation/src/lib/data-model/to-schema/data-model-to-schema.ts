@@ -106,7 +106,7 @@ function toValueTypeSchema(
     return toSimpleTypeSchema(schema);
   }
 
-  invariant(false, 'Invalid property type.');
+  invariant(false, `Invalid property type: '${type}'.`);
 }
 
 function toSimpleTypeSchema(schema: AnyValue): MongoJsonSchemaAnyType {

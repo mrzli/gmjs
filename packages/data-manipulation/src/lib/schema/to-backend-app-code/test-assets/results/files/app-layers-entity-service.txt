@@ -64,6 +64,7 @@ export function dbEntityToAppEntity(dbEntity: DbEntity): AppEntity {
     fieldInt6: dbEntity.fieldInt6,
     fieldInt7: dbEntity.fieldInt7,
     fieldLong: dbEntity.fieldLong,
+    fieldDouble: dbEntity.fieldDouble,
     fieldDecimal: dbEntity.fieldDecimal.toString(),
     fieldBool: dbEntity.fieldBool,
     fieldObjectId: dbEntity.fieldObjectId.toString(),
@@ -73,10 +74,11 @@ export function dbEntityToAppEntity(dbEntity: DbEntity): AppEntity {
     fieldArrayInt1: dbEntity.fieldArrayInt1,
     fieldArrayInt2: dbEntity.fieldArrayInt2,
     fieldArrayLong: dbEntity.fieldArrayLong,
-    fieldArrayBool: dbEntity.fieldArrayBool,
+    fieldArrayDouble: dbEntity.fieldArrayDouble,
     fieldArrayDecimal: dbEntity.fieldArrayDecimal.map((item) =>
       item.toString()
     ),
+    fieldArrayBool: dbEntity.fieldArrayBool,
     fieldArrayObjectId: dbEntity.fieldArrayObjectId.map((item) =>
       item.toString()
     ),
@@ -153,6 +155,7 @@ export function appEntityToDbEntityWithoutId(
     fieldInt6: appEntity.fieldInt6,
     fieldInt7: appEntity.fieldInt7,
     fieldLong: appEntity.fieldLong,
+    fieldDouble: appEntity.fieldDouble,
     fieldDecimal: new Decimal128(appEntity.fieldDecimal),
     fieldBool: appEntity.fieldBool,
     fieldObjectId: new ObjectId(appEntity.fieldObjectId),
@@ -162,10 +165,11 @@ export function appEntityToDbEntityWithoutId(
     fieldArrayInt1: appEntity.fieldArrayInt1,
     fieldArrayInt2: appEntity.fieldArrayInt2,
     fieldArrayLong: appEntity.fieldArrayLong,
-    fieldArrayBool: appEntity.fieldArrayBool,
+    fieldArrayDouble: appEntity.fieldArrayDouble,
     fieldArrayDecimal: appEntity.fieldArrayDecimal.map(
       (item) => new Decimal128(item)
     ),
+    fieldArrayBool: appEntity.fieldArrayBool,
     fieldArrayObjectId: appEntity.fieldArrayObjectId.map(
       (item) => new ObjectId(item)
     ),
@@ -239,6 +243,7 @@ export function appEntityToDbEntityWithoutIdPartial(
     fieldInt6: appEntity.fieldInt6,
     fieldInt7: appEntity.fieldInt7,
     fieldLong: appEntity.fieldLong,
+    fieldDouble: appEntity.fieldDouble,
     fieldDecimal: transformIfExists(
       appEntity.fieldDecimal,
       (value) => new Decimal128(value),
@@ -260,10 +265,11 @@ export function appEntityToDbEntityWithoutIdPartial(
     fieldArrayInt1: appEntity.fieldArrayInt1,
     fieldArrayInt2: appEntity.fieldArrayInt2,
     fieldArrayLong: appEntity.fieldArrayLong,
-    fieldArrayBool: appEntity.fieldArrayBool,
+    fieldArrayDouble: appEntity.fieldArrayDouble,
     fieldArrayDecimal: appEntity.fieldArrayDecimal?.map(
       (item) => new Decimal128(item)
     ),
+    fieldArrayBool: appEntity.fieldArrayBool,
     fieldArrayObjectId: appEntity.fieldArrayObjectId?.map(
       (item) => new ObjectId(item)
     ),

@@ -10,6 +10,7 @@
   "fieldInt6": 0,
   "fieldInt7": 0,
   "fieldLong": 0,
+  "fieldDouble": 0,
   "fieldDecimal": "0",
   "fieldBool": false,
   "fieldObjectId": "000000000000000000000000",
@@ -27,11 +28,14 @@
   "fieldArrayLong": [
     0
   ],
-  "fieldArrayBool": [
-    false
+  "fieldArrayDouble": [
+    0
   ],
   "fieldArrayDecimal": [
     "0"
+  ],
+  "fieldArrayBool": [
+    false
   ],
   "fieldArrayObjectId": [
     "000000000000000000000000"
