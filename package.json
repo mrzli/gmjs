@@ -19,16 +19,14 @@
     "js-yaml": "4.1.0",
     "jsonschema": "1.4.1",
     "klaw-sync": "6.0.0",
+    "mongodb": "4.7.0",
     "prettier": "2.7.1",
     "recast": "0.21.1",
     "ts-morph": "15.0.0",
     "tslib": "^2.3.0",
     "type-fest": "2.14.0",
-    "uuid": "8.3.2"
-  },
-  "peerDependencies": {
-    "mongodb": "^4.7.0",
-    "typescript": "^4.7.4"
+    "uuid": "8.3.2",
+    "typescript": "4.7.4"
   },
   "devDependencies": {
     "@gmnx/example-plugin": "0.0.30",
@@ -52,9 +50,7 @@
     "eslint": "8.15.0",
     "eslint-config-prettier": "8.1.0",
     "jest": "27.5.1",
-    "mongodb": "4.7.0",
     "ts-jest": "27.1.4",
-    "ts-node": "10.8.1",
-    "typescript": "4.7.4"
+    "ts-node": "10.8.1"
   }
 }
