@@ -11,7 +11,7 @@ export interface AppEntity {
   readonly fieldInt5: number;
   readonly fieldInt6: number;
   readonly fieldInt7: number;
-  readonly fieldLong: number;
+  readonly fieldLong: string;
   readonly fieldDouble: number;
   readonly fieldDecimal: string;
   readonly fieldBool: boolean;
@@ -21,7 +21,7 @@ export interface AppEntity {
   readonly fieldArrayString: readonly string[];
   readonly fieldArrayInt1: readonly number[];
   readonly fieldArrayInt2: readonly number[];
-  readonly fieldArrayLong: readonly number[];
+  readonly fieldArrayLong: readonly string[];
   readonly fieldArrayDouble: readonly number[];
   readonly fieldArrayDecimal: readonly string[];
   readonly fieldArrayBool: readonly boolean[];

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Decimal128, ObjectId } from 'mongodb';
+import { Decimal128, Long, ObjectId } from 'mongodb';
 import { Except } from 'type-fest';
 import { objectRemoveUndefined, transformIfExists } from '@gmjs/util';
 import {
@@ -63,7 +63,7 @@ export function dbEntityToAppEntity(dbEntity: DbEntity): AppEntity {
     fieldInt5: dbEntity.fieldInt5,
     fieldInt6: dbEntity.fieldInt6,
     fieldInt7: dbEntity.fieldInt7,
-    fieldLong: dbEntity.fieldLong,
+    fieldLong: dbEntity.fieldLong.toString(),
     fieldDouble: dbEntity.fieldDouble,
     fieldDecimal: dbEntity.fieldDecimal.toString(),
     fieldBool: dbEntity.fieldBool,
@@ -73,7 +73,7 @@ export function dbEntityToAppEntity(dbEntity: DbEntity): AppEntity {
     fieldArrayString: dbEntity.fieldArrayString,
     fieldArrayInt1: dbEntity.fieldArrayInt1,
     fieldArrayInt2: dbEntity.fieldArrayInt2,
-    fieldArrayLong: dbEntity.fieldArrayLong,
+    fieldArrayLong: dbEntity.fieldArrayLong.map((item) => item.toString()),
     fieldArrayDouble: dbEntity.fieldArrayDouble,
     fieldArrayDecimal: dbEntity.fieldArrayDecimal.map((item) =>
       item.toString()
@@ -154,7 +154,7 @@ export function appEntityToDbEntityWithoutId(
     fieldInt5: appEntity.fieldInt5,
     fieldInt6: appEntity.fieldInt6,
     fieldInt7: appEntity.fieldInt7,
-    fieldLong: appEntity.fieldLong,
+    fieldLong: new Long(appEntity.fieldLong),
     fieldDouble: appEntity.fieldDouble,
     fieldDecimal: new Decimal128(appEntity.fieldDecimal),
     fieldBool: appEntity.fieldBool,
@@ -164,7 +164,7 @@ export function appEntityToDbEntityWithoutId(
     fieldArrayString: appEntity.fieldArrayString,
     fieldArrayInt1: appEntity.fieldArrayInt1,
     fieldArrayInt2: appEntity.fieldArrayInt2,
-    fieldArrayLong: appEntity.fieldArrayLong,
+    fieldArrayLong: appEntity.fieldArrayLong.map((item) => new Long(item)),
     fieldArrayDouble: appEntity.fieldArrayDouble,
     fieldArrayDecimal: appEntity.fieldArrayDecimal.map(
       (item) => new Decimal128(item)
@@ -242,7 +242,11 @@ export function appEntityToDbEntityWithoutIdPartial(
     fieldInt5: appEntity.fieldInt5,
     fieldInt6: appEntity.fieldInt6,
     fieldInt7: appEntity.fieldInt7,
-    fieldLong: appEntity.fieldLong,
+    fieldLong: transformIfExists(
+      appEntity.fieldLong,
+      (value) => new Long(value),
+      undefined
+    ),
     fieldDouble: appEntity.fieldDouble,
     fieldDecimal: transformIfExists(
       appEntity.fieldDecimal,
@@ -264,7 +268,7 @@ export function appEntityToDbEntityWithoutIdPartial(
     fieldArrayString: appEntity.fieldArrayString,
     fieldArrayInt1: appEntity.fieldArrayInt1,
     fieldArrayInt2: appEntity.fieldArrayInt2,
-    fieldArrayLong: appEntity.fieldArrayLong,
+    fieldArrayLong: appEntity.fieldArrayLong?.map((item) => new Long(item)),
     fieldArrayDouble: appEntity.fieldArrayDouble,
     fieldArrayDecimal: appEntity.fieldArrayDecimal?.map(
       (item) => new Decimal128(item)

@@ -1,7 +1,11 @@
 import { invariant } from '@gmjs/util';
 import { MongoBsonType } from '@gmjs/mongo-util';
 
-const MONGO_BSON_TYPES: readonly MongoBsonType[] = ['decimal', 'objectId'];
+const MONGO_BSON_TYPES: readonly MongoBsonType[] = [
+  'long',
+  'decimal',
+  'objectId',
+];
 
 export function isMongoValueType(type: MongoBsonType): boolean {
   return MONGO_BSON_TYPES.includes(type);
@@ -9,6 +13,8 @@ export function isMongoValueType(type: MongoBsonType): boolean {
 
 export function mongoBsonTypeToMongoJsType(type: MongoBsonType): string {
   switch (type) {
+    case 'long':
+      return 'Long';
     case 'decimal':
       return 'Decimal128';
     case 'objectId':

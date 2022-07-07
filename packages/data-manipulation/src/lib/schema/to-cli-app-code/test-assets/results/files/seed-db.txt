@@ -1,4 +1,4 @@
-import { Db, Decimal128, ObjectId } from 'mongodb';
+import { Db, Decimal128, Long, ObjectId } from 'mongodb';
 import {
   executeMongo,
   insertMany,
@@ -21,7 +21,7 @@ export async function seedDb(
         fieldInt5: 0,
         fieldInt6: 0,
         fieldInt7: 0,
-        fieldLong: 0,
+        fieldLong: new Long('0'),
         fieldDouble: 0,
         fieldDecimal: new Decimal128('0'),
         fieldBool: false,
@@ -31,7 +31,7 @@ export async function seedDb(
         fieldArrayString: [''],
         fieldArrayInt1: [0],
         fieldArrayInt2: [0],
-        fieldArrayLong: [0],
+        fieldArrayLong: [new Long('0')],
         fieldArrayDouble: [0],
         fieldArrayDecimal: [new Decimal128('0')],
         fieldArrayBool: [false],

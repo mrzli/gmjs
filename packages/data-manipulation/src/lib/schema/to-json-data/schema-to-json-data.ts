@@ -18,7 +18,7 @@ function parseAnyType(schema: MongoJsonSchemaAnyType): AnyValue {
     case 'int':
       return 0;
     case 'long':
-      return 0;
+      return '0';
     case 'double':
       return 0;
     case 'decimal':

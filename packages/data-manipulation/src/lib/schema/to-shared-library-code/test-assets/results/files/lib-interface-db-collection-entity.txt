@@ -1,4 +1,4 @@
-import { Decimal128, ObjectId } from 'mongodb';
+import { Decimal128, Long, ObjectId } from 'mongodb';
 import { DbSubEntity1, DbSubEntity2 } from './embedded';
 
 export interface DbEntity {
@@ -12,7 +12,7 @@ export interface DbEntity {
   readonly fieldInt5: number;
   readonly fieldInt6: number;
   readonly fieldInt7: number;
-  readonly fieldLong: number;
+  readonly fieldLong: Long;
   readonly fieldDouble: number;
   readonly fieldDecimal: Decimal128;
   readonly fieldBool: boolean;
@@ -22,7 +22,7 @@ export interface DbEntity {
   readonly fieldArrayString: readonly string[];
   readonly fieldArrayInt1: readonly number[];
   readonly fieldArrayInt2: readonly number[];
-  readonly fieldArrayLong: readonly number[];
+  readonly fieldArrayLong: readonly Long[];
   readonly fieldArrayDouble: readonly number[];
   readonly fieldArrayDecimal: readonly Decimal128[];
   readonly fieldArrayBool: readonly boolean[];

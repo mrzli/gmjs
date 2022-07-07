@@ -73,10 +73,18 @@ function writeDbToAppPropertyAssignment(
   switch (type) {
     case 'string':
     case 'int':
-    case 'long':
     case 'double':
     case 'bool':
       writer.write(`${appPropertyName}: ${dbVariableName}.${propertyName},`);
+      break;
+    case 'long':
+      writeDbToAppConvertablePropertyAssignment(
+        writer,
+        propertyName,
+        isOptional,
+        dbVariableName,
+        dbToAppLongConversion
+      );
       break;
     case 'decimal':
       writeDbToAppConvertablePropertyAssignment(
@@ -160,10 +168,18 @@ function writeDbToAppArrayPropertyAssignment(
   switch (itemType) {
     case 'string':
     case 'int':
-    case 'long':
     case 'double':
     case 'bool':
       writer.write(`${appPropertyName}: ${dbVariableName}.${propertyName},`);
+      break;
+    case 'long':
+      writeDbToAppArrayWithMapping(
+        writer,
+        propertyName,
+        dbVariableName,
+        isOptionalToken,
+        dbToAppLongConversion('item')
+      );
       break;
     case 'decimal':
       writeDbToAppArrayWithMapping(
@@ -242,6 +258,10 @@ function writeDbToAppObjectPropertyAssignment(
     : `${mapperFunctionName}(${dbPropertyAccess})`;
 
   writer.write(`${appPropertyName}: ${valueRight},`);
+}
+
+function dbToAppLongConversion(fieldStr: string): string {
+  return `${fieldStr}.toString()`;
 }
 
 function dbToAppDecimalConversion(fieldStr: string): string {

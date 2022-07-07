@@ -113,7 +113,7 @@ function writeAnyValue(
       writer.write('0');
       break;
     case 'long':
-      writer.write('0');
+      writer.write("new Long('0')");
       break;
     case 'double':
       writer.write('0');
