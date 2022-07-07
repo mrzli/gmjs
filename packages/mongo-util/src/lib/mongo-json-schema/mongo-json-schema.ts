@@ -39,6 +39,11 @@ export interface MongoJsonSchemaTypeLong extends MongoJsonSchemaTypeNumberBase {
   readonly bsonType: 'long';
 }
 
+export interface MongoJsonSchemaTypeDouble
+  extends MongoJsonSchemaTypeNumberBase {
+  readonly bsonType: 'double';
+}
+
 export interface MongoJsonSchemaTypeDecimal
   extends MongoJsonSchemaTypeNumberBase {
   readonly bsonType: 'decimal';
@@ -62,6 +67,7 @@ export type MongoJsonSchemaAnyType =
   | MongoJsonSchemaTypeString
   | MongoJsonSchemaTypeInt
   | MongoJsonSchemaTypeLong
+  | MongoJsonSchemaTypeDouble
   | MongoJsonSchemaTypeDecimal
   | MongoJsonSchemaTypeBool
   | MongoJsonSchemaTypeObjectId

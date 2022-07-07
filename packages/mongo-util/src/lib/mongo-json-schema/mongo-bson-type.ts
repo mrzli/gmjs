@@ -4,6 +4,7 @@ export type MongoBsonType =
   | 'string'
   | 'int'
   | 'long'
+  | 'double'
   | 'decimal'
   | 'bool'
   | 'objectId'

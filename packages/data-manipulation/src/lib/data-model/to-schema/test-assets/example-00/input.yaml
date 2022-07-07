@@ -30,6 +30,8 @@ collections:
         exclusiveMaximum: 10
       - name: fieldLong
         type: long
+      - name: fieldDouble
+        type: double
       - name: fieldDecimal
         type: decimal
       - name: fieldBool
@@ -54,12 +56,15 @@ collections:
       - name: fieldArrayLong
         items:
           type: long
-      - name: fieldArrayBool
+      - name: fieldArrayDouble
         items:
-          type: bool
+          type: double
       - name: fieldArrayDecimal
         items:
           type: decimal
+      - name: fieldArrayBool
+        items:
+          type: bool
       - name: fieldArrayObjectId
         items:
           type: objectId
