@@ -63,7 +63,7 @@ export function dbEntityToAppEntity(dbEntity: DbEntity): AppEntity {
     fieldInt5: dbEntity.fieldInt5,
     fieldInt6: dbEntity.fieldInt6,
     fieldInt7: dbEntity.fieldInt7,
-    fieldLong: dbEntity.fieldLong.toString(),
+    fieldLong: dbEntity.fieldLong.toInt(),
     fieldDouble: dbEntity.fieldDouble,
     fieldDecimal: dbEntity.fieldDecimal.toString(),
     fieldBool: dbEntity.fieldBool,
@@ -73,7 +73,7 @@ export function dbEntityToAppEntity(dbEntity: DbEntity): AppEntity {
     fieldArrayString: dbEntity.fieldArrayString,
     fieldArrayInt1: dbEntity.fieldArrayInt1,
     fieldArrayInt2: dbEntity.fieldArrayInt2,
-    fieldArrayLong: dbEntity.fieldArrayLong.map((item) => item.toString()),
+    fieldArrayLong: dbEntity.fieldArrayLong.map((item) => item.toInt()),
     fieldArrayDouble: dbEntity.fieldArrayDouble,
     fieldArrayDecimal: dbEntity.fieldArrayDecimal.map((item) =>
       item.toString()

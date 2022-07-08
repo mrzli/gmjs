@@ -316,9 +316,7 @@ class InterfaceCodeGeneratorApp extends InterfaceCodeGeneratorBase {
       case 'string':
         return 'string';
       case 'int':
-        return 'number';
       case 'long':
-        return 'string';
       case 'double':
         return 'number';
       case 'decimal':

@@ -261,7 +261,7 @@ function writeDbToAppObjectPropertyAssignment(
 }
 
 function dbToAppLongConversion(fieldStr: string): string {
-  return `${fieldStr}.toString()`;
+  return `${fieldStr}.toInt()`;
 }
 
 function dbToAppDecimalConversion(fieldStr: string): string {
