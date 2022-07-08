@@ -6,12 +6,19 @@
     "cloc": {
       "executor": "@gmnx/util:cloc",
       "options": {
-        "ignoreDirs": [".idea", ".vscode", "node_modules", "dist"],
-        "ignoreFiles": ["package-lock.json"]
+        "ignoreDirs": [
+          ".idea",
+          ".vscode",
+          "node_modules",
+          "dist"
+        ],
+        "ignoreFiles": [
+          "package-lock.json"
+        ]
       }
     },
-    "start-mongo": {
-      "executor": "@gmnx/util:start-mongo",
+    "mongo-start": {
+      "executor": "@gmnx/util:mongo-start",
       "options": {
         "containerName": "mongo",
         "mongoVersion": "5.0.8",
@@ -19,19 +26,66 @@
         "dataDir": "~/docker/mongo"
       }
     },
-    "stop-mongo": {
-      "executor": "@gmnx/util:stop-mongo",
+    "mongo-stop": {
+      "executor": "@gmnx/util:mongo-stop",
       "options": {
         "containerName": "mongo",
         "mongoVersion": "5.0.8",
         "port": 27017,
         "dataDir": "~/docker/mongo"
+      }
+    },
+    "postgres-start": {
+      "executor": "@gmnx/util:postgres-start",
+      "options": {
+        "containerName": "postgres",
+        "postgresVersion": "14.2",
+        "port": 15432,
+        "dataDir": "~/docker/postgres",
+        "username": "postgres",
+        "password": "password"
+      }
+    },
+    "postgres-stop": {
+      "executor": "@gmnx/util:postgres-stop",
+      "options": {
+        "containerName": "postgres",
+        "postgresVersion": "14.2",
+        "port": 15432,
+        "dataDir": "~/docker/postgres",
+        "username": "postgres",
+        "password": "password"
       }
     },
     "publish-all": {
       "executor": "@gmnx/util:publish-all",
       "options": {}
+    },
+    "update-gmjs": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "npm install @gmjs/data-manipulation@latest @gmjs/fs-util@latest @gmjs/lib-util@latest @gmjs/mongo-util@latest @gmjs/nest-util@latest @gmjs/util@latest -f",
+          "npm install -D @gmjs/test-util@latest -f"
+        ],
+        "parallel": false
+      }
+    },
+    "update-gmnx": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npm install -D @gmnx/util@latest @gmnx/project@latest -f"
+      }
+    },
+    "update-gmall": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "nx run workspace:update-gmjs",
+          "nx run workspace:update-gmnx"
+        ],
+        "parallel": false
+      }
     }
-  },
-  "tags": []
+  }
 }
