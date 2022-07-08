@@ -11,9 +11,11 @@ import {
   WriterFunction,
 } from 'ts-morph';
 import { camelCase, pascalCase } from '@gmjs/lib-util';
-import { invariant } from '@gmjs/util';
+import { ImmutableMap, invariant } from '@gmjs/util';
 import { TRANSFORM_IF_EXISTS_FN_NAME } from './constants';
 import { getAppInterfacePropertyName } from '../../../../shared/mongo-schema-util';
+import { BSONType } from 'mongodb';
+import { MongoBsonType } from '@gmjs/mongo-util';
 
 export function getDbToAppMapperFunctionName(entityName: string): string {
   const typeName = pascalCase(entityName);
@@ -73,44 +75,20 @@ function writeDbToAppPropertyAssignment(
   switch (type) {
     case 'string':
     case 'int':
-    case 'double':
     case 'bool':
       writer.write(`${appPropertyName}: ${dbVariableName}.${propertyName},`);
       break;
     case 'long':
-      writeDbToAppConvertablePropertyAssignment(
-        writer,
-        propertyName,
-        isOptional,
-        dbVariableName,
-        dbToAppLongConversion
-      );
-      break;
+    case 'double':
     case 'decimal':
-      writeDbToAppConvertablePropertyAssignment(
-        writer,
-        propertyName,
-        isOptional,
-        dbVariableName,
-        dbToAppDecimalConversion
-      );
-      break;
     case 'objectId':
-      writeDbToAppConvertablePropertyAssignment(
-        writer,
-        propertyName,
-        isOptional,
-        dbVariableName,
-        dbToAppObjectIdConversion
-      );
-      break;
     case 'date':
       writeDbToAppConvertablePropertyAssignment(
         writer,
         propertyName,
         isOptional,
         dbVariableName,
-        dbToAppDateConversion
+        DB_TO_APP_CONVERSION_MAP.getOrThrow(type)
       );
       break;
     case 'array':
@@ -168,44 +146,20 @@ function writeDbToAppArrayPropertyAssignment(
   switch (itemType) {
     case 'string':
     case 'int':
-    case 'double':
     case 'bool':
       writer.write(`${appPropertyName}: ${dbVariableName}.${propertyName},`);
       break;
     case 'long':
-      writeDbToAppArrayWithMapping(
-        writer,
-        propertyName,
-        dbVariableName,
-        isOptionalToken,
-        dbToAppLongConversion('item')
-      );
-      break;
+    case 'double':
     case 'decimal':
-      writeDbToAppArrayWithMapping(
-        writer,
-        propertyName,
-        dbVariableName,
-        isOptionalToken,
-        dbToAppDecimalConversion('item')
-      );
-      break;
     case 'objectId':
-      writeDbToAppArrayWithMapping(
-        writer,
-        propertyName,
-        dbVariableName,
-        isOptionalToken,
-        dbToAppObjectIdConversion('item')
-      );
-      break;
     case 'date':
       writeDbToAppArrayWithMapping(
         writer,
         propertyName,
         dbVariableName,
         isOptionalToken,
-        dbToAppDateConversion('item')
+        DB_TO_APP_CONVERSION_MAP.getOrThrow(itemType)('item')
       );
       break;
     case 'array':
@@ -260,8 +214,25 @@ function writeDbToAppObjectPropertyAssignment(
   writer.write(`${appPropertyName}: ${valueRight},`);
 }
 
+type DbToAppConversion = (fieldStr: string) => string;
+
+const DB_TO_APP_CONVERSION_MAP = ImmutableMap.fromTupleArray<
+  MongoBsonType,
+  DbToAppConversion
+>([
+  ['long', dbToAppLongConversion],
+  ['double', dbToAppDoubleConversion],
+  ['decimal', dbToAppDecimalConversion],
+  ['objectId', dbToAppObjectIdConversion],
+  ['date', dbToAppDateConversion],
+]);
+
 function dbToAppLongConversion(fieldStr: string): string {
   return `${fieldStr}.toInt()`;
+}
+
+function dbToAppDoubleConversion(fieldStr: string): string {
+  return `${fieldStr}.valueOf()`;
 }
 
 function dbToAppDecimalConversion(fieldStr: string): string {

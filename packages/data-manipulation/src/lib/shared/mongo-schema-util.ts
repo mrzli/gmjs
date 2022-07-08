@@ -3,6 +3,7 @@ import { MongoBsonType } from '@gmjs/mongo-util';
 
 const MONGO_BSON_TYPES: readonly MongoBsonType[] = [
   'long',
+  'double',
   'decimal',
   'objectId',
 ];
@@ -15,6 +16,8 @@ export function mongoBsonTypeToMongoJsType(type: MongoBsonType): string {
   switch (type) {
     case 'long':
       return 'Long';
+    case 'double':
+      return 'Double';
     case 'decimal':
       return 'Decimal128';
     case 'objectId':

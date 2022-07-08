@@ -116,7 +116,7 @@ function writeAnyValue(
       writer.write('new Long(0)');
       break;
     case 'double':
-      writer.write('0');
+      writer.write('new Double(0)');
       break;
     case 'decimal':
       writer.write("new Decimal128('0')");

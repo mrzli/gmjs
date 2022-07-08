@@ -280,7 +280,6 @@ class InterfaceCodeGeneratorDb extends InterfaceCodeGeneratorBase {
       case 'string':
         return 'string';
       case 'int':
-      case 'double':
         return 'number';
       case 'bool':
         return 'boolean';
