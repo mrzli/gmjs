@@ -1,4 +1,5 @@
 import { Nullish, SimpleValue } from '../types/generic';
+import { isNotNullish } from '../generic/generic';
 
 export function arrayGetPrimitiveDuplicates(
   array: readonly string[]
@@ -95,4 +96,12 @@ export function mapWithSeparators<TInputElement, TOutputElement>(
     }
   }
   return finalArray;
+}
+
+export function filterOutNullish<TElement>(
+  array: readonly Nullish<TElement>[]
+): readonly NonNullable<TElement>[] {
+  return array.filter((item) =>
+    isNotNullish(item)
+  ) as unknown as readonly NonNullable<TElement>[];
 }

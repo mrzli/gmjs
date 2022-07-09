@@ -2,6 +2,7 @@ import {
   arrayGetPrimitiveDuplicates,
   distinctItems,
   distinctItemsBy,
+  filterOutNullish,
   flatMap,
   mapWithSeparators,
 } from './array-utils';
@@ -334,6 +335,59 @@ describe('array-utils', () => {
     EXAMPLES.forEach((example) => {
       it(JSON.stringify(example), () => {
         const actual = mapWithSeparators(example.input, MAPPING, SEPARATOR);
+        expect(actual).toEqual(example.expected);
+      });
+    });
+  });
+
+  describe('filterOutNullish()', () => {
+    interface Example {
+      readonly input: readonly unknown[];
+      readonly expected: readonly unknown[];
+    }
+
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: [],
+        expected: [],
+      },
+      {
+        input: [undefined],
+        expected: [],
+      },
+      {
+        input: [null],
+        expected: [],
+      },
+      {
+        input: [0],
+        expected: [0],
+      },
+      {
+        input: [''],
+        expected: [''],
+      },
+      {
+        input: [false],
+        expected: [false],
+      },
+      {
+        input: [{}],
+        expected: [{}],
+      },
+      {
+        input: [[]],
+        expected: [[]],
+      },
+      {
+        input: ['value', '', undefined, 11, 0, null, {}, [], true, false],
+        expected: ['value', '', 11, 0, {}, [], true, false],
+      },
+    ];
+
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        const actual = filterOutNullish(example.input);
         expect(actual).toEqual(example.expected);
       });
     });
