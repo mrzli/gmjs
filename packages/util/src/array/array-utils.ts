@@ -47,12 +47,12 @@ export function distinctItems<TElement>(
 
   // using mutable array and forEach for performance
   const finalArray: TElement[] = [];
-  array.forEach((item) => {
+  for (const item of array) {
     if (!set.has(item)) {
       set.add(item);
       finalArray.push(item);
     }
-  });
+  }
 
   return finalArray;
 }
@@ -63,15 +63,14 @@ export function distinctItemsBy<TElement, TSelectorResult>(
 ): readonly TElement[] {
   const set = new Set<TSelectorResult>();
 
-  // using mutable array and forEach for performance
   const finalArray: TElement[] = [];
-  array.forEach((item) => {
+  for (const item of array) {
     const valueToCheck = distinctBy(item);
     if (!set.has(valueToCheck)) {
       set.add(valueToCheck);
       finalArray.push(item);
     }
-  });
+  }
 
   return finalArray;
 }
@@ -99,7 +98,7 @@ export function mapWithSeparators<TInputElement, TOutputElement>(
 }
 
 export function filterOutNullish<TElement>(
-  array: readonly Nullish<TElement>[]
+  array: readonly TElement[]
 ): readonly NonNullable<TElement>[] {
   return array.filter((item) =>
     isNotNullish(item)
