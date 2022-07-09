@@ -74,3 +74,25 @@ export function distinctItemsBy<TElement, TSelectorResult>(
 
   return finalArray;
 }
+
+export function mapWithSeparators<TInputElement, TOutputElement>(
+  array: readonly TInputElement[],
+  mappingFn: (item: TInputElement, index: number) => TOutputElement,
+  separatorGeneratorFn: (
+    index: number,
+    itemBefore: TInputElement,
+    itemAfter: TInputElement
+  ) => TOutputElement
+): readonly TOutputElement[] {
+  const finalArray: TOutputElement[] = [];
+
+  const length = array.length;
+  for (let i = 0; i < length; i++) {
+    const item = array[i];
+    finalArray.push(mappingFn(item, i));
+    if (i < length - 1) {
+      finalArray.push(separatorGeneratorFn(i, item, array[i + 1]));
+    }
+  }
+  return finalArray;
+}

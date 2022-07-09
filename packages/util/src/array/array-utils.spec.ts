@@ -3,6 +3,7 @@ import {
   distinctItems,
   distinctItemsBy,
   flatMap,
+  mapWithSeparators,
 } from './array-utils';
 import { Nullish, SimpleValue } from '../types/generic';
 
@@ -298,6 +299,42 @@ describe('array-utils', () => {
         expect(distinctItemsBy(example.input, distinctBy)).toEqual(
           example.expected
         );
+      });
+    });
+  });
+
+  describe('mapWithSeparators()', () => {
+    interface Example {
+      readonly input: readonly number[];
+      readonly expected: readonly string[];
+    }
+
+    const MAPPING = (item: number): string => `${item.toString()}x`;
+    const SEPARATOR = (index: number): string => `sep${index}`;
+
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: [],
+        expected: [],
+      },
+      {
+        input: [1],
+        expected: ['1x'],
+      },
+      {
+        input: [1, 2],
+        expected: ['1x', 'sep0', '2x'],
+      },
+      {
+        input: [1, 2, 3],
+        expected: ['1x', 'sep0', '2x', 'sep1', '3x'],
+      },
+    ];
+
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        const actual = mapWithSeparators(example.input, MAPPING, SEPARATOR);
+        expect(actual).toEqual(example.expected);
       });
     });
   });
