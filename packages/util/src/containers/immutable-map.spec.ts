@@ -1,4 +1,8 @@
-import { ImmutableMap, ImmutableMapKeyValuePair } from './immutable-map';
+import {
+  ImmutableMap,
+  ImmutableMapKeyValuePair,
+  ImmutableMapTuple,
+} from './immutable-map';
 import { AnyValue } from '../types/generic';
 
 describe('ImmutableMap', () => {
@@ -11,10 +15,8 @@ describe('ImmutableMap', () => {
   });
 
   it('createEmpty()', () => {
-    const actual: readonly [string, string][] = ImmutableMap.createEmpty<
-      string,
-      string
-    >().entryTuples();
+    const actual: readonly ImmutableMapTuple<string, string>[] =
+      ImmutableMap.createEmpty<string, string>().entryTuples();
     expect(actual).toEqual([]);
   });
 
@@ -1036,11 +1038,8 @@ describe('ImmutableMap', () => {
 
     EXAMPLES.forEach((example) => {
       it(JSON.stringify(example), () => {
-        const actual: readonly [string, string][] = ImmutableMap.fromTupleArray(
-          example.input
-        )
-          .clear()
-          .entryTuples();
+        const actual: readonly ImmutableMapTuple<string, string>[] =
+          ImmutableMap.fromTupleArray(example.input).clear().entryTuples();
         expect(actual).toEqual([]);
       });
     });

@@ -6,6 +6,8 @@ export interface ImmutableMapKeyValuePair<K, V> {
   readonly value: V;
 }
 
+export type ImmutableMapTuple<K, V> = readonly [K, V];
+
 export class ImmutableMap<K, V> {
   private readonly map: Immutable.Map<K, V>;
 
@@ -18,15 +20,18 @@ export class ImmutableMap<K, V> {
   }
 
   public static fromTupleArray<K, V>(
-    array: readonly [K, V][]
+    array: readonly ImmutableMapTuple<K, V>[]
   ): ImmutableMap<K, V> {
-    return new ImmutableMap<K, V>(Immutable.Map(array));
+    return new ImmutableMap<K, V>(
+      Immutable.Map<K, V>(array as readonly [K, V][])
+    );
   }
 
   public static fromPairArray<K, V>(
     array: readonly ImmutableMapKeyValuePair<K, V>[]
   ): ImmutableMap<K, V> {
-    const tupleArray: readonly [K, V][] = array.map(pairToTuple);
+    const tupleArray: readonly ImmutableMapTuple<K, V>[] =
+      array.map(pairToTuple);
     return ImmutableMap.fromTupleArray<K, V>(tupleArray);
   }
 
@@ -34,10 +39,9 @@ export class ImmutableMap<K, V> {
     array: readonly T[],
     keyField: K
   ): ImmutableMap<T[K], T> {
-    const tupleArray: readonly [T[K], T][] = array.map((item) => [
-      item[keyField],
-      item,
-    ]);
+    const tupleArray: readonly ImmutableMapTuple<T[K], T>[] = array.map(
+      (item) => [item[keyField], item]
+    );
     return ImmutableMap.fromTupleArray<T[K], T>(tupleArray);
   }
 
@@ -49,7 +53,7 @@ export class ImmutableMap<K, V> {
     return this.map.valueSeq().toArray();
   }
 
-  public entryTuples(): readonly [K, V][] {
+  public entryTuples(): readonly ImmutableMapTuple<K, V>[] {
     const sequence: Immutable.Seq.Indexed<[K, V]> =
       this.map.entrySeq() as Immutable.Seq.Indexed<[K, V]>; // not sure why this causes an error without cast
     return sequence.toArray();
@@ -92,10 +96,14 @@ export class ImmutableMap<K, V> {
   }
 }
 
-function tupleToPair<K, V>(tuple: [K, V]): ImmutableMapKeyValuePair<K, V> {
+function tupleToPair<K, V>(
+  tuple: ImmutableMapTuple<K, V>
+): ImmutableMapKeyValuePair<K, V> {
   return { key: tuple[0], value: tuple[1] };
 }
 
-function pairToTuple<K, V>(pair: ImmutableMapKeyValuePair<K, V>): [K, V] {
+function pairToTuple<K, V>(
+  pair: ImmutableMapKeyValuePair<K, V>
+): ImmutableMapTuple<K, V> {
   return [pair.key, pair.value];
 }
