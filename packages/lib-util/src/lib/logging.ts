@@ -5,17 +5,23 @@
 // @ts-ignore
 import { inspect } from 'util';
 
-export function logErrorWithFullObject(e: unknown): void {
-  console.error(
-    inspect(e, {
-      showHidden: false,
-      depth: null,
-      colors: true,
-    })
-  );
+export function logErrorWithFullValue(e: unknown): void {
+  console.error(inspectFullValue(e));
 }
 
-export function logErrorWithFullObjectAndRethrow(e: unknown): void {
-  logErrorWithFullObject(e);
+export function logErrorWithFullValueAndRethrow(e: unknown): void {
+  logErrorWithFullValue(e);
   throw e;
+}
+
+export function logWithFullValue(value: unknown): void {
+  console.log(inspectFullValue(value));
+}
+
+function inspectFullValue(value: unknown): string {
+  return inspect(value, {
+    showHidden: false,
+    depth: null,
+    colors: true,
+  });
 }

@@ -50,7 +50,7 @@ export function generateMainCode(input: SchemaToCliAppCodeInput): string {
               .indent(() => {
                 writer
                   .writeLine(
-                    'await seedDb(dbParams).catch(logErrorWithFullObjectAndRethrow);'
+                    'await seedDb(dbParams).catch(logErrorWithFullValueAndRethrow);'
                   )
                   .writeLine('break;');
               })
@@ -109,7 +109,7 @@ function createImportDeclarations(
       moduleSpecifier: `@${libsMonorepo.npmScope}/${libsMonorepo.mongoUtilProjectName}`,
     },
     {
-      namedImports: ['logErrorWithFullObjectAndRethrow'],
+      namedImports: ['logErrorWithFullValueAndRethrow'],
       moduleSpecifier: `@${libsMonorepo.npmScope}/${libsMonorepo.libUtilProjectName}`,
     },
     {
