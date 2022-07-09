@@ -1,4 +1,4 @@
-import { isInDir, pathExtension, pathWithoutExtension } from './path';
+import { isInDir, pathDir, pathExtension, pathWithoutExtension } from './path';
 
 describe('path', () => {
   describe('isInDir()', () => {
@@ -79,6 +79,51 @@ describe('path', () => {
     EXAMPLES.forEach((example) => {
       it(JSON.stringify(example), () => {
         const actual = isInDir(example.input.rootDir, example.input.fsPath);
+        expect(actual).toEqual(example.expected);
+      });
+    });
+  });
+
+  describe('pathDir()', () => {
+    interface Example {
+      readonly input: string;
+      readonly expected: string;
+    }
+
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: '',
+        expected: '',
+      },
+      {
+        input: 'a',
+        expected: '',
+      },
+      {
+        input: 'a.ext',
+        expected: '',
+      },
+      {
+        input: '/a',
+        expected: '/',
+      },
+      {
+        input: 'a/b',
+        expected: 'a',
+      },
+      {
+        input: 'a/b.ext',
+        expected: 'a',
+      },
+      {
+        input: 'a/b/c.ext',
+        expected: 'a/b',
+      },
+    ];
+
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        const actual = pathDir(example.input);
         expect(actual).toEqual(example.expected);
       });
     });

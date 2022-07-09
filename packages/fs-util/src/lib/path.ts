@@ -5,6 +5,11 @@ export function isInDir(rootDir: string, fsPath: string): boolean {
   return !!relative && !relative.startsWith('..') && !path.isAbsolute(relative);
 }
 
+export function pathDir(fullPath: string): string {
+  const pathInfo = path.parse(fullPath);
+  return pathInfo.dir;
+}
+
 export function pathWithoutExtension(fullPath: string): string {
   const pathInfo = path.parse(fullPath);
   return path.join(pathInfo.dir, pathInfo.name);
