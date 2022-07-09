@@ -1,4 +1,9 @@
-import { jsonToPretty, jsonToText, textToJson } from './transformations';
+import {
+  jsonToPretty,
+  jsonToText,
+  stringArrayToLines,
+  textToJson,
+} from './transformations';
 import { JsonValue } from 'type-fest';
 
 describe('transformations', () => {
@@ -144,6 +149,47 @@ describe('transformations', () => {
     EXAMPLES.forEach((example) => {
       it(JSON.stringify(example), () => {
         const actual = jsonToPretty(example.input);
+        expect(actual).toEqual(example.expected);
+      });
+    });
+  });
+
+  describe('stringArrayToLines()', () => {
+    interface Example {
+      readonly input: readonly string[];
+      readonly expected: string;
+    }
+
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: [],
+        expected: '',
+      },
+      {
+        input: [''],
+        expected: '',
+      },
+      {
+        input: ['', ''],
+        expected: '\n',
+      },
+      {
+        input: ['', ' '],
+        expected: '\n ',
+      },
+      {
+        input: ['line 1', 'line 2'],
+        expected: 'line 1\nline 2',
+      },
+      {
+        input: ['one line', '', 'another line'],
+        expected: 'one line\n\nanother line',
+      },
+    ];
+
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        const actual = stringArrayToLines(example.input);
         expect(actual).toEqual(example.expected);
       });
     });

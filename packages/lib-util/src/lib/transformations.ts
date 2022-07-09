@@ -29,3 +29,7 @@ function getFinalJsonToPrettyOptions(
     newLineAtEnd: options?.newLineAtEnd ?? true,
   };
 }
+
+export function stringArrayToLines(stringArray: readonly string[]): string {
+  return stringArray.join('\n');
+}
