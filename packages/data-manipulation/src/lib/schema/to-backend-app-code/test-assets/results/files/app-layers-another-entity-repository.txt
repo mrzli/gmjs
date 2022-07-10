@@ -21,7 +21,8 @@ export class AnotherEntityRepository {
   }
 
   public async getById(id: ObjectId): Promise<DbAnotherEntity | undefined> {
-    return this.collection.findOne({ _id: id });
+    const result = await this.collection.findOne({ _id: id });
+    return result ?? undefined;
   }
 
   public async create(

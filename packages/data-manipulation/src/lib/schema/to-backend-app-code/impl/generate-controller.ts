@@ -3,7 +3,10 @@ import { MongoJsonSchemaTypeObject } from '@gmjs/mongo-util';
 import { camelCase, kebabCase, pascalCase } from '@gmjs/lib-util';
 import path from 'path';
 import { SchemaToBackendAppCodeInput } from '../schema-to-backend-app-code-input';
-import { getSharedLibraryModuleSpecifier } from './service-helpers/import-helpers';
+import {
+  getNestUtilModuleSpecifier,
+  getSharedLibraryModuleSpecifier,
+} from './service-helpers/import-helpers';
 import { PathContentPair } from '@gmjs/fs-util';
 import { createTsSourceFile } from '../../../shared/source-file-util';
 
@@ -35,6 +38,10 @@ export function generateController(
         namedImports: ['Except'],
         moduleSpecifier: 'type-fest',
         isTypeOnly: true,
+      },
+      {
+        namedImports: ['valueOrThrowItemNotFoundException'],
+        moduleSpecifier: getNestUtilModuleSpecifier(input),
       },
       {
         namedImports: [appTypeName],
@@ -105,7 +112,10 @@ export function generateController(
             },
           ],
           returnType: `Promise<${appTypeName}>`,
-          statements: [`return this.${serviceVariable}.getById(id);`],
+          statements: [
+            `const result = await this.${serviceVariable}.getById(id);`,
+            'return valueOrThrowItemNotFoundException(result, id);',
+          ],
         },
         {
           decorators: [

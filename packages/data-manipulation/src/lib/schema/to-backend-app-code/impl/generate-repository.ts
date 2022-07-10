@@ -95,7 +95,10 @@ export function generateRepository(
             },
           ],
           returnType: `Promise<${dbTypeName} | undefined>`,
-          statements: ['return this.collection.findOne({ _id: id });'],
+          statements: [
+            'const result = await this.collection.findOne({ _id: id });',
+            'return result ?? undefined;',
+          ],
         },
         {
           scope: Scope.Public,

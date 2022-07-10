@@ -19,7 +19,8 @@ export class Entity2Repository {
   }
 
   public async getById(id: ObjectId): Promise<DbEntity2 | undefined> {
-    return this.collection.findOne({ _id: id });
+    const result = await this.collection.findOne({ _id: id });
+    return result ?? undefined;
   }
 
   public async create(dbEntity2: Except<DbEntity2, '_id'>): Promise<DbEntity2> {

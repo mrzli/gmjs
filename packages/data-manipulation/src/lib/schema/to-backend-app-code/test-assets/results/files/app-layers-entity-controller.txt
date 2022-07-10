@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import type { Except } from 'type-fest';
+import { valueOrThrowItemNotFoundException } from '@gmjs/nest-util';
 import { AppEntity } from '@gmjs-apps/example-shared';
 import { EntityService } from './entity.service';
 
@@ -14,7 +15,8 @@ export class EntityController {
 
   @Get('/find/:id')
   public async getById(@Param('id') id: string): Promise<AppEntity> {
-    return this.entityService.getById(id);
+    const result = await this.entityService.getById(id);
+    return valueOrThrowItemNotFoundException(result, id);
   }
 
   @Post('/create')
