@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
-import type { Except } from 'type-fest';
+import { WithoutId } from '@gmjs/mongo-util';
 import { valueOrThrowItemNotFoundException } from '@gmjs/nest-util';
 import { AppEntity2 } from '@gmjs-apps/example-shared';
 import { Entity2Service } from './entity2.service';
@@ -21,7 +21,7 @@ export class Entity2Controller {
 
   @Post('/create')
   public async create(
-    @Body() entity2: Except<AppEntity2, 'id'>
+    @Body() entity2: WithoutId<AppEntity2>
   ): Promise<AppEntity2> {
     return this.entity2Service.create(entity2);
   }
@@ -29,7 +29,7 @@ export class Entity2Controller {
   @Post('/update/:id')
   public async update(
     @Param('id') id: string,
-    @Body() entity2: Partial<Except<AppEntity2, 'id'>>
+    @Body() entity2: WithoutId<AppEntity2>
   ): Promise<AppEntity2> {
     return this.entity2Service.update(id, entity2);
   }

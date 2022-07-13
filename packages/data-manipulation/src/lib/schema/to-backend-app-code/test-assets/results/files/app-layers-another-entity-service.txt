@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ObjectId } from 'mongodb';
-import { Except } from 'type-fest';
+import { DbWithoutId, WithoutId } from '@gmjs/mongo-util';
 import { objectRemoveUndefined, transformIfExists } from '@gmjs/util';
 import { AppAnotherEntity, DbAnotherEntity } from '@gmjs-apps/example-shared';
 import { AnotherEntityRepository } from './another-entity.repository';
@@ -28,7 +28,7 @@ export class AnotherEntityService {
   }
 
   public async create(
-    appAnotherEntity: Except<AppAnotherEntity, 'id'>
+    appAnotherEntity: WithoutId<AppAnotherEntity>
   ): Promise<AppAnotherEntity> {
     const dbAnotherEntity = await this.anotherEntityRepository.create(
       appAnotherEntityToDbAnotherEntityWithoutId(appAnotherEntity)
@@ -38,11 +38,11 @@ export class AnotherEntityService {
 
   public async update(
     id: string,
-    appAnotherEntity: Partial<Except<AppAnotherEntity, 'id'>>
+    appAnotherEntity: WithoutId<AppAnotherEntity>
   ): Promise<AppAnotherEntity> {
     const dbAnotherEntity = await this.anotherEntityRepository.update(
       new ObjectId(id),
-      appAnotherEntityToDbAnotherEntityWithoutIdPartial(appAnotherEntity)
+      appAnotherEntityToDbAnotherEntityWithoutId(appAnotherEntity)
     );
     return dbAnotherEntityToAppAnotherEntity(dbAnotherEntity);
   }
@@ -71,17 +71,9 @@ export function appAnotherEntityToDbAnotherEntity(
 }
 
 export function appAnotherEntityToDbAnotherEntityWithoutId(
-  appAnotherEntity: Except<AppAnotherEntity, 'id'>
-): Except<DbAnotherEntity, '_id'> {
+  appAnotherEntity: WithoutId<AppAnotherEntity>
+): DbWithoutId<DbAnotherEntity> {
   return {
     field: appAnotherEntity.field,
   };
-}
-
-export function appAnotherEntityToDbAnotherEntityWithoutIdPartial(
-  appAnotherEntity: Partial<Except<AppAnotherEntity, 'id'>>
-): Partial<Except<DbAnotherEntity, '_id'>> {
-  return objectRemoveUndefined({
-    field: appAnotherEntity.field,
-  });
 }

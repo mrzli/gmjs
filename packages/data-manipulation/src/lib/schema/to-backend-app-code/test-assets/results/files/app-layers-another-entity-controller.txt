@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
-import type { Except } from 'type-fest';
+import { WithoutId } from '@gmjs/mongo-util';
 import { valueOrThrowItemNotFoundException } from '@gmjs/nest-util';
 import { AppAnotherEntity } from '@gmjs-apps/example-shared';
 import { AnotherEntityService } from './another-entity.service';
@@ -23,7 +23,7 @@ export class AnotherEntityController {
 
   @Post('/create')
   public async create(
-    @Body() anotherEntity: Except<AppAnotherEntity, 'id'>
+    @Body() anotherEntity: WithoutId<AppAnotherEntity>
   ): Promise<AppAnotherEntity> {
     return this.anotherEntityService.create(anotherEntity);
   }
@@ -31,7 +31,7 @@ export class AnotherEntityController {
   @Post('/update/:id')
   public async update(
     @Param('id') id: string,
-    @Body() anotherEntity: Partial<Except<AppAnotherEntity, 'id'>>
+    @Body() anotherEntity: WithoutId<AppAnotherEntity>
   ): Promise<AppAnotherEntity> {
     return this.anotherEntityService.update(id, anotherEntity);
   }

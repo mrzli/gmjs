@@ -57,16 +57,23 @@ export function getSharedLibraryModuleSpecifier(
   return `@${appsMonorepo.npmScope}/${appsMonorepo.sharedProjectName}`;
 }
 
-export function getNestUtilModuleSpecifier(
-  input: SchemaToBackendAppCodeInput
-): string {
-  const libsMonorepo = input.options.libsMonorepo;
-  return `@${libsMonorepo.npmScope}/${libsMonorepo.nestUtilProjectName}`;
-}
-
 export function getUtilModuleSpecifier(
   input: SchemaToBackendAppCodeInput
 ): string {
   const libsMonorepo = input.options.libsMonorepo;
   return `@${libsMonorepo.npmScope}/${libsMonorepo.utilProjectName}`;
+}
+
+export function getMongoUtilModuleSpecifier(
+  input: SchemaToBackendAppCodeInput
+): string {
+  const libsMonorepo = input.options.libsMonorepo;
+  return `@${libsMonorepo.npmScope}/${libsMonorepo.mongoUtilProjectName}`;
+}
+
+export function getNestUtilModuleSpecifier(
+  input: SchemaToBackendAppCodeInput
+): string {
+  const libsMonorepo = input.options.libsMonorepo;
+  return `@${libsMonorepo.npmScope}/${libsMonorepo.nestUtilProjectName}`;
 }

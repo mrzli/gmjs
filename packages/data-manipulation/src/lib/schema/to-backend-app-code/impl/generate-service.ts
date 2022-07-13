@@ -10,6 +10,7 @@ import {
 import { compareFnStringAsc, sortArray } from '@gmjs/util';
 import {
   getMongoImports,
+  getMongoUtilModuleSpecifier,
   getSharedLibraryInterfaceImports,
   getSharedLibraryModuleSpecifier,
   getUtilModuleSpecifier,
@@ -26,7 +27,6 @@ import {
   createAppToDbMapperFunctionDeclaration,
   createAppToDbMapperMainCollectionFunctionDeclaration,
   createAppToDbWithoutIdMapperFunctionDeclaration,
-  createAppToDbWithoutIdPartialMapperFunctionDeclaration,
   getAppToDbMapperFunctionName,
 } from './service-helpers/app-to-db-mapping-helpers';
 import { SchemaToBackendAppCodeInput } from '../schema-to-backend-app-code-input';
@@ -71,8 +71,8 @@ export function generateService(
         moduleSpecifier: 'mongodb',
       },
       {
-        namedImports: ['Except'],
-        moduleSpecifier: 'type-fest',
+        namedImports: ['DbWithoutId', 'WithoutId'],
+        moduleSpecifier: getMongoUtilModuleSpecifier(input),
       },
       {
         namedImports: [
@@ -148,7 +148,7 @@ export function generateService(
           parameters: [
             {
               name: appVariableName,
-              type: `Except<${appTypeName}, 'id'>`,
+              type: `WithoutId<${appTypeName}>`,
             },
           ],
           returnType: `Promise<${appTypeName}>`,
@@ -172,7 +172,7 @@ export function generateService(
             },
             {
               name: appVariableName,
-              type: `Partial<Except<${appTypeName}, 'id'>>`,
+              type: `WithoutId<${appTypeName}>`,
             },
           ],
           returnType: `Promise<${appTypeName}>`,
@@ -180,7 +180,7 @@ export function generateService(
             [
               `const ${dbVariableName} = await this.${repositoryVariable}.update(`,
               '  new ObjectId(id),',
-              `  ${appToDbMapper}WithoutIdPartial(${appVariableName})`,
+              `  ${appToDbMapper}WithoutId(${appVariableName})`,
               ');',
             ].join('\n'),
             `return ${dbToAppMapper}(${dbVariableName});`,
@@ -249,11 +249,6 @@ function createMapperFunctionDeclarations(
     ),
     ...embeddedEntities.map((entity) =>
       createAppToDbMapperFunctionDeclaration(entity, dbPrefix, appPrefix)
-    ),
-    createAppToDbWithoutIdPartialMapperFunctionDeclaration(
-      collectionStructure.collectionType,
-      dbPrefix,
-      appPrefix
     ),
   ];
 }

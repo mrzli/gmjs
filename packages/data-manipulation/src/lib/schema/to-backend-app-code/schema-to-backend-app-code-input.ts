@@ -20,6 +20,7 @@ export interface SchemaToBackendAppCodeOptions {
 export interface SchemaToBackendAppCodeLibsMonorepoOptions {
   readonly npmScope: string;
   readonly utilProjectName: string;
+  readonly mongoUtilProjectName: string;
   readonly nestUtilProjectName: string;
 }
 

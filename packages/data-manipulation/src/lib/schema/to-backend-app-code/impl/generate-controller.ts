@@ -4,6 +4,7 @@ import { camelCase, kebabCase, pascalCase } from '@gmjs/lib-util';
 import path from 'path';
 import { SchemaToBackendAppCodeInput } from '../schema-to-backend-app-code-input';
 import {
+  getMongoUtilModuleSpecifier,
   getNestUtilModuleSpecifier,
   getSharedLibraryModuleSpecifier,
 } from './service-helpers/import-helpers';
@@ -35,9 +36,8 @@ export function generateController(
         moduleSpecifier: '@nestjs/common',
       },
       {
-        namedImports: ['Except'],
-        moduleSpecifier: 'type-fest',
-        isTypeOnly: true,
+        namedImports: ['WithoutId'],
+        moduleSpecifier: getMongoUtilModuleSpecifier(input),
       },
       {
         namedImports: ['valueOrThrowItemNotFoundException'],
@@ -136,7 +136,7 @@ export function generateController(
                 },
               ],
               name: variableName,
-              type: `Except<${appTypeName}, 'id'>`,
+              type: `WithoutId<${appTypeName}>`,
             },
           ],
           returnType: `Promise<${appTypeName}>`,
@@ -173,7 +173,7 @@ export function generateController(
                 },
               ],
               name: variableName,
-              type: `Partial<Except<${appTypeName}, 'id'>>`,
+              type: `WithoutId<${appTypeName}>`,
             },
           ],
           returnType: `Promise<${appTypeName}>`,

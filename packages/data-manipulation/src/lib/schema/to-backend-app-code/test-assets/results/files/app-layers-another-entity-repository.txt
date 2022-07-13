@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Collection, ObjectId, OptionalId } from 'mongodb';
-import { Except } from 'type-fest';
+import { DbWithoutId } from '@gmjs/mongo-util';
 import { MongoDatabaseService, valueOrThrow } from '@gmjs/nest-util';
 import { DbCollectionName, DbAnotherEntity } from '@gmjs-apps/example-shared';
 
@@ -26,7 +26,7 @@ export class AnotherEntityRepository {
   }
 
   public async create(
-    dbAnotherEntity: Except<DbAnotherEntity, '_id'>
+    dbAnotherEntity: DbWithoutId<DbAnotherEntity>
   ): Promise<DbAnotherEntity> {
     const { insertedId } = await this.collection.insertOne(dbAnotherEntity);
     const result = await this.collection.findOne<DbAnotherEntity>({
@@ -37,7 +37,7 @@ export class AnotherEntityRepository {
 
   public async update(
     id: ObjectId,
-    dbAnotherEntity: Partial<Except<DbAnotherEntity, '_id'>>
+    dbAnotherEntity: DbWithoutId<DbAnotherEntity>
   ): Promise<DbAnotherEntity> {
     const result = await this.collection.findOneAndUpdate(
       { _id: id },

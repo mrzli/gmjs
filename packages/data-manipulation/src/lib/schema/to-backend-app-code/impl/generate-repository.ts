@@ -4,6 +4,7 @@ import { camelCase, kebabCase, pascalCase } from '@gmjs/lib-util';
 import path from 'path';
 import { SchemaToBackendAppCodeInput } from '../schema-to-backend-app-code-input';
 import {
+  getMongoUtilModuleSpecifier,
   getNestUtilModuleSpecifier,
   getSharedLibraryModuleSpecifier,
 } from './service-helpers/import-helpers';
@@ -36,8 +37,8 @@ export function generateRepository(
         moduleSpecifier: 'mongodb',
       },
       {
-        namedImports: ['Except'],
-        moduleSpecifier: 'type-fest',
+        namedImports: ['DbWithoutId'],
+        moduleSpecifier: getMongoUtilModuleSpecifier(input),
       },
       {
         namedImports: ['MongoDatabaseService', 'valueOrThrow'],
@@ -107,7 +108,7 @@ export function generateRepository(
           parameters: [
             {
               name: dbVariableName,
-              type: `Except<${dbTypeName}, '_id'>`,
+              type: `DbWithoutId<${dbTypeName}>`,
             },
           ],
           returnType: `Promise<${dbTypeName}>`,
@@ -132,7 +133,7 @@ export function generateRepository(
             },
             {
               name: dbVariableName,
-              type: `Partial<Except<${dbTypeName}, '_id'>>`,
+              type: `DbWithoutId<${dbTypeName}>`,
             },
           ],
           returnType: `Promise<${dbTypeName}>`,

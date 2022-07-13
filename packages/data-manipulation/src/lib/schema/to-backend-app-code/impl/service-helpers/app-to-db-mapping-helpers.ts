@@ -101,8 +101,8 @@ export function createAppToDbWithoutIdMapperFunctionDeclaration(
   const appTypeName = pascalCase(`${appPrefix}${typeName}`);
 
   const functionName = `${getAppToDbMapperFunctionName(entity.name)}WithoutId`;
-  const inputType = `Except<${appTypeName}, 'id'>`;
-  const returnType = `Except<${dbTypeName}, '_id'>`;
+  const inputType = `WithoutId<${appTypeName}>`;
+  const returnType = `DbWithoutId<${dbTypeName}>`;
 
   return createAppToDbMapperFunctionDeclarationInternal(
     entity,
@@ -112,33 +112,6 @@ export function createAppToDbWithoutIdMapperFunctionDeclaration(
     inputType,
     returnType,
     false,
-    ['_id']
-  );
-}
-
-export function createAppToDbWithoutIdPartialMapperFunctionDeclaration(
-  entity: MongoEntityStructure,
-  dbPrefix: string,
-  appPrefix: string
-): OptionalKind<FunctionDeclarationStructure> {
-  const typeName = pascalCase(entity.name);
-  const dbTypeName = pascalCase(`${dbPrefix}${typeName}`);
-  const appTypeName = pascalCase(`${appPrefix}${typeName}`);
-
-  const functionName = `${getAppToDbMapperFunctionName(
-    entity.name
-  )}WithoutIdPartial`;
-  const inputType = `Partial<Except<${appTypeName}, 'id'>>`;
-  const returnType = `Partial<Except<${dbTypeName}, '_id'>>`;
-
-  return createAppToDbMapperFunctionDeclarationInternal(
-    entity,
-    dbPrefix,
-    appPrefix,
-    functionName,
-    inputType,
-    returnType,
-    true,
     ['_id']
   );
 }

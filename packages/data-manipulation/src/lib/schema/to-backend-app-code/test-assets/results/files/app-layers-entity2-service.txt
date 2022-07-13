@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ObjectId } from 'mongodb';
-import { Except } from 'type-fest';
+import { DbWithoutId, WithoutId } from '@gmjs/mongo-util';
 import { objectRemoveUndefined, transformIfExists } from '@gmjs/util';
 import {
   AppEntity2,
@@ -26,9 +26,7 @@ export class Entity2Service {
     return transformIfExists(dbEntity2, dbEntity2ToAppEntity2, undefined);
   }
 
-  public async create(
-    appEntity2: Except<AppEntity2, 'id'>
-  ): Promise<AppEntity2> {
+  public async create(appEntity2: WithoutId<AppEntity2>): Promise<AppEntity2> {
     const dbEntity2 = await this.entity2Repository.create(
       appEntity2ToDbEntity2WithoutId(appEntity2)
     );
@@ -37,11 +35,11 @@ export class Entity2Service {
 
   public async update(
     id: string,
-    appEntity2: Partial<Except<AppEntity2, 'id'>>
+    appEntity2: WithoutId<AppEntity2>
   ): Promise<AppEntity2> {
     const dbEntity2 = await this.entity2Repository.update(
       new ObjectId(id),
-      appEntity2ToDbEntity2WithoutIdPartial(appEntity2)
+      appEntity2ToDbEntity2WithoutId(appEntity2)
     );
     return dbEntity2ToAppEntity2(dbEntity2);
   }
@@ -88,8 +86,8 @@ export function appEntity2ToDbEntity2(appEntity2: AppEntity2): DbEntity2 {
 }
 
 export function appEntity2ToDbEntity2WithoutId(
-  appEntity2: Except<AppEntity2, 'id'>
-): Except<DbEntity2, '_id'> {
+  appEntity2: WithoutId<AppEntity2>
+): DbWithoutId<DbEntity2> {
   return {
     field: appEntity2.field,
     fieldRefFromOtherCollection: appSubEntity1ToDbSubEntity1(
@@ -115,17 +113,4 @@ export function appSubEntity11ToDbSubEntity11(
   return {
     subfield111: appSubEntity11.subfield111,
   };
-}
-
-export function appEntity2ToDbEntity2WithoutIdPartial(
-  appEntity2: Partial<Except<AppEntity2, 'id'>>
-): Partial<Except<DbEntity2, '_id'>> {
-  return objectRemoveUndefined({
-    field: appEntity2.field,
-    fieldRefFromOtherCollection: transformIfExists(
-      appEntity2.fieldRefFromOtherCollection,
-      appSubEntity1ToDbSubEntity1,
-      undefined
-    ),
-  });
 }

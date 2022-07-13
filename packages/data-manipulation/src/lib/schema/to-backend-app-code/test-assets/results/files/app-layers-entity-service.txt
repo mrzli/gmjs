@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Decimal128, Double, Long, ObjectId } from 'mongodb';
-import { Except } from 'type-fest';
+import { DbWithoutId, WithoutId } from '@gmjs/mongo-util';
 import { objectRemoveUndefined, transformIfExists } from '@gmjs/util';
 import {
   AppEntity,
@@ -28,7 +28,7 @@ export class EntityService {
     return transformIfExists(dbEntity, dbEntityToAppEntity, undefined);
   }
 
-  public async create(appEntity: Except<AppEntity, 'id'>): Promise<AppEntity> {
+  public async create(appEntity: WithoutId<AppEntity>): Promise<AppEntity> {
     const dbEntity = await this.entityRepository.create(
       appEntityToDbEntityWithoutId(appEntity)
     );
@@ -37,11 +37,11 @@ export class EntityService {
 
   public async update(
     id: string,
-    appEntity: Partial<Except<AppEntity, 'id'>>
+    appEntity: WithoutId<AppEntity>
   ): Promise<AppEntity> {
     const dbEntity = await this.entityRepository.update(
       new ObjectId(id),
-      appEntityToDbEntityWithoutIdPartial(appEntity)
+      appEntityToDbEntityWithoutId(appEntity)
     );
     return dbEntityToAppEntity(dbEntity);
   }
@@ -142,8 +142,8 @@ export function appEntityToDbEntity(appEntity: AppEntity): DbEntity {
 }
 
 export function appEntityToDbEntityWithoutId(
-  appEntity: Except<AppEntity, 'id'>
-): Except<DbEntity, '_id'> {
+  appEntity: WithoutId<AppEntity>
+): DbWithoutId<DbEntity> {
   return {
     fieldString1: appEntity.fieldString1,
     fieldString2: appEntity.fieldString2,
@@ -229,89 +229,4 @@ export function appSubEntity2ToDbSubEntity2(
     subfield22: appSubEntity2.subfield22,
     subfield23: new Date(appSubEntity2.subfield23),
   };
-}
-
-export function appEntityToDbEntityWithoutIdPartial(
-  appEntity: Partial<Except<AppEntity, 'id'>>
-): Partial<Except<DbEntity, '_id'>> {
-  return objectRemoveUndefined({
-    fieldString1: appEntity.fieldString1,
-    fieldString2: appEntity.fieldString2,
-    fieldInt1: appEntity.fieldInt1,
-    fieldInt2: appEntity.fieldInt2,
-    fieldInt3: appEntity.fieldInt3,
-    fieldInt4: appEntity.fieldInt4,
-    fieldInt5: appEntity.fieldInt5,
-    fieldInt6: appEntity.fieldInt6,
-    fieldInt7: appEntity.fieldInt7,
-    fieldLong: transformIfExists(
-      appEntity.fieldLong,
-      (value) => new Long(value),
-      undefined
-    ),
-    fieldDouble: transformIfExists(
-      appEntity.fieldDouble,
-      (value) => new Double(value),
-      undefined
-    ),
-    fieldDecimal: transformIfExists(
-      appEntity.fieldDecimal,
-      (value) => new Decimal128(value),
-      undefined
-    ),
-    fieldBool: appEntity.fieldBool,
-    fieldObjectId: transformIfExists(
-      appEntity.fieldObjectId,
-      (value) => new ObjectId(value),
-      undefined
-    ),
-    fieldDate: transformIfExists(
-      appEntity.fieldDate,
-      (value) => new Date(value),
-      undefined
-    ),
-    fieldEnumString: appEntity.fieldEnumString,
-    fieldArrayString: appEntity.fieldArrayString,
-    fieldArrayInt1: appEntity.fieldArrayInt1,
-    fieldArrayInt2: appEntity.fieldArrayInt2,
-    fieldArrayLong: appEntity.fieldArrayLong?.map((item) => new Long(item)),
-    fieldArrayDouble: appEntity.fieldArrayDouble?.map(
-      (item) => new Double(item)
-    ),
-    fieldArrayDecimal: appEntity.fieldArrayDecimal?.map(
-      (item) => new Decimal128(item)
-    ),
-    fieldArrayBool: appEntity.fieldArrayBool,
-    fieldArrayObjectId: appEntity.fieldArrayObjectId?.map(
-      (item) => new ObjectId(item)
-    ),
-    fieldArrayDate: appEntity.fieldArrayDate?.map((item) => new Date(item)),
-    fieldArrayEnumString: appEntity.fieldArrayEnumString,
-    fieldObject: transformIfExists(
-      appEntity.fieldObject,
-      appSubEntity1ToDbSubEntity1,
-      undefined
-    ),
-    fieldArrayOfObjects: appEntity.fieldArrayOfObjects?.map(
-      appSubEntity2ToDbSubEntity2
-    ),
-    fieldOptionalString: appEntity.fieldOptionalString,
-    fieldOptionalDate: transformIfExists(
-      appEntity.fieldOptionalDate,
-      (value) => new Date(value),
-      undefined
-    ),
-    fieldOptionalArrayString: appEntity.fieldOptionalArrayString,
-    fieldOptionalArrayDate: appEntity.fieldOptionalArrayDate?.map(
-      (item) => new Date(item)
-    ),
-    fieldOptionalObject: transformIfExists(
-      appEntity.fieldOptionalObject,
-      appSubEntity1ToDbSubEntity1,
-      undefined
-    ),
-    fieldOptionalArrayOfObjects: appEntity.fieldOptionalArrayOfObjects?.map(
-      appSubEntity2ToDbSubEntity2
-    ),
-  });
 }
