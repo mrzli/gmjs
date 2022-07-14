@@ -4,85 +4,29 @@
   "sourceRoot": "packages/workspace/src",
   "targets": {
     "cloc": {
-      "executor": "@gmnx/ws-util:cloc",
+      "executor": "nx:run-commands",
       "options": {
-        "ignoreDirs": [
-          ".idea",
-          ".vscode",
-          "node_modules",
-          "dist"
-        ],
-        "ignoreFiles": [
-          "package-lock.json"
-        ]
+        "command": "npx cloc --exclude-dir=.idea,.vscode,node_modules,dist --not-match-f=package-lock.json ."
       }
     },
-    "mongo-start": {
-      "executor": "@gmnx/ws-util:mongo-start",
+    "publish-all-compile": {
+      "executor": "nx:run-commands",
       "options": {
-        "containerName": "mongo",
-        "mongoVersion": "5.0.8",
-        "port": 27017,
-        "dataDir": "~/docker/mongo"
+        "command": "tsc --project ./tools/scripts/publish-all/tsconfig.json"
       }
     },
-    "mongo-stop": {
-      "executor": "@gmnx/ws-util:mongo-stop",
+    "publish-all-run": {
+      "executor": "nx:run-commands",
       "options": {
-        "containerName": "mongo",
-        "mongoVersion": "5.0.8",
-        "port": 27017,
-        "dataDir": "~/docker/mongo"
-      }
-    },
-    "postgres-start": {
-      "executor": "@gmnx/ws-util:postgres-start",
-      "options": {
-        "containerName": "postgres",
-        "postgresVersion": "14.2",
-        "port": 15432,
-        "dataDir": "~/docker/postgres",
-        "username": "postgres",
-        "password": "password"
-      }
-    },
-    "postgres-stop": {
-      "executor": "@gmnx/ws-util:postgres-stop",
-      "options": {
-        "containerName": "postgres",
-        "postgresVersion": "14.2",
-        "port": 15432,
-        "dataDir": "~/docker/postgres",
-        "username": "postgres",
-        "password": "password"
+        "command": "node ./tools/scripts/publish-all/dist/index.js"
       }
     },
     "publish-all": {
-      "executor": "@gmnx/ws-util:publish-all",
-      "options": {}
-    },
-    "update-gmjs": {
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "npm install @gmjs/data-manipulation@latest @gmjs/fs-util@latest @gmjs/lib-util@latest @gmjs/mongo-util@latest @gmjs/nest-util@latest @gmjs/util@latest -f",
-          "npm install -D @gmjs/test-util@latest -f"
-        ],
-        "parallel": false
-      }
-    },
-    "update-gmnx": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "npm install -D @gmnx/ws-util@latest @gmnx/project@latest -f"
-      }
-    },
-    "update-gmall": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": [
-          "nx run workspace:update-gmjs",
-          "nx run workspace:update-gmnx"
+          "nx run workspace:publish-all-compile",
+          "nx run workspace:publish-all-run"
         ],
         "parallel": false
       }
