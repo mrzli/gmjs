@@ -54,10 +54,7 @@ export function createCodeFileComparisonStrings(
   actual: readonly PathContentPair[],
   expected: readonly PathContentPair[]
 ): FileComparisonStrings {
-  const expectedPathsSet = ImmutableSet.fromArrayWithFieldMapping(
-    expected,
-    'path'
-  );
+  const expectedPathsSet = ImmutableSet.fromArrayWithField(expected, 'path');
 
   const finalExpected: readonly PathContentPair[] = [
     ...expected,

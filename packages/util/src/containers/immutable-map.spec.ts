@@ -4,6 +4,7 @@ import {
   ImmutableMapTuple,
 } from './immutable-map';
 import { AnyValue } from '../types/generic';
+import { identifyFn } from '@gmjs/util';
 
 describe('ImmutableMap', () => {
   it.skip('performance-test', () => {
@@ -20,127 +21,7 @@ describe('ImmutableMap', () => {
     expect(actual).toEqual([]);
   });
 
-  describe('fromTupleArray()', () => {
-    interface Example {
-      readonly input: readonly [string, string][];
-      readonly expected: readonly [string, string][];
-    }
-
-    const EXAMPLES: readonly Example[] = [
-      {
-        input: [],
-        expected: [],
-      },
-      {
-        input: [['k1', 'v1']],
-        expected: [['k1', 'v1']],
-      },
-      {
-        input: [
-          ['k1', 'v1'],
-          ['k2', 'v2'],
-        ],
-        expected: [
-          ['k1', 'v1'],
-          ['k2', 'v2'],
-        ],
-      },
-      {
-        input: [
-          ['k2', 'v2'],
-          ['k1', 'v1'],
-          ['k3', 'v3'],
-        ],
-        expected: [
-          ['k2', 'v2'],
-          ['k1', 'v1'],
-          ['k3', 'v3'],
-        ],
-      },
-      {
-        input: [
-          ['k2', 'v2'],
-          ['k1', 'v1-1'],
-          ['k1', 'v1-2'],
-          ['k3', 'v3'],
-        ],
-        expected: [
-          ['k2', 'v2'],
-          ['k1', 'v1-2'],
-          ['k3', 'v3'],
-        ],
-      },
-    ];
-
-    EXAMPLES.forEach((example) => {
-      it(JSON.stringify(example), () => {
-        const actual = ImmutableMap.fromTupleArray(example.input).entryTuples();
-        expect(actual).toEqual(example.expected);
-      });
-    });
-  });
-
-  describe('fromPairArray()', () => {
-    interface Example {
-      readonly input: readonly ImmutableMapKeyValuePair<string, string>[];
-      readonly expected: readonly [string, string][];
-    }
-
-    const EXAMPLES: readonly Example[] = [
-      {
-        input: [],
-        expected: [],
-      },
-      {
-        input: [{ key: 'k1', value: 'v1' }],
-        expected: [['k1', 'v1']],
-      },
-      {
-        input: [
-          { key: 'k1', value: 'v1' },
-          { key: 'k2', value: 'v2' },
-        ],
-        expected: [
-          ['k1', 'v1'],
-          ['k2', 'v2'],
-        ],
-      },
-      {
-        input: [
-          { key: 'k2', value: 'v2' },
-          { key: 'k1', value: 'v1' },
-          { key: 'k3', value: 'v3' },
-        ],
-        expected: [
-          ['k2', 'v2'],
-          ['k1', 'v1'],
-          ['k3', 'v3'],
-        ],
-      },
-      {
-        input: [
-          { key: 'k2', value: 'v2' },
-          { key: 'k1', value: 'v1-1' },
-          { key: 'k1', value: 'v1-2' },
-          { key: 'k3', value: 'v3' },
-        ],
-        expected: [
-          ['k2', 'v2'],
-          ['k1', 'v1-2'],
-          ['k3', 'v3'],
-        ],
-      },
-    ];
-
-    EXAMPLES.forEach((example) => {
-      it(JSON.stringify(example), () => {
-        const actual = ImmutableMap.fromPairArray(example.input).entryTuples();
-        expect(actual).toEqual(example.expected);
-      });
-    });
-  });
-
-  describe('fromArrayWithKeyField()', () => {
+  describe('fromArray', () => {
     interface ExampleItem {
       readonly keyA: string;
       readonly keyB: string;
@@ -161,84 +42,392 @@ describe('ImmutableMap', () => {
       };
     }
 
-    interface Example {
-      readonly input: {
-        readonly array: readonly ExampleItem[];
-        readonly keyField: keyof ExampleItem;
-      };
-      readonly expected: unknown;
-    }
+    describe('fromTupleArray()', () => {
+      interface Example {
+        readonly input: readonly [string, string][];
+        readonly expected: readonly [string, string][];
+      }
 
-    const EXAMPLES: readonly Example[] = [
-      {
-        input: {
-          array: [],
-          keyField: 'keyA',
+      const EXAMPLES: readonly Example[] = [
+        {
+          input: [],
+          expected: [],
         },
-        expected: [],
-      },
-      {
-        input: {
-          array: [createExampleItem(1)],
-          keyField: 'keyA',
+        {
+          input: [['k1', 'v1']],
+          expected: [['k1', 'v1']],
         },
-        expected: [['keyA1', createExampleItem(1)]],
-      },
-      {
-        input: {
-          array: [
-            createExampleItem(1),
-            createExampleItem(2),
-            createExampleItem(3),
+        {
+          input: [
+            ['k1', 'v1'],
+            ['k2', 'v2'],
           ],
-          keyField: 'keyA',
-        },
-        expected: [
-          ['keyA1', createExampleItem(1)],
-          ['keyA2', createExampleItem(2)],
-          ['keyA3', createExampleItem(3)],
-        ],
-      },
-      {
-        input: {
-          array: [
-            createExampleItem(1),
-            createExampleItem(2),
-            createExampleItem(3),
+          expected: [
+            ['k1', 'v1'],
+            ['k2', 'v2'],
           ],
-          keyField: 'keyB',
         },
-        expected: [
-          ['keyB1', createExampleItem(1)],
-          ['keyB2', createExampleItem(2)],
-          ['keyB3', createExampleItem(3)],
-        ],
-      },
-      {
-        input: {
-          array: [
-            createExampleItem(1),
-            createExampleItem(2, 1),
-            createExampleItem(2, 2),
-            createExampleItem(3),
+        {
+          input: [
+            ['k2', 'v2'],
+            ['k1', 'v1'],
+            ['k3', 'v3'],
           ],
-          keyField: 'keyA',
+          expected: [
+            ['k2', 'v2'],
+            ['k1', 'v1'],
+            ['k3', 'v3'],
+          ],
         },
-        expected: [
-          ['keyA1', createExampleItem(1)],
-          ['keyA2', createExampleItem(2, 2)],
-          ['keyA3', createExampleItem(3)],
-        ],
-      },
-    ];
+        {
+          input: [
+            ['k2', 'v2'],
+            ['k1', 'v1-1'],
+            ['k1', 'v1-2'],
+            ['k3', 'v3'],
+          ],
+          expected: [
+            ['k2', 'v2'],
+            ['k1', 'v1-2'],
+            ['k3', 'v3'],
+          ],
+        },
+      ];
 
-    EXAMPLES.forEach((example) => {
-      it(JSON.stringify(example), () => {
-        const actual = ImmutableMap.fromArrayWithKeyField(
-          example.input.array,
-          example.input.keyField
-        ).entryTuples();
-        expect(actual).toEqual(example.expected);
+      EXAMPLES.forEach((example) => {
+        it(JSON.stringify(example), () => {
+          const actual = ImmutableMap.fromTupleArray(
+            example.input
+          ).entryTuples();
+          expect(actual).toEqual(example.expected);
+        });
+      });
+    });
+
+    describe('fromPairArray()', () => {
+      interface Example {
+        readonly input: readonly ImmutableMapKeyValuePair<string, string>[];
+        readonly expected: readonly [string, string][];
+      }
+
+      const EXAMPLES: readonly Example[] = [
+        {
+          input: [],
+          expected: [],
+        },
+        {
+          input: [{ key: 'k1', value: 'v1' }],
+          expected: [['k1', 'v1']],
+        },
+        {
+          input: [
+            { key: 'k1', value: 'v1' },
+            { key: 'k2', value: 'v2' },
+          ],
+          expected: [
+            ['k1', 'v1'],
+            ['k2', 'v2'],
+          ],
+        },
+        {
+          input: [
+            { key: 'k2', value: 'v2' },
+            { key: 'k1', value: 'v1' },
+            { key: 'k3', value: 'v3' },
+          ],
+          expected: [
+            ['k2', 'v2'],
+            ['k1', 'v1'],
+            ['k3', 'v3'],
+          ],
+        },
+        {
+          input: [
+            { key: 'k2', value: 'v2' },
+            { key: 'k1', value: 'v1-1' },
+            { key: 'k1', value: 'v1-2' },
+            { key: 'k3', value: 'v3' },
+          ],
+          expected: [
+            ['k2', 'v2'],
+            ['k1', 'v1-2'],
+            ['k3', 'v3'],
+          ],
+        },
+      ];
+
+      EXAMPLES.forEach((example) => {
+        it(JSON.stringify(example), () => {
+          const actual = ImmutableMap.fromPairArray(
+            example.input
+          ).entryTuples();
+          expect(actual).toEqual(example.expected);
+        });
+      });
+    });
+
+    describe('fromArrayWithKeyField()', () => {
+      interface Example {
+        readonly input: {
+          readonly array: readonly ExampleItem[];
+          readonly keyField: keyof ExampleItem;
+        };
+        readonly expected: unknown;
+      }
+
+      const EXAMPLES: readonly Example[] = [
+        {
+          input: {
+            array: [],
+            keyField: 'keyA',
+          },
+          expected: [],
+        },
+        {
+          input: {
+            array: [createExampleItem(1)],
+            keyField: 'keyA',
+          },
+          expected: [['keyA1', createExampleItem(1)]],
+        },
+        {
+          input: {
+            array: [
+              createExampleItem(1),
+              createExampleItem(2),
+              createExampleItem(3),
+            ],
+            keyField: 'keyA',
+          },
+          expected: [
+            ['keyA1', createExampleItem(1)],
+            ['keyA2', createExampleItem(2)],
+            ['keyA3', createExampleItem(3)],
+          ],
+        },
+        {
+          input: {
+            array: [
+              createExampleItem(1),
+              createExampleItem(2),
+              createExampleItem(3),
+            ],
+            keyField: 'keyB',
+          },
+          expected: [
+            ['keyB1', createExampleItem(1)],
+            ['keyB2', createExampleItem(2)],
+            ['keyB3', createExampleItem(3)],
+          ],
+        },
+        {
+          input: {
+            array: [
+              createExampleItem(1),
+              createExampleItem(2, 1),
+              createExampleItem(2, 2),
+              createExampleItem(3),
+            ],
+            keyField: 'keyA',
+          },
+          expected: [
+            ['keyA1', createExampleItem(1)],
+            ['keyA2', createExampleItem(2, 2)],
+            ['keyA3', createExampleItem(3)],
+          ],
+        },
+      ];
+
+      EXAMPLES.forEach((example) => {
+        it(JSON.stringify(example), () => {
+          const actual = ImmutableMap.fromArrayWithKeyField(
+            example.input.array,
+            example.input.keyField
+          ).entryTuples();
+          expect(actual).toEqual(example.expected);
+        });
+      });
+    });
+
+    describe('fromArrayWithKeyMapping()', () => {
+      const KEY_MAPPING_A = (item: ExampleItem) => item.keyA;
+      const KEY_MAPPING_B = (item: ExampleItem) => item.keyB;
+
+      interface Example {
+        readonly input: {
+          readonly array: readonly ExampleItem[];
+          readonly keyMapping: (item: ExampleItem) => string;
+        };
+        readonly expected: unknown;
+      }
+
+      const EXAMPLES: readonly Example[] = [
+        {
+          input: {
+            array: [],
+            keyMapping: KEY_MAPPING_A,
+          },
+          expected: [],
+        },
+        {
+          input: {
+            array: [createExampleItem(1)],
+            keyMapping: KEY_MAPPING_A,
+          },
+          expected: [['keyA1', createExampleItem(1)]],
+        },
+        {
+          input: {
+            array: [
+              createExampleItem(1),
+              createExampleItem(2),
+              createExampleItem(3),
+            ],
+            keyMapping: KEY_MAPPING_A,
+          },
+          expected: [
+            ['keyA1', createExampleItem(1)],
+            ['keyA2', createExampleItem(2)],
+            ['keyA3', createExampleItem(3)],
+          ],
+        },
+        {
+          input: {
+            array: [
+              createExampleItem(1),
+              createExampleItem(2),
+              createExampleItem(3),
+            ],
+            keyMapping: KEY_MAPPING_B,
+          },
+          expected: [
+            ['keyB1', createExampleItem(1)],
+            ['keyB2', createExampleItem(2)],
+            ['keyB3', createExampleItem(3)],
+          ],
+        },
+        {
+          input: {
+            array: [
+              createExampleItem(1),
+              createExampleItem(2, 1),
+              createExampleItem(2, 2),
+              createExampleItem(3),
+            ],
+            keyMapping: KEY_MAPPING_A,
+          },
+          expected: [
+            ['keyA1', createExampleItem(1)],
+            ['keyA2', createExampleItem(2, 2)],
+            ['keyA3', createExampleItem(3)],
+          ],
+        },
+      ];
+
+      EXAMPLES.forEach((example) => {
+        it(JSON.stringify(example), () => {
+          const actual = ImmutableMap.fromArrayWithKeyMapping(
+            example.input.array,
+            example.input.keyMapping
+          ).entryTuples();
+          expect(actual).toEqual(example.expected);
+        });
+      });
+    });
+
+    describe('fromArrayWithKeyValueMapping()', () => {
+      const KEY_MAPPING_A = (item: ExampleItem) => item.keyA;
+      const KEY_MAPPING_B = (item: ExampleItem) => item.keyB;
+
+      const VALUE_MAPPING_IDENTITY = identifyFn;
+      const VALUE_MAPPING_VALUE = (item: ExampleItem) => item.value;
+
+      interface Example {
+        readonly input: {
+          readonly array: readonly ExampleItem[];
+          readonly keyMapping: (item: ExampleItem) => string;
+          readonly valueMapping: (item: ExampleItem) => unknown;
+        };
+        readonly expected: unknown;
+      }
+
+      const EXAMPLES: readonly Example[] = [
+        {
+          input: {
+            array: [],
+            keyMapping: KEY_MAPPING_A,
+            valueMapping: VALUE_MAPPING_IDENTITY,
+          },
+          expected: [],
+        },
+        {
+          input: {
+            array: [createExampleItem(1)],
+            keyMapping: KEY_MAPPING_A,
+            valueMapping: VALUE_MAPPING_IDENTITY,
+          },
+          expected: [['keyA1', createExampleItem(1)]],
+        },
+        {
+          input: {
+            array: [
+              createExampleItem(1),
+              createExampleItem(2),
+              createExampleItem(3),
+            ],
+            keyMapping: KEY_MAPPING_A,
+            valueMapping: VALUE_MAPPING_IDENTITY,
+          },
+          expected: [
+            ['keyA1', createExampleItem(1)],
+            ['keyA2', createExampleItem(2)],
+            ['keyA3', createExampleItem(3)],
+          ],
+        },
+        {
+          input: {
+            array: [
+              createExampleItem(1),
+              createExampleItem(2),
+              createExampleItem(3),
+            ],
+            keyMapping: KEY_MAPPING_B,
+            valueMapping: VALUE_MAPPING_IDENTITY,
+          },
+          expected: [
+            ['keyB1', createExampleItem(1)],
+            ['keyB2', createExampleItem(2)],
+            ['keyB3', createExampleItem(3)],
+          ],
+        },
+        {
+          input: {
+            array: [
+              createExampleItem(1),
+              createExampleItem(2, 1),
+              createExampleItem(2, 2),
+              createExampleItem(3),
+            ],
+            keyMapping: KEY_MAPPING_A,
+            valueMapping: VALUE_MAPPING_VALUE,
+          },
+          expected: [
+            ['keyA1', createExampleItem(1).value],
+            ['keyA2', createExampleItem(2, 2).value],
+            ['keyA3', createExampleItem(3).value],
+          ],
+        },
+      ];
+
+      EXAMPLES.forEach((example) => {
+        it(JSON.stringify(example), () => {
+          const actual = ImmutableMap.fromArrayWithKeyValueMapping(
+            example.input.array,
+            example.input.keyMapping,
+            example.input.valueMapping
+          ).entryTuples();
+          expect(actual).toEqual(example.expected);
+        });
       });
     });
   });

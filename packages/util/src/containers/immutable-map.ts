@@ -1,5 +1,6 @@
 import Immutable from 'immutable';
 import { AnyObject } from '../types/generic';
+import { identifyFn } from '../function/generic-function-utils';
 
 export interface ImmutableMapKeyValuePair<K, V> {
   readonly key: K;
@@ -43,6 +44,27 @@ export class ImmutableMap<K, V> {
       (item) => [item[keyField], item]
     );
     return ImmutableMap.fromTupleArray<T[K], T>(tupleArray);
+  }
+
+  public static fromArrayWithKeyMapping<T extends AnyObject, TKey>(
+    array: readonly T[],
+    keyMapper: (item: T) => TKey
+  ): ImmutableMap<TKey, T> {
+    const tupleArray: readonly ImmutableMapTuple<TKey, T>[] = array.map(
+      (item) => [keyMapper(item), item]
+    );
+    return ImmutableMap.fromTupleArray<TKey, T>(tupleArray);
+  }
+
+  public static fromArrayWithKeyValueMapping<T extends AnyObject, TKey, TValue>(
+    array: readonly T[],
+    keyMapper: (item: T) => TKey,
+    valueMapper: (item: T) => TValue
+  ): ImmutableMap<TKey, TValue> {
+    const tupleArray: readonly ImmutableMapTuple<TKey, TValue>[] = array.map(
+      (item) => [keyMapper(item), valueMapper(item)]
+    );
+    return ImmutableMap.fromTupleArray<TKey, TValue>(tupleArray);
   }
 
   public keys(): readonly K[] {

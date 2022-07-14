@@ -16,11 +16,18 @@ export class ImmutableSet<T> {
     return new ImmutableSet<T>(Immutable.Set(array));
   }
 
-  public static fromArrayWithFieldMapping<
-    T extends AnyObject,
-    K extends keyof T
-  >(array: readonly T[], field: K): ImmutableSet<T[K]> {
+  public static fromArrayWithField<T extends AnyObject, K extends keyof T>(
+    array: readonly T[],
+    field: K
+  ): ImmutableSet<T[K]> {
     return ImmutableSet.fromArray<T[K]>(array.map((item) => item[field]));
+  }
+
+  public static fromArrayWithMapping<T extends AnyObject, TValue>(
+    array: readonly T[],
+    mapping: (item: T) => TValue
+  ): ImmutableSet<TValue> {
+    return ImmutableSet.fromArray<TValue>(array.map(mapping));
   }
 
   public count(): number {
