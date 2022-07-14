@@ -4,7 +4,7 @@
   "sourceRoot": "packages/workspace/src",
   "targets": {
     "cloc": {
-      "executor": "@gmnx/util:cloc",
+      "executor": "@gmnx/ws-util:cloc",
       "options": {
         "ignoreDirs": [
           ".idea",
@@ -18,7 +18,7 @@
       }
     },
     "mongo-start": {
-      "executor": "@gmnx/util:mongo-start",
+      "executor": "@gmnx/ws-util:mongo-start",
       "options": {
         "containerName": "mongo",
         "mongoVersion": "5.0.8",
@@ -27,7 +27,7 @@
       }
     },
     "mongo-stop": {
-      "executor": "@gmnx/util:mongo-stop",
+      "executor": "@gmnx/ws-util:mongo-stop",
       "options": {
         "containerName": "mongo",
         "mongoVersion": "5.0.8",
@@ -36,7 +36,7 @@
       }
     },
     "postgres-start": {
-      "executor": "@gmnx/util:postgres-start",
+      "executor": "@gmnx/ws-util:postgres-start",
       "options": {
         "containerName": "postgres",
         "postgresVersion": "14.2",
@@ -47,7 +47,7 @@
       }
     },
     "postgres-stop": {
-      "executor": "@gmnx/util:postgres-stop",
+      "executor": "@gmnx/ws-util:postgres-stop",
       "options": {
         "containerName": "postgres",
         "postgresVersion": "14.2",
@@ -58,7 +58,7 @@
       }
     },
     "publish-all": {
-      "executor": "@gmnx/util:publish-all",
+      "executor": "@gmnx/ws-util:publish-all",
       "options": {}
     },
     "update-gmjs": {
@@ -74,7 +74,7 @@
     "update-gmnx": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "npm install -D @gmnx/util@latest @gmnx/project@latest -f"
+        "command": "npm install -D @gmnx/ws-util@latest @gmnx/project@latest -f"
       }
     },
     "update-gmall": {
