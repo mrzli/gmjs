@@ -19,4 +19,3 @@ export * from './object/object-utils';
 export * from './string/string-utils';
 export * from './types/function';
 export * from './types/generic';
-export * from './types/generic';
