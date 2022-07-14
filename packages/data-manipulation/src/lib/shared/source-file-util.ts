@@ -27,9 +27,18 @@ export function createTsSourceFile(
   initialText?: string,
   options?: ProcessTsSourceFileOptions
 ): string {
-  const project = new Project(PROJECT_OPTIONS);
-  const sf = project.createSourceFile('source-file.ts', initialText);
+  const sf = createTsSourceFileInternal(initialText);
   writer(sf);
+  return processTsSourceFile(sf.getFullText(), options);
+}
+
+export async function createTsSourceFileAsync(
+  writer: (sf: SourceFile) => Promise<void>,
+  initialText?: string,
+  options?: ProcessTsSourceFileOptions
+): Promise<string> {
+  const sf = createTsSourceFileInternal(initialText);
+  await writer(sf);
   return processTsSourceFile(sf.getFullText(), options);
 }
 
@@ -37,6 +46,11 @@ const PRETTIER_OPTIONS: Options = {
   singleQuote: true,
   parser: 'typescript',
 };
+
+function createTsSourceFileInternal(initialText?: string): SourceFile {
+  const project = new Project(PROJECT_OPTIONS);
+  return project.createSourceFile('source-file.ts', initialText);
+}
 
 export function processTsSourceFile(
   sourceFileText: string,
