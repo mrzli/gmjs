@@ -4,7 +4,7 @@ import {
   ImmutableMapTuple,
 } from './immutable-map';
 import { AnyValue } from '../types/generic';
-import { identifyFn } from '@gmjs/util';
+import { identifyFn } from '../function/generic-function-utils';
 
 describe('ImmutableMap', () => {
   it.skip('performance-test', () => {
@@ -250,8 +250,8 @@ describe('ImmutableMap', () => {
     });
 
     describe('fromArrayWithKeyMapping()', () => {
-      const KEY_MAPPING_A = (item: ExampleItem) => item.keyA;
-      const KEY_MAPPING_B = (item: ExampleItem) => item.keyB;
+      const KEY_MAPPING_A = (item: ExampleItem): string => item.keyA;
+      const KEY_MAPPING_B = (item: ExampleItem): string => item.keyB;
 
       interface Example {
         readonly input: {
@@ -336,11 +336,11 @@ describe('ImmutableMap', () => {
     });
 
     describe('fromArrayWithKeyValueMapping()', () => {
-      const KEY_MAPPING_A = (item: ExampleItem) => item.keyA;
-      const KEY_MAPPING_B = (item: ExampleItem) => item.keyB;
+      const KEY_MAPPING_A = (item: ExampleItem): string => item.keyA;
+      const KEY_MAPPING_B = (item: ExampleItem): string => item.keyB;
 
       const VALUE_MAPPING_IDENTITY = identifyFn;
-      const VALUE_MAPPING_VALUE = (item: ExampleItem) => item.value;
+      const VALUE_MAPPING_VALUE = (item: ExampleItem): string => item.value;
 
       interface Example {
         readonly input: {

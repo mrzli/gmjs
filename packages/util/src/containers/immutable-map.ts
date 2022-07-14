@@ -1,6 +1,5 @@
 import Immutable from 'immutable';
 import { AnyObject } from '../types/generic';
-import { identifyFn } from '../function/generic-function-utils';
 
 export interface ImmutableMapKeyValuePair<K, V> {
   readonly key: K;

@@ -137,8 +137,8 @@ describe('ImmutableSet', () => {
     });
 
     describe('fromArrayWithMapping()', () => {
-      const MAPPING_A = (item: ExampleItem) => item.keyA;
-      const MAPPING_B = (item: ExampleItem) => item.keyB;
+      const MAPPING_A = (item: ExampleItem): string => item.keyA;
+      const MAPPING_B = (item: ExampleItem): string => item.keyB;
 
       interface Example {
         readonly input: {
