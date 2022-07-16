@@ -38,9 +38,9 @@ describe('add-mongo-database-to-backend', () => {
             const input: AddMongoDatabaseToBackendInput = {
               appModuleFile: example.input.appModule,
               options: {
-                projectName: 'example',
-                libsMonorepoNpmScope: 'gmjs',
-                nestUtilProjectName: 'nest-util',
+                npmScope: 'gmjs-apps',
+                libsDir: 'libs',
+                baseProjectName: 'example',
               },
             };
             return addMongoDatabaseToBackend(input);
