@@ -21,6 +21,7 @@
       "@gmjs/lib-util": ["packages/lib-util/src/index.ts"],
       "@gmjs/mongo-util": ["packages/mongo-util/src/index.ts"],
       "@gmjs/nest-util": ["packages/nest-util/src/index.ts"],
+      "@gmjs/react-util": ["packages/react-util/src/index.ts"],
       "@gmjs/test-util": ["packages/test-util/src/index.ts"],
       "@gmjs/util": ["packages/util/src/index.ts"]
     },

@@ -7,6 +7,7 @@
     "lib-util": "packages/lib-util",
     "mongo-util": "packages/mongo-util",
     "nest-util": "packages/nest-util",
+    "react-util": "packages/react-util",
     "test-util": "packages/test-util",
     "util": "packages/util",
     "workspace": "packages/workspace"
