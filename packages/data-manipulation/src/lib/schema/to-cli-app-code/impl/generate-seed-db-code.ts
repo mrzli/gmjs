@@ -16,7 +16,7 @@ import { pascalCase } from '@gmjs/lib-util';
 import { DEFAULT_DATE, DEFAULT_OBJECT_ID } from '../../../shared/constants';
 import { invariant, objectGetEntries } from '@gmjs/util';
 import { getMongoTypeImports } from '../../../shared/code-util';
-import { MODULE_NAME_GMJS_MONGO_UTIL } from '@gmjs/data-manipulation';
+import { MODULE_NAME_GMJS_MONGO_UTIL } from '../../shared/constants';
 import { getSharedLibraryModuleName } from '../../shared/util';
 
 export function generateSeedDbCode(input: SchemaToCliAppCodeInput): string {

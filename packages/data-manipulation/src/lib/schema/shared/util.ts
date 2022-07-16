@@ -1,4 +1,4 @@
-import { SchemaToCodeAppsMonorepoOptions } from '@gmjs/data-manipulation';
+import { SchemaToCodeAppsMonorepoOptions } from './types';
 
 export function getSharedLibraryModuleName(
   appsMonorepo: SchemaToCodeAppsMonorepoOptions

@@ -2,11 +2,7 @@ import { SchemaToCliAppCodeInput } from '../schema-to-cli-app-code-input';
 import { ImportDeclarationStructure, OptionalKind } from 'ts-morph';
 import { createTsSourceFile } from '../../../shared/source-file-util';
 import { getSchemasDir } from '../../shared/util';
-import {
-  MODULE_NAME_GMJS_LIB_UTIL,
-  MODULE_NAME_GMJS_MONGO_UTIL,
-  MODULE_NAME_GMJS_UTIL,
-} from '@gmjs/data-manipulation';
+import { MODULE_NAME_GMJS_LIB_UTIL, MODULE_NAME_GMJS_MONGO_UTIL, MODULE_NAME_GMJS_UTIL } from '../../shared/constants';
 
 export function generateMainCode(input: SchemaToCliAppCodeInput): string {
   return createTsSourceFile((sf) => {

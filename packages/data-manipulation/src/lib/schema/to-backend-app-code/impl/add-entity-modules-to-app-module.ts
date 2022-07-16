@@ -1,10 +1,5 @@
 import { SchemaToBackendAppCodeInput } from '../schema-to-backend-app-code-input';
-import {
-  ImportDeclarationStructure,
-  OptionalKind,
-  SourceFile,
-  SyntaxKind,
-} from 'ts-morph';
+import { ImportDeclarationStructure, OptionalKind, SourceFile } from 'ts-morph';
 import { sortArrayByStringAsc } from '@gmjs/util';
 import { kebabCase, pascalCase } from '@gmjs/lib-util';
 import {

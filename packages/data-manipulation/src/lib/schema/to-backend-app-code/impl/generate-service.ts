@@ -30,10 +30,7 @@ import { SchemaToBackendAppCodeInput } from '../schema-to-backend-app-code-input
 import { PathContentPair } from '@gmjs/fs-util';
 import { createTsSourceFile } from '../../../shared/source-file-util';
 import { getSharedLibraryModuleName } from '../../shared/util';
-import {
-  MODULE_NAME_GMJS_MONGO_UTIL,
-  MODULE_NAME_GMJS_UTIL,
-} from '@gmjs/data-manipulation';
+import { MODULE_NAME_GMJS_MONGO_UTIL, MODULE_NAME_GMJS_UTIL } from '../../shared/constants';
 
 export function generateService(
   input: SchemaToBackendAppCodeInput,
