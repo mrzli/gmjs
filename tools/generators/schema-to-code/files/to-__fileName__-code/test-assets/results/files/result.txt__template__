@@ -1,0 +1,5 @@
+function someResultFunction(): void {
+  console.log('some result text');
+  const resultValue = 11;
+  console.log(resultValue * 2);
+}

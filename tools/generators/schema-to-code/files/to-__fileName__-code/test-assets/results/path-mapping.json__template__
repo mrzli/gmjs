@@ -1,0 +1,6 @@
+[
+  {
+    "testFile": "result.txt",
+    "path": "some/application/path/result.ts"
+  }
+]

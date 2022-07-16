@@ -1,0 +1,5 @@
+function someInputFunction(): void {
+  console.log('some input text');
+  const inputValue = 11;
+  console.log(inputValue * 2);
+}

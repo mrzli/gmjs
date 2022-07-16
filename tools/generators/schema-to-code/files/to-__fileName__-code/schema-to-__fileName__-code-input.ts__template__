@@ -1,0 +1,15 @@
+import { MongoJsonSchemaTypeObject } from '@gmjs/mongo-util';
+
+export interface SchemaTo<%= className %>CodeInput {
+  readonly schemas: readonly MongoJsonSchemaTypeObject[];
+  readonly initialFiles: SchemaTo<%= className %>CodeInitialFiles;
+  readonly options: SchemaTo<%= className %>CodeOptions;
+}
+
+export interface SchemaTo<%= className %>CodeInitialFiles {
+  readonly input: string;
+}
+
+export interface SchemaTo<%= className %>CodeOptions {
+  readonly someOption: boolean;
+}
