@@ -45,7 +45,7 @@ export function generateEntityApiCode(
   });
 
   return {
-    path: `api/${baseNames.kebabCased}-api.ts`,
+    path: `api/parts/${baseNames.kebabCased}-api.ts`,
     content: content,
   };
 }

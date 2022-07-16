@@ -1,0 +1,21 @@
+import { AxiosInstance } from 'axios';
+import {
+  AnotherEntityApi,
+  createAnotherEntityApi,
+} from './parts/another-entity-api';
+import { createEntityApi, EntityApi } from './parts/entity-api';
+import { createEntity2Api, Entity2Api } from './parts/entity2-api';
+
+export interface AppApi {
+  readonly anotherEntity: AnotherEntityApi;
+  readonly entity: EntityApi;
+  readonly entity2: Entity2Api;
+}
+
+export function createAppApi(server: AxiosInstance): AppApi {
+  return {
+    anotherEntity: createAnotherEntityApi(server),
+    entity: createEntityApi(server),
+    entity2: createEntity2Api(server),
+  };
+}

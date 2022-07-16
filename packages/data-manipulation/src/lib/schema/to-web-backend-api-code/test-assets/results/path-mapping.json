@@ -1,14 +1,18 @@
 [
   {
-    "testFile": "api-entity-api.txt",
-    "path": "api/entity-api.ts"
+    "testFile": "api-parts-entity-api.txt",
+    "path": "api/parts/entity-api.ts"
   },
   {
-    "testFile": "api-entity2-api.txt",
-    "path": "api/entity2-api.ts"
+    "testFile": "api-parts-entity2-api.txt",
+    "path": "api/parts/entity2-api.ts"
   },
   {
-    "testFile": "api-another-entity-api.txt",
-    "path": "api/another-entity-api.ts"
+    "testFile": "api-parts-another-entity-api.txt",
+    "path": "api/parts/another-entity-api.ts"
+  },
+  {
+    "testFile": "api-app-api.txt",
+    "path": "api/app-api.ts"
   }
 ]
