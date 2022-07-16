@@ -7,6 +7,7 @@ import {
   createCodeFileComparisonStrings,
   createCodeFileExpected,
 } from '../../shared/test-util';
+import { TEST_APPS_MONOREPO_OPTIONS } from '../shared/test-util';
 
 describe('schema-to-cli-app-code', () => {
   it('schemaToCliAppCode()', () => {
@@ -33,11 +34,7 @@ function createInput(testDir: string): SchemaToCliAppCodeInput {
   return {
     schemas,
     options: {
-      appsMonorepo: {
-        npmScope: 'gmjs-apps',
-        libsDir: 'libs',
-        baseProjectName: 'example',
-      },
+      appsMonorepo: TEST_APPS_MONOREPO_OPTIONS,
     },
   };
 }

@@ -7,6 +7,7 @@ import {
   createCodeFileComparisonStrings,
   createCodeFileExpected,
 } from '../../shared/test-util';
+import { TEST_APPS_MONOREPO_OPTIONS } from '../shared/test-util';
 
 describe('schema-to-web-backend-api-code', () => {
   it('schemaToWebBackendApiCode()', () => {
@@ -33,11 +34,7 @@ function createInput(testDir: string): SchemaToWebBackendApiCodeInput {
   return {
     schemas,
     options: {
-      appsMonorepo: {
-        npmScope: 'gmjs-apps',
-        libsDir: 'libs',
-        baseProjectName: 'example',
-      },
+      appsMonorepo: TEST_APPS_MONOREPO_OPTIONS,
       interfacePrefixes: {
         db: 'db',
         app: 'app',

@@ -7,6 +7,7 @@ import {
 import path from 'path';
 import { identifyFn } from '@gmjs/util';
 import { AddMongoDatabaseToBackendInput } from './add-mongo-database-to-backend-input';
+import { TEST_APPS_MONOREPO_OPTIONS } from '../shared/test-util';
 
 describe('add-mongo-database-to-backend', () => {
   describe('addMongoDatabaseToBackend()', () => {
@@ -37,11 +38,7 @@ describe('add-mongo-database-to-backend', () => {
           () => {
             const input: AddMongoDatabaseToBackendInput = {
               appModuleFile: example.input.appModule,
-              options: {
-                npmScope: 'gmjs-apps',
-                libsDir: 'libs',
-                baseProjectName: 'example',
-              },
+              options: TEST_APPS_MONOREPO_OPTIONS,
             };
             return addMongoDatabaseToBackend(input);
           },
