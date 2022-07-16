@@ -40,7 +40,15 @@ function createInput(testDir: string): SchemaTo<%= className %>CodeInput {
     schemas,
     initialFiles,
     options: {
-      someOption: false,
+      appsMonorepo: {
+        npmScope: 'gmjs-apps',
+        libsDir: 'libs',
+        baseProjectName: '<%= file-name %>',
+      },
+      interfacePrefixes: {
+        db: 'db',
+        app: 'app',
+      },
     },
   };
 }

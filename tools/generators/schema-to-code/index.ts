@@ -6,7 +6,7 @@ import {
   generateFiles,
 } from '@nrwl/devkit';
 import { SchemaToCodeSchema } from './schema';
-import path from 'path';
+import * as path from 'path';
 
 export async function generateSchemaToCode(
   tree: Tree,

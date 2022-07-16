@@ -1,4 +1,8 @@
 import { MongoJsonSchemaTypeObject } from '@gmjs/mongo-util';
+import {
+  SchemaToCodeAppsMonorepoOptions,
+  SchemaToCodeInterfacePrefixes,
+} from '../shared/types';
 
 export interface SchemaTo<%= className %>CodeInput {
   readonly schemas: readonly MongoJsonSchemaTypeObject[];
@@ -11,5 +15,6 @@ export interface SchemaTo<%= className %>CodeInitialFiles {
 }
 
 export interface SchemaTo<%= className %>CodeOptions {
-  readonly someOption: boolean;
+  readonly appsMonorepo: SchemaToCodeAppsMonorepoOptions;
+  readonly interfacePrefixes: SchemaToCodeInterfacePrefixes;
 }
