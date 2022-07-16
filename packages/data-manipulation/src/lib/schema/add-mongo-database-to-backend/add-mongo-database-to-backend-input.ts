@@ -1,4 +1,4 @@
-import { SchemaToCodeAppsMonorepoOptions } from '../../schema/shared/types';
+import { SchemaToCodeAppsMonorepoOptions } from '../shared/types';
 
 export interface AddMongoDatabaseToBackendInput {
   readonly appModuleFile: string;

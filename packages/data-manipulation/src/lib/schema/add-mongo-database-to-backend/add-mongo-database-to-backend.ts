@@ -3,7 +3,7 @@ import { appendImports, appendNestModuleImports } from '../../shared/code-util';
 import { SourceFile, SyntaxKind, WriterFunction } from 'ts-morph';
 import { kebabCase } from '@gmjs/lib-util';
 import { createTsSourceFile } from '../../shared/source-file-util';
-import { MODULE_NAME_GMJS_NEST_UTIL } from '../../schema/shared/constants';
+import { MODULE_NAME_GMJS_NEST_UTIL } from '../shared/constants';
 
 export function addMongoDatabaseToBackend(
   input: AddMongoDatabaseToBackendInput
