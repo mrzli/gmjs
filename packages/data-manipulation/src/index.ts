@@ -12,5 +12,7 @@ export * from './lib/schema/to-postman-collection/schema-to-postman-collection';
 export * from './lib/schema/to-postman-collection/schema-to-postman-collection-input';
 export * from './lib/schema/to-shared-library-code/schema-to-shared-library-code';
 export * from './lib/schema/to-shared-library-code/schema-to-shared-library-code-input';
+export * from './lib/schema/to-web-backend-api-code/schema-to-web-backend-api-code';
+export * from './lib/schema/to-web-backend-api-code/schema-to-web-backend-api-code-input';
 
 export * from './lib/shared/source-file-util';
