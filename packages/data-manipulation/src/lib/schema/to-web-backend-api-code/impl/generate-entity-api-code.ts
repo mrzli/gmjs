@@ -8,11 +8,11 @@ import {
   InterfaceDeclarationStructure,
   OptionalKind,
 } from 'ts-morph';
+import { createTsSourceFile } from '../../../shared/source-file-util';
 import {
-  createTsSourceFile,
   MODULE_NAME_GMJS_MONGO_UTIL,
   MODULE_NAME_GMJS_UTIL,
-} from '@gmjs/data-manipulation';
+} from '../../shared/constants';
 import { getSharedLibraryModuleName } from '../../shared/util';
 
 export function generateEntityApiCode(
@@ -151,7 +151,7 @@ function getCreateApiFunctionDeclaration(
               .inlineBlock(() => {
                 writer
                   .writeLine(
-                    `const response = await server.get<${typeName}>(\`api/${fsName}/find/\$\{id\}\`);`
+                    `const response = await server.get<${typeName}>(\`api/${fsName}/find/\${id}\`);`
                   )
                   .writeLine('return response.data;');
               })
@@ -173,7 +173,7 @@ function getCreateApiFunctionDeclaration(
               .inlineBlock(() => {
                 writer
                   .writeLine(
-                    `const response = await server.post<${typeName}>(\`api/${fsName}/update/\$\{${variableName}.id\}\`, objectOmitFields(${variableName}, ['id']));`
+                    `const response = await server.post<${typeName}>(\`api/${fsName}/update/\${${variableName}.id}\`, objectOmitFields(${variableName}, ['id']));`
                   )
                   .writeLine('return response.data;');
               })
@@ -181,7 +181,7 @@ function getCreateApiFunctionDeclaration(
               .write(`async remove(id: string): Promise<void>`)
               .inlineBlock(() => {
                 writer.writeLine(
-                  `await server.delete<${typeName}>(\`api/${fsName}/update/\$\{id\}\`);`
+                  `await server.delete<${typeName}>(\`api/${fsName}/update/\${id}\`);`
                 );
               })
               .writeLine(',');

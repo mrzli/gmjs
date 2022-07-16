@@ -3,7 +3,6 @@ import { asChainable, distinctItems, sortArrayByStringAsc } from '@gmjs/util';
 import { pascalCase } from '@gmjs/lib-util';
 import { mongoBsonTypeToMongoJsType } from '../../../../shared/mongo-schema-util';
 import { MongoBsonType } from '@gmjs/mongo-util';
-import { SchemaToBackendAppCodeInput } from '../../schema-to-backend-app-code-input';
 
 export function getMongoImports(
   collectionStructure: MongoCollectionStructure

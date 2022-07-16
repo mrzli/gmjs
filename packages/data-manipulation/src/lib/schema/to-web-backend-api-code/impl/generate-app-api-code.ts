@@ -9,7 +9,7 @@ import {
   OptionalKind,
   PropertySignatureStructure,
 } from 'ts-morph';
-import { createTsSourceFile } from '@gmjs/data-manipulation';
+import { createTsSourceFile } from '../../../shared/source-file-util';
 import {
   compareFnStringAsc,
   sortArray,

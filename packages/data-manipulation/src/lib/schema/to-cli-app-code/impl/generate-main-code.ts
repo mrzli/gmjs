@@ -2,13 +2,17 @@ import { SchemaToCliAppCodeInput } from '../schema-to-cli-app-code-input';
 import { ImportDeclarationStructure, OptionalKind } from 'ts-morph';
 import { createTsSourceFile } from '../../../shared/source-file-util';
 import { getSchemasDir } from '../../shared/util';
-import { MODULE_NAME_GMJS_LIB_UTIL, MODULE_NAME_GMJS_MONGO_UTIL, MODULE_NAME_GMJS_UTIL } from '../../shared/constants';
+import {
+  MODULE_NAME_GMJS_LIB_UTIL,
+  MODULE_NAME_GMJS_MONGO_UTIL,
+  MODULE_NAME_GMJS_UTIL,
+} from '../../shared/constants';
 
 export function generateMainCode(input: SchemaToCliAppCodeInput): string {
   return createTsSourceFile((sf) => {
     const appsMonorepo = input.options.appsMonorepo;
 
-    const importDeclarations = createImportDeclarations(input);
+    const importDeclarations = createImportDeclarations();
     sf.addImportDeclarations(importDeclarations);
 
     sf.addFunction({
@@ -94,9 +98,7 @@ export function generateMainCode(input: SchemaToCliAppCodeInput): string {
   });
 }
 
-function createImportDeclarations(
-  input: SchemaToCliAppCodeInput
-): readonly OptionalKind<ImportDeclarationStructure>[] {
+function createImportDeclarations(): readonly OptionalKind<ImportDeclarationStructure>[] {
   return [
     {
       namedImports: ['invariant'],

@@ -1,4 +1,4 @@
-import { casedNames, CasedNames } from '@gmjs/lib-util';
+import { casedNames, CasedNames } from './change-case';
 
 describe('change-case', () => {
   describe('casedNames()', () => {
