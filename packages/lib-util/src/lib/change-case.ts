@@ -29,3 +29,18 @@ export function camelCase<T extends string>(
 export function capitalCase(value: string): string {
   return _capitalCase(value);
 }
+
+export interface CasedNames {
+  readonly pascalCased: string;
+  readonly camelCased: string;
+  readonly kebabCased: string;
+}
+
+export function casedNames(...values: readonly string[]): CasedNames {
+  const joinedValues = values.join(' ');
+  return {
+    pascalCased: pascalCase(joinedValues),
+    camelCased: camelCase(joinedValues),
+    kebabCased: kebabCase(joinedValues),
+  };
+}
