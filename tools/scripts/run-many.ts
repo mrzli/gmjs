@@ -8,7 +8,7 @@ interface DebugOutput {
 }
 
 interface Task {
-  readonly target: { readonly project: string; };
+  readonly target: { readonly project: string };
 }
 
 function runMany(argv: readonly string[]): void {
@@ -32,10 +32,15 @@ function runMany(argv: readonly string[]): void {
   const printAffectedCommand = `npx nx print-affected --base=${base} --head=${head} --target=${target}`;
   console.log(`printAffectedCommand: '${printAffectedCommand}'`);
 
-  const affectedResult: string = execSync(printAffectedCommand).toString('utf-8');
-  const affectedProjects: readonly string[] = getAffectedProjects(affectedResult);
+  const affectedResult: string =
+    execSync(printAffectedCommand).toString('utf-8');
+  const affectedProjects: readonly string[] =
+    getAffectedProjects(affectedResult);
 
-  const sliceSize: number = Math.max(Math.floor(affectedProjects.length / jobCount), 1);
+  const sliceSize: number = Math.max(
+    Math.floor(affectedProjects.length / jobCount),
+    1
+  );
   const projects: readonly string[] =
     jobIndex < jobCount
       ? affectedProjects.slice(sliceSize * (jobIndex - 1), sliceSize * jobIndex)
