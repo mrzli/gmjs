@@ -14,7 +14,6 @@ import { camelCase, pascalCase } from '@gmjs/lib-util';
 import { ImmutableMap, invariant } from '@gmjs/util';
 import { TRANSFORM_IF_EXISTS_FN_NAME } from './constants';
 import { getAppInterfacePropertyName } from '../../../../shared/mongo-schema-util';
-import { BSONType } from 'mongodb';
 import { MongoBsonType } from '@gmjs/mongo-util';
 
 export function getDbToAppMapperFunctionName(entityName: string): string {

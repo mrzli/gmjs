@@ -10,10 +10,7 @@ import {
 import { compareFnStringAsc, sortArray } from '@gmjs/util';
 import {
   getMongoImports,
-  getMongoUtilModuleSpecifier,
   getSharedLibraryInterfaceImports,
-  getSharedLibraryModuleSpecifier,
-  getUtilModuleSpecifier,
 } from './service-helpers/import-helpers';
 import {
   OBJECT_REMOVE_UNDEFINED_FN_NAME,
@@ -32,6 +29,11 @@ import {
 import { SchemaToBackendAppCodeInput } from '../schema-to-backend-app-code-input';
 import { PathContentPair } from '@gmjs/fs-util';
 import { createTsSourceFile } from '../../../shared/source-file-util';
+import { getSharedLibraryModuleName } from '../../shared/util';
+import {
+  MODULE_NAME_GMJS_MONGO_UTIL,
+  MODULE_NAME_GMJS_UTIL,
+} from '@gmjs/data-manipulation';
 
 export function generateService(
   input: SchemaToBackendAppCodeInput,
@@ -39,8 +41,8 @@ export function generateService(
   moduleDir: string
 ): PathContentPair {
   const collectionStructure = schemaToCollectionStructure(schema);
-  const dbPrefix = input.options.dbPrefix;
-  const appPrefix = input.options.appPrefix;
+  const dbPrefix = input.options.interfacePrefixes.db;
+  const appPrefix = input.options.interfacePrefixes.app;
 
   const collectionEntityName = collectionStructure.collectionType.name;
 
@@ -72,14 +74,14 @@ export function generateService(
       },
       {
         namedImports: ['DbWithoutId', 'WithoutId'],
-        moduleSpecifier: getMongoUtilModuleSpecifier(input),
+        moduleSpecifier: MODULE_NAME_GMJS_MONGO_UTIL,
       },
       {
         namedImports: [
           OBJECT_REMOVE_UNDEFINED_FN_NAME,
           TRANSFORM_IF_EXISTS_FN_NAME,
         ],
-        moduleSpecifier: getUtilModuleSpecifier(input),
+        moduleSpecifier: MODULE_NAME_GMJS_UTIL,
       },
       {
         namedImports: [
@@ -89,7 +91,7 @@ export function generateService(
             appPrefix
           ),
         ],
-        moduleSpecifier: getSharedLibraryModuleSpecifier(input),
+        moduleSpecifier: getSharedLibraryModuleName(input.options.appsMonorepo),
       },
       {
         namedImports: [repositoryType],

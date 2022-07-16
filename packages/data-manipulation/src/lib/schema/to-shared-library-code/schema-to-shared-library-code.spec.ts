@@ -40,14 +40,9 @@ function createInput(testDir: string): SchemaToSharedLibraryCodeInput {
     schemas,
     initialFiles,
     options: {
-      mongoInterfacesDir: 'lib/mongo',
-      dbInterfaceOptions: {
-        dir: 'db',
-        prefix: 'db',
-      },
-      appInterfaceOptions: {
-        dir: 'app',
-        prefix: 'app',
+      interfacePrefixes: {
+        db: 'db',
+        app: 'app',
       },
     },
   };

@@ -1,4 +1,8 @@
 import { MongoJsonSchemaTypeObject } from '@gmjs/mongo-util';
+import {
+  SchemaToCodeAppsMonorepoOptions,
+  SchemaToCodeInterfacePrefixes,
+} from '../shared/types';
 
 export interface SchemaToBackendAppCodeInput {
   readonly schemas: readonly MongoJsonSchemaTypeObject[];
@@ -11,20 +15,6 @@ export interface SchemaToBackendAppCodeInitialFiles {
 }
 
 export interface SchemaToBackendAppCodeOptions {
-  readonly libsMonorepo: SchemaToBackendAppCodeLibsMonorepoOptions;
-  readonly appsMonorepo: SchemaToBackendAppCodeAppsMonorepoOptions;
-  readonly dbPrefix: string;
-  readonly appPrefix: string;
-}
-
-export interface SchemaToBackendAppCodeLibsMonorepoOptions {
-  readonly npmScope: string;
-  readonly utilProjectName: string;
-  readonly mongoUtilProjectName: string;
-  readonly nestUtilProjectName: string;
-}
-
-export interface SchemaToBackendAppCodeAppsMonorepoOptions {
-  readonly npmScope: string;
-  readonly sharedProjectName: string;
+  readonly appsMonorepo: SchemaToCodeAppsMonorepoOptions;
+  readonly interfacePrefixes: SchemaToCodeInterfacePrefixes;
 }

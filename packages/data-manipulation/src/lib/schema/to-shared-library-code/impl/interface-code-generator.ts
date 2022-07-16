@@ -1,7 +1,4 @@
-import {
-  SchemaToSharedLibraryCodeInput,
-  SchemaToSharedLibraryCodeInterfaceOptions,
-} from '../schema-to-shared-library-code-input';
+import { SchemaToSharedLibraryCodeInput } from '../schema-to-shared-library-code-input';
 import {
   ExportDeclarationStructure,
   ImportDeclarationStructure,
@@ -26,6 +23,11 @@ import {
 import { MongoBsonType } from '@gmjs/mongo-util';
 import { PathContentPair } from '@gmjs/fs-util';
 import { createTsSourceFile } from '../../../shared/source-file-util';
+import {
+  APP_INTERFACES_DIR,
+  DB_INTERFACES_DIR,
+  MONGO_INTERFACES_DIR,
+} from './constants';
 
 export interface InterfaceCodeGenerator {
   generate(): readonly PathContentPair[];
@@ -86,7 +88,7 @@ abstract class InterfaceCodeGeneratorBase implements InterfaceCodeGenerator {
         const exportDeclarations: readonly OptionalKind<ExportDeclarationStructure>[] =
           getEntityExportDeclarations(
             allCollections.embeddedTypes,
-            this.interfaceOptions.prefix
+            this.getInterfacePrefix()
           );
         sf.addExportDeclarations(exportDeclarations);
       });
@@ -112,7 +114,7 @@ abstract class InterfaceCodeGeneratorBase implements InterfaceCodeGenerator {
         exportDeclarations.push(
           ...getEntityExportDeclarations(
             allCollections.collectionTypes,
-            this.interfaceOptions.prefix
+            this.getInterfacePrefix()
           )
         );
         sf.addExportDeclarations(exportDeclarations);
@@ -131,7 +133,7 @@ abstract class InterfaceCodeGeneratorBase implements InterfaceCodeGenerator {
     entity: MongoEntityStructure,
     isEmbedded: boolean
   ): PathContentPair {
-    const entityName = getEntityName(this.interfaceOptions.prefix, entity.name);
+    const entityName = getEntityName(this.getInterfacePrefix(), entity.name);
 
     const filePath = getCollectionInterfaceFilePath(
       entityName,
@@ -163,13 +165,6 @@ abstract class InterfaceCodeGeneratorBase implements InterfaceCodeGenerator {
     };
   }
 
-  private getInterfacesDir(): string {
-    return path.join(
-      this.input.options.mongoInterfacesDir,
-      this.interfaceOptions.dir
-    );
-  }
-
   private getInterfaceFileImportDeclarations(
     entity: MongoEntityStructure,
     isEmbedded: boolean
@@ -189,7 +184,7 @@ abstract class InterfaceCodeGeneratorBase implements InterfaceCodeGenerator {
 
     const localImports = sortArrayByStringAsc(
       entity.embeddedTypes.map((name) =>
-        getEntityName(this.interfaceOptions.prefix, name)
+        getEntityName(this.getInterfacePrefix(), name)
       )
     );
 
@@ -231,7 +226,7 @@ abstract class InterfaceCodeGeneratorBase implements InterfaceCodeGenerator {
   ): string {
     const type = valueType.bsonType;
     if (type === 'object') {
-      return getEntityName(this.interfaceOptions.prefix, valueType.typeName);
+      return getEntityName(this.getInterfacePrefix(), valueType.typeName);
     } else if (type === 'array') {
       const itemType = this.getValueType(valueType.items, true);
       const fullArrayType = `readonly ${itemType}[]`;
@@ -241,7 +236,9 @@ abstract class InterfaceCodeGeneratorBase implements InterfaceCodeGenerator {
     }
   }
 
-  protected abstract get interfaceOptions(): SchemaToSharedLibraryCodeInterfaceOptions;
+  protected abstract getInterfacesDir(): string;
+
+  protected abstract getInterfacePrefix(): string;
 
   protected abstract getMongoImportTypes(
     bsonTypes: readonly MongoBsonType[]
@@ -257,8 +254,12 @@ class InterfaceCodeGeneratorDb extends InterfaceCodeGeneratorBase {
     super(input);
   }
 
-  protected get interfaceOptions(): SchemaToSharedLibraryCodeInterfaceOptions {
-    return this.input.options.dbInterfaceOptions;
+  protected getInterfacesDir(): string {
+    return path.join(MONGO_INTERFACES_DIR, DB_INTERFACES_DIR);
+  }
+
+  protected getInterfacePrefix(): string {
+    return this.input.options.interfacePrefixes.db;
   }
 
   protected getMongoImportTypes(
@@ -296,8 +297,12 @@ class InterfaceCodeGeneratorApp extends InterfaceCodeGeneratorBase {
     super(input);
   }
 
-  protected get interfaceOptions(): SchemaToSharedLibraryCodeInterfaceOptions {
-    return this.input.options.appInterfaceOptions;
+  protected getInterfacesDir(): string {
+    return path.join(MONGO_INTERFACES_DIR, APP_INTERFACES_DIR);
+  }
+
+  protected getInterfacePrefix(): string {
+    return this.input.options.interfacePrefixes.app;
   }
 
   protected getMongoImportTypes(

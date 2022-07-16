@@ -40,18 +40,15 @@ function createInput(testDir: string): SchemaToBackendAppCodeInput {
     schemas,
     initialFiles,
     options: {
-      libsMonorepo: {
-        npmScope: 'gmjs',
-        utilProjectName: 'util',
-        mongoUtilProjectName: 'mongo-util',
-        nestUtilProjectName: 'nest-util',
-      },
       appsMonorepo: {
         npmScope: 'gmjs-apps',
-        sharedProjectName: 'example-shared',
+        libsDir: 'libs',
+        baseProjectName: 'example',
       },
-      dbPrefix: 'db',
-      appPrefix: 'app',
+      interfacePrefixes: {
+        db: 'db',
+        app: 'app',
+      },
     },
   };
 }

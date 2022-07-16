@@ -49,31 +49,3 @@ export function getSharedLibraryInterfaceImports(
     .apply(sortArrayByStringAsc)
     .getValue();
 }
-
-export function getSharedLibraryModuleSpecifier(
-  input: SchemaToBackendAppCodeInput
-): string {
-  const appsMonorepo = input.options.appsMonorepo;
-  return `@${appsMonorepo.npmScope}/${appsMonorepo.sharedProjectName}`;
-}
-
-export function getUtilModuleSpecifier(
-  input: SchemaToBackendAppCodeInput
-): string {
-  const libsMonorepo = input.options.libsMonorepo;
-  return `@${libsMonorepo.npmScope}/${libsMonorepo.utilProjectName}`;
-}
-
-export function getMongoUtilModuleSpecifier(
-  input: SchemaToBackendAppCodeInput
-): string {
-  const libsMonorepo = input.options.libsMonorepo;
-  return `@${libsMonorepo.npmScope}/${libsMonorepo.mongoUtilProjectName}`;
-}
-
-export function getNestUtilModuleSpecifier(
-  input: SchemaToBackendAppCodeInput
-): string {
-  const libsMonorepo = input.options.libsMonorepo;
-  return `@${libsMonorepo.npmScope}/${libsMonorepo.nestUtilProjectName}`;
-}

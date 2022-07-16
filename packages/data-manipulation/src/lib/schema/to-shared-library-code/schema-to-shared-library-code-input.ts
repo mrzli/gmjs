@@ -1,4 +1,5 @@
 import { MongoJsonSchemaTypeObject } from '@gmjs/mongo-util';
+import { SchemaToCodeInterfacePrefixes } from '../shared/types';
 
 export interface SchemaToSharedLibraryCodeInput {
   readonly schemas: readonly MongoJsonSchemaTypeObject[];
@@ -11,12 +12,5 @@ export interface SchemaToSharedLibraryCodeInitialFiles {
 }
 
 export interface SchemaToSharedLibraryCodeOptions {
-  readonly mongoInterfacesDir: string;
-  readonly dbInterfaceOptions: SchemaToSharedLibraryCodeInterfaceOptions;
-  readonly appInterfaceOptions: SchemaToSharedLibraryCodeInterfaceOptions;
-}
-
-export interface SchemaToSharedLibraryCodeInterfaceOptions {
-  readonly dir: string;
-  readonly prefix: string;
+  readonly interfacePrefixes: SchemaToCodeInterfacePrefixes;
 }

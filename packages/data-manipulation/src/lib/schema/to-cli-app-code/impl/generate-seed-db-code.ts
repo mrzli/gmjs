@@ -16,6 +16,8 @@ import { pascalCase } from '@gmjs/lib-util';
 import { DEFAULT_DATE, DEFAULT_OBJECT_ID } from '../../../shared/constants';
 import { invariant, objectGetEntries } from '@gmjs/util';
 import { getMongoTypeImports } from '../../../shared/code-util';
+import { MODULE_NAME_GMJS_MONGO_UTIL } from '@gmjs/data-manipulation';
+import { getSharedLibraryModuleName } from '../../shared/util';
 
 export function generateSeedDbCode(input: SchemaToCliAppCodeInput): string {
   return createTsSourceFile((sf) => {
@@ -30,11 +32,7 @@ export function generateSeedDbCode(input: SchemaToCliAppCodeInput): string {
 function createImportDeclarations(
   input: SchemaToCliAppCodeInput
 ): readonly OptionalKind<ImportDeclarationStructure>[] {
-  const libsMonorepo = input.options.libsMonorepo;
   const appsMonorepo = input.options.appsMonorepo;
-
-  const mongoUtilModule = `@${libsMonorepo.npmScope}/${libsMonorepo.mongoUtilProjectName}`;
-  const sharedLibModule = `@${appsMonorepo.npmScope}/${appsMonorepo.sharedLibProjectName}`;
 
   return [
     {
@@ -43,11 +41,11 @@ function createImportDeclarations(
     },
     {
       namedImports: ['executeMongo', 'insertMany', 'MongoConnectionParameters'],
-      moduleSpecifier: mongoUtilModule,
+      moduleSpecifier: MODULE_NAME_GMJS_MONGO_UTIL,
     },
     {
       namedImports: ['DbCollectionName'],
-      moduleSpecifier: sharedLibModule,
+      moduleSpecifier: getSharedLibraryModuleName(appsMonorepo),
     },
   ];
 }

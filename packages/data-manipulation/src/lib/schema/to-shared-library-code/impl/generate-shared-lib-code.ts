@@ -5,6 +5,16 @@ import { createInterfaceCodeGenerator } from './interface-code-generator';
 import { getRelativeImportPath } from '../../../shared/code-util';
 import { PathContentPair } from '@gmjs/fs-util';
 import { createTsSourceFile } from '../../../shared/source-file-util';
+import {
+  APP_INTERFACES_DIR,
+  DB_INTERFACES_DIR,
+  MONGO_INTERFACES_DIR,
+} from './constants';
+
+const DB_COLLECTION_NAME_FILE_PATH = path.join(
+  MONGO_INTERFACES_DIR,
+  'db-collection-name.ts'
+);
 
 export function generateSharedLibCode(
   input: SchemaToSharedLibraryCodeInput
@@ -29,22 +39,21 @@ export function generateSharedLibCode(
 function createIndexFile(
   input: SchemaToSharedLibraryCodeInput
 ): PathContentPair {
-  const options = input.options;
   const dbInterfacesIndexPath = path.join(
-    options.mongoInterfacesDir,
-    options.dbInterfaceOptions.dir,
+    MONGO_INTERFACES_DIR,
+    DB_INTERFACES_DIR,
     'index.ts'
   );
   const appInterfacesIndexPath = path.join(
-    options.mongoInterfacesDir,
-    options.appInterfaceOptions.dir,
+    MONGO_INTERFACES_DIR,
+    APP_INTERFACES_DIR,
     'index.ts'
   );
 
   const content = createTsSourceFile((sf) => {
     sf.addExportDeclarations(
       [
-        getDbCollectionNameFilePath(input),
+        DB_COLLECTION_NAME_FILE_PATH,
         dbInterfacesIndexPath,
         appInterfacesIndexPath,
       ].map((p) => ({
@@ -73,13 +82,7 @@ function createCollectionNameFile(
   });
 
   return {
-    path: getDbCollectionNameFilePath(input),
+    path: DB_COLLECTION_NAME_FILE_PATH,
     content,
   };
-}
-
-function getDbCollectionNameFilePath(
-  input: SchemaToSharedLibraryCodeInput
-): string {
-  return path.join(input.options.mongoInterfacesDir, 'db-collection-name.ts');
 }

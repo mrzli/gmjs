@@ -1,6 +1,12 @@
 import { SchemaToCliAppCodeInput } from '../schema-to-cli-app-code-input';
 import { ImportDeclarationStructure, OptionalKind } from 'ts-morph';
 import { createTsSourceFile } from '../../../shared/source-file-util';
+import { getSchemasDir } from '../../shared/util';
+import {
+  MODULE_NAME_GMJS_LIB_UTIL,
+  MODULE_NAME_GMJS_MONGO_UTIL,
+  MODULE_NAME_GMJS_UTIL,
+} from '@gmjs/data-manipulation';
 
 export function generateMainCode(input: SchemaToCliAppCodeInput): string {
   return createTsSourceFile((sf) => {
@@ -26,7 +32,7 @@ export function generateMainCode(input: SchemaToCliAppCodeInput): string {
               writer
                 .writeLine("host: 'localhost',")
                 .writeLine('port: 27017,')
-                .write(`dbName: '${appsMonorepo.projectName}',`);
+                .write(`dbName: '${appsMonorepo.baseProjectName}',`);
             })
             .write(';');
         },
@@ -38,7 +44,9 @@ export function generateMainCode(input: SchemaToCliAppCodeInput): string {
               .indent(() => {
                 writer
                   .writeLine(
-                    `await createDb(dbParams, getSchemasFromDir('${appsMonorepo.libsDir}/${appsMonorepo.projectName}-data-model/assets/schemas'));`
+                    `await createDb(dbParams, getSchemasFromDir('${getSchemasDir(
+                      appsMonorepo
+                    )}'));`
                   )
                   .writeLine('break;');
               })
@@ -93,11 +101,10 @@ export function generateMainCode(input: SchemaToCliAppCodeInput): string {
 function createImportDeclarations(
   input: SchemaToCliAppCodeInput
 ): readonly OptionalKind<ImportDeclarationStructure>[] {
-  const libsMonorepo = input.options.libsMonorepo;
   return [
     {
       namedImports: ['invariant'],
-      moduleSpecifier: `@${libsMonorepo.npmScope}/${libsMonorepo.utilProjectName}`,
+      moduleSpecifier: MODULE_NAME_GMJS_UTIL,
     },
     {
       namedImports: [
@@ -106,11 +113,11 @@ function createImportDeclarations(
         'getSchemasFromDir',
         'MongoConnectionParameters',
       ],
-      moduleSpecifier: `@${libsMonorepo.npmScope}/${libsMonorepo.mongoUtilProjectName}`,
+      moduleSpecifier: MODULE_NAME_GMJS_MONGO_UTIL,
     },
     {
       namedImports: ['logErrorWithFullValueAndRethrow'],
-      moduleSpecifier: `@${libsMonorepo.npmScope}/${libsMonorepo.libUtilProjectName}`,
+      moduleSpecifier: MODULE_NAME_GMJS_LIB_UTIL,
     },
     {
       namedImports: ['seedDb'],

@@ -3,20 +3,20 @@ import { MongoJsonSchemaTypeObject } from '@gmjs/mongo-util';
 import { camelCase, kebabCase, pascalCase } from '@gmjs/lib-util';
 import path from 'path';
 import { SchemaToBackendAppCodeInput } from '../schema-to-backend-app-code-input';
-import {
-  getMongoUtilModuleSpecifier,
-  getNestUtilModuleSpecifier,
-  getSharedLibraryModuleSpecifier,
-} from './service-helpers/import-helpers';
 import { PathContentPair } from '@gmjs/fs-util';
 import { createTsSourceFile } from '../../../shared/source-file-util';
+import { getSharedLibraryModuleName } from '../../shared/util';
+import {
+  MODULE_NAME_GMJS_MONGO_UTIL,
+  MODULE_NAME_GMJS_NEST_UTIL,
+} from '@gmjs/data-manipulation';
 
 export function generateController(
   input: SchemaToBackendAppCodeInput,
   schema: MongoJsonSchemaTypeObject,
   moduleDir: string
 ): PathContentPair {
-  const appPrefix = input.options.appPrefix;
+  const appPrefix = input.options.interfacePrefixes.app;
 
   const entityFsName = kebabCase(schema.title);
   const typeName = pascalCase(schema.title);
@@ -37,15 +37,15 @@ export function generateController(
       },
       {
         namedImports: ['WithoutId'],
-        moduleSpecifier: getMongoUtilModuleSpecifier(input),
+        moduleSpecifier: MODULE_NAME_GMJS_MONGO_UTIL,
       },
       {
         namedImports: ['valueOrThrowItemNotFoundException'],
-        moduleSpecifier: getNestUtilModuleSpecifier(input),
+        moduleSpecifier: MODULE_NAME_GMJS_NEST_UTIL,
       },
       {
         namedImports: [appTypeName],
-        moduleSpecifier: getSharedLibraryModuleSpecifier(input),
+        moduleSpecifier: getSharedLibraryModuleName(input.options.appsMonorepo),
       },
       {
         namedImports: [serviceType],
