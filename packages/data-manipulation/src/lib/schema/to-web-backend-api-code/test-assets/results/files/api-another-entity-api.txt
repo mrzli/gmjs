@@ -1,0 +1,56 @@
+import { AxiosInstance } from 'axios';
+import { objectOmitFields } from '@gmjs/util';
+import { WithoutId } from '@gmjs/mongo-util';
+import { AppAnotherEntity } from '@gmjs-apps/example-shared';
+
+export interface AnotherEntityApi {
+  readonly getAll: () => Promise<readonly AppAnotherEntity[]>;
+  readonly getById: (id: string) => Promise<AppAnotherEntity>;
+  readonly create: (
+    appAnotherEntity: WithoutId<AppAnotherEntity>
+  ) => Promise<AppAnotherEntity>;
+  readonly update: (
+    appAnotherEntity: AppAnotherEntity
+  ) => Promise<AppAnotherEntity>;
+  readonly remove: (id: string) => Promise<void>;
+}
+
+export function createAnotherEntityApi(
+  server: AxiosInstance
+): AnotherEntityApi {
+  return {
+    async getAll(): Promise<readonly AppAnotherEntity[]> {
+      const response = await server.get<readonly AppAnotherEntity[]>(
+        'api/another-entity/find-all'
+      );
+      return response.data;
+    },
+    async getById(id: string): Promise<AppAnotherEntity> {
+      const response = await server.get<AppAnotherEntity>(
+        `api/another-entity/find/${id}`
+      );
+      return response.data;
+    },
+    async create(
+      appAnotherEntity: WithoutId<AppAnotherEntity>
+    ): Promise<AppAnotherEntity> {
+      const response = await server.post<AppAnotherEntity>(
+        'api/another-entity/create',
+        appAnotherEntity
+      );
+      return response.data;
+    },
+    async update(
+      appAnotherEntity: AppAnotherEntity
+    ): Promise<AppAnotherEntity> {
+      const response = await server.post<AppAnotherEntity>(
+        `api/another-entity/update/${appAnotherEntity.id}`,
+        objectOmitFields(appAnotherEntity, ['id'])
+      );
+      return response.data;
+    },
+    async remove(id: string): Promise<void> {
+      await server.delete<AppAnotherEntity>(`api/another-entity/update/${id}`);
+    },
+  };
+}
