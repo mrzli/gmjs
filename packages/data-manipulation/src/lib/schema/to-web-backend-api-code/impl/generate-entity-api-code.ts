@@ -9,10 +9,6 @@ import {
   OptionalKind,
 } from 'ts-morph';
 import { createTsSourceFile } from '../../../shared/source-file-util';
-import {
-  MODULE_NAME_GMJS_MONGO_UTIL,
-  MODULE_NAME_GMJS_UTIL,
-} from '../../shared/constants';
 import { getSharedLibraryModuleName } from '../../shared/util';
 
 export function generateEntityApiCode(
@@ -54,6 +50,8 @@ function getImportDeclarations(
   input: SchemaToWebBackendApiCodeInput,
   prefixedNames: CasedNames
 ): readonly OptionalKind<ImportDeclarationStructure>[] {
+  const libModuleNames = input.options.libModuleNames;
+
   return [
     {
       namedImports: ['AxiosInstance'],
@@ -61,11 +59,11 @@ function getImportDeclarations(
     },
     {
       namedImports: ['objectOmitFields'],
-      moduleSpecifier: MODULE_NAME_GMJS_UTIL,
+      moduleSpecifier: libModuleNames.util,
     },
     {
       namedImports: ['WithoutId'],
-      moduleSpecifier: MODULE_NAME_GMJS_MONGO_UTIL,
+      moduleSpecifier: libModuleNames.mongoUtil,
     },
     {
       namedImports: [prefixedNames.pascalCased],

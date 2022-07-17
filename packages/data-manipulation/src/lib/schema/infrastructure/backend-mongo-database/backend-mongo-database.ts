@@ -6,14 +6,13 @@ import {
 import { SourceFile, SyntaxKind, WriterFunction } from 'ts-morph';
 import { kebabCase } from '@gmjs/lib-util';
 import { createTsSourceFile } from '../../../shared/source-file-util';
-import { MODULE_NAME_GMJS_NEST_UTIL } from '../../shared/constants';
 
 export function backendMongoDatabase(input: BackendMongoDatabaseInput): string {
   return createTsSourceFile((sf) => {
     appendImports(sf, [
       {
         namedImports: ['MongoDatabaseConfigOptions', 'MongoDatabaseModule'],
-        moduleSpecifier: MODULE_NAME_GMJS_NEST_UTIL,
+        moduleSpecifier: input.options.libModuleNames.nestUtil,
       },
     ]);
 
@@ -42,7 +41,9 @@ function addMongoConfigOptionStatement(
         writer
           .writeLine("host: 'localhost',")
           .writeLine('port: 27017,')
-          .write(`dbName: '${kebabCase(input.options.baseProjectName)}',`);
+          .write(
+            `dbName: '${kebabCase(input.options.appMonorepo.baseProjectName)}',`
+          );
       });
   };
 

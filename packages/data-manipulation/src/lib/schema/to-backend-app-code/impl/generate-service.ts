@@ -30,10 +30,6 @@ import { SchemaToBackendAppCodeInput } from '../schema-to-backend-app-code-input
 import { PathContentPair } from '@gmjs/fs-util';
 import { createTsSourceFile } from '../../../shared/source-file-util';
 import { getSharedLibraryModuleName } from '../../shared/util';
-import {
-  MODULE_NAME_GMJS_MONGO_UTIL,
-  MODULE_NAME_GMJS_UTIL,
-} from '../../shared/constants';
 
 export function generateService(
   input: SchemaToBackendAppCodeInput,
@@ -43,6 +39,7 @@ export function generateService(
   const collectionStructure = schemaToCollectionStructure(schema);
   const dbPrefix = input.options.interfacePrefixes.db;
   const appPrefix = input.options.interfacePrefixes.app;
+  const libModuleNames = input.options.libModuleNames;
 
   const collectionEntityName = collectionStructure.collectionType.name;
 
@@ -74,14 +71,14 @@ export function generateService(
       },
       {
         namedImports: ['DbWithoutId', 'WithoutId'],
-        moduleSpecifier: MODULE_NAME_GMJS_MONGO_UTIL,
+        moduleSpecifier: libModuleNames.mongoUtil,
       },
       {
         namedImports: [
           OBJECT_REMOVE_UNDEFINED_FN_NAME,
           TRANSFORM_IF_EXISTS_FN_NAME,
         ],
-        moduleSpecifier: MODULE_NAME_GMJS_UTIL,
+        moduleSpecifier: libModuleNames.util,
       },
       {
         namedImports: [

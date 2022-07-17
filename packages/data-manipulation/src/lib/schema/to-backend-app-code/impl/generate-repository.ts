@@ -6,10 +6,6 @@ import { SchemaToBackendAppCodeInput } from '../schema-to-backend-app-code-input
 import { PathContentPair } from '@gmjs/fs-util';
 import { createTsSourceFile } from '../../../shared/source-file-util';
 import { getSharedLibraryModuleName } from '../../shared/util';
-import {
-  MODULE_NAME_GMJS_MONGO_UTIL,
-  MODULE_NAME_GMJS_NEST_UTIL,
-} from '../../shared/constants';
 
 export function generateRepository(
   input: SchemaToBackendAppCodeInput,
@@ -17,6 +13,7 @@ export function generateRepository(
   moduleDir: string
 ): PathContentPair {
   const dbPrefix = input.options.interfacePrefixes.db;
+  const libModuleNames = input.options.libModuleNames;
 
   const entityFsName = kebabCase(schema.title);
   const typeName = pascalCase(schema.title);
@@ -38,11 +35,11 @@ export function generateRepository(
       },
       {
         namedImports: ['DbWithoutId'],
-        moduleSpecifier: MODULE_NAME_GMJS_MONGO_UTIL,
+        moduleSpecifier: libModuleNames.mongoUtil,
       },
       {
         namedImports: ['MongoDatabaseService', 'valueOrThrow'],
-        moduleSpecifier: MODULE_NAME_GMJS_NEST_UTIL,
+        moduleSpecifier: libModuleNames.nestUtil,
       },
       {
         namedImports: ['DbCollectionName', dbTypeName],

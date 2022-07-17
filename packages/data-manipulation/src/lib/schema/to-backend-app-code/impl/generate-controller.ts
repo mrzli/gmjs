@@ -6,10 +6,6 @@ import { SchemaToBackendAppCodeInput } from '../schema-to-backend-app-code-input
 import { PathContentPair } from '@gmjs/fs-util';
 import { createTsSourceFile } from '../../../shared/source-file-util';
 import { getSharedLibraryModuleName } from '../../shared/util';
-import {
-  MODULE_NAME_GMJS_MONGO_UTIL,
-  MODULE_NAME_GMJS_NEST_UTIL,
-} from '../../shared/constants';
 
 export function generateController(
   input: SchemaToBackendAppCodeInput,
@@ -17,6 +13,7 @@ export function generateController(
   moduleDir: string
 ): PathContentPair {
   const appPrefix = input.options.interfacePrefixes.app;
+  const libModuleNames = input.options.libModuleNames;
 
   const entityFsName = kebabCase(schema.title);
   const typeName = pascalCase(schema.title);
@@ -37,11 +34,11 @@ export function generateController(
       },
       {
         namedImports: ['WithoutId'],
-        moduleSpecifier: MODULE_NAME_GMJS_MONGO_UTIL,
+        moduleSpecifier: libModuleNames.mongoUtil,
       },
       {
         namedImports: ['valueOrThrowItemNotFoundException'],
-        moduleSpecifier: MODULE_NAME_GMJS_NEST_UTIL,
+        moduleSpecifier: libModuleNames.nestUtil,
       },
       {
         namedImports: [appTypeName],

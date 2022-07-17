@@ -11,6 +11,7 @@ import {
   createCodeFileExpected,
 } from '../../shared/test-util';
 import { TEST_APPS_MONOREPO_OPTIONS } from '../shared/test-util';
+import { DEFAULT_CODE_GENERATION_LIB_MODULE_NAMES } from '../shared/constants';
 
 describe('schema-to-backend-app-code', () => {
   it('schemaToBackendAppCode()', () => {
@@ -42,6 +43,7 @@ function createInput(testDir: string): SchemaToBackendAppCodeInput {
     initialFiles,
     options: {
       appsMonorepo: TEST_APPS_MONOREPO_OPTIONS,
+      libModuleNames: DEFAULT_CODE_GENERATION_LIB_MODULE_NAMES,
       interfacePrefixes: {
         db: 'db',
         app: 'app',

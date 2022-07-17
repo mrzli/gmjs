@@ -8,6 +8,7 @@ import {
   createCodeFileExpected,
 } from '../../shared/test-util';
 import { TEST_APPS_MONOREPO_OPTIONS } from '../shared/test-util';
+import { DEFAULT_CODE_GENERATION_LIB_MODULE_NAMES } from '../shared/constants';
 
 describe('schema-to-web-backend-api-code', () => {
   it('schemaToWebBackendApiCode()', () => {
@@ -35,6 +36,7 @@ function createInput(testDir: string): SchemaToWebBackendApiCodeInput {
     schemas,
     options: {
       appsMonorepo: TEST_APPS_MONOREPO_OPTIONS,
+      libModuleNames: DEFAULT_CODE_GENERATION_LIB_MODULE_NAMES,
       interfacePrefixes: {
         db: 'db',
         app: 'app',

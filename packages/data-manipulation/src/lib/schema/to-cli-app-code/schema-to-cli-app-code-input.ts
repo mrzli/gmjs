@@ -1,5 +1,8 @@
 import { MongoJsonSchemaTypeObject } from '@gmjs/mongo-util';
-import { CodeGenerationAppsMonorepoOptions } from '../shared/types';
+import {
+  CodeGenerationAppsMonorepoOptions,
+  CodeGenerationLibsModuleNames,
+} from '../shared/types';
 
 export interface SchemaToCliAppCodeInput {
   readonly schemas: readonly MongoJsonSchemaTypeObject[];
@@ -8,4 +11,5 @@ export interface SchemaToCliAppCodeInput {
 
 export interface SchemaToCliAppCodeOptions {
   readonly appsMonorepo: CodeGenerationAppsMonorepoOptions;
+  readonly libModuleNames: CodeGenerationLibsModuleNames;
 }

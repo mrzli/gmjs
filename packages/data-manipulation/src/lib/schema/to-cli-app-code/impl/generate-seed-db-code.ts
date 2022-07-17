@@ -16,7 +16,6 @@ import { pascalCase } from '@gmjs/lib-util';
 import { DEFAULT_DATE, DEFAULT_OBJECT_ID } from '../../../shared/constants';
 import { invariant, objectGetEntries } from '@gmjs/util';
 import { getMongoTypeImports } from '../../../shared/code-util';
-import { MODULE_NAME_GMJS_MONGO_UTIL } from '../../shared/constants';
 import { getSharedLibraryModuleName } from '../../shared/util';
 
 export function generateSeedDbCode(input: SchemaToCliAppCodeInput): string {
@@ -33,6 +32,7 @@ function createImportDeclarations(
   input: SchemaToCliAppCodeInput
 ): readonly OptionalKind<ImportDeclarationStructure>[] {
   const appsMonorepo = input.options.appsMonorepo;
+  const libModuleNames = input.options.libModuleNames;
 
   return [
     {
@@ -41,7 +41,7 @@ function createImportDeclarations(
     },
     {
       namedImports: ['executeMongo', 'insertMany', 'MongoConnectionParameters'],
-      moduleSpecifier: MODULE_NAME_GMJS_MONGO_UTIL,
+      moduleSpecifier: libModuleNames.mongoUtil,
     },
     {
       namedImports: ['DbCollectionName'],

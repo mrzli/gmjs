@@ -2,17 +2,12 @@ import { SchemaToCliAppCodeInput } from '../schema-to-cli-app-code-input';
 import { ImportDeclarationStructure, OptionalKind } from 'ts-morph';
 import { createTsSourceFile } from '../../../shared/source-file-util';
 import { getSchemasDir } from '../../shared/util';
-import {
-  MODULE_NAME_GMJS_LIB_UTIL,
-  MODULE_NAME_GMJS_MONGO_UTIL,
-  MODULE_NAME_GMJS_UTIL,
-} from '../../shared/constants';
 
 export function generateMainCode(input: SchemaToCliAppCodeInput): string {
   return createTsSourceFile((sf) => {
     const appsMonorepo = input.options.appsMonorepo;
 
-    const importDeclarations = createImportDeclarations();
+    const importDeclarations = createImportDeclarations(input);
     sf.addImportDeclarations(importDeclarations);
 
     sf.addFunction({
@@ -98,11 +93,15 @@ export function generateMainCode(input: SchemaToCliAppCodeInput): string {
   });
 }
 
-function createImportDeclarations(): readonly OptionalKind<ImportDeclarationStructure>[] {
+function createImportDeclarations(
+  input: SchemaToCliAppCodeInput
+): readonly OptionalKind<ImportDeclarationStructure>[] {
+  const libModuleNames = input.options.libModuleNames;
+
   return [
     {
       namedImports: ['invariant'],
-      moduleSpecifier: MODULE_NAME_GMJS_UTIL,
+      moduleSpecifier: libModuleNames.util,
     },
     {
       namedImports: [
@@ -111,11 +110,11 @@ function createImportDeclarations(): readonly OptionalKind<ImportDeclarationStru
         'getSchemasFromDir',
         'MongoConnectionParameters',
       ],
-      moduleSpecifier: MODULE_NAME_GMJS_MONGO_UTIL,
+      moduleSpecifier: libModuleNames.mongoUtil,
     },
     {
       namedImports: ['logErrorWithFullValueAndRethrow'],
-      moduleSpecifier: MODULE_NAME_GMJS_LIB_UTIL,
+      moduleSpecifier: libModuleNames.libUtil,
     },
     {
       namedImports: ['seedDb'],

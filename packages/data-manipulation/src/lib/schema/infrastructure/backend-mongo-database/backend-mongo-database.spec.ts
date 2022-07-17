@@ -8,6 +8,7 @@ import path from 'path';
 import { identifyFn } from '@gmjs/util';
 import { BackendMongoDatabaseInput } from './backend-mongo-database-input';
 import { TEST_APPS_MONOREPO_OPTIONS } from '../../shared/test-util';
+import { DEFAULT_CODE_GENERATION_LIB_MODULE_NAMES } from '../../shared/constants';
 
 describe('backend-mongo-database', () => {
   describe('backendMongoDatabase()', () => {
@@ -38,7 +39,10 @@ describe('backend-mongo-database', () => {
           () => {
             const input: BackendMongoDatabaseInput = {
               appModuleFile: example.input.appModule,
-              options: TEST_APPS_MONOREPO_OPTIONS,
+              options: {
+                appMonorepo: TEST_APPS_MONOREPO_OPTIONS,
+                libModuleNames: DEFAULT_CODE_GENERATION_LIB_MODULE_NAMES,
+              },
             };
             return backendMongoDatabase(input);
           },
