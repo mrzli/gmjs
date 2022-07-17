@@ -1,0 +1,49 @@
+import { <%= propertyName %> } from './<%= fileName %>';
+import path from 'path';
+import {
+  <%= className %>InitialFiles,
+  <%= className %>Input,
+} from './<%= fileName %>-input';
+import { readTextSync } from '@gmjs/fs-util';
+import {
+  createCodeFileComparisonStrings,
+  createCodeFileExpected,
+} from '../../../shared/test-util';
+
+describe('<%= fileName %>', () => {
+  it('<%= propertyName %>()', () => {
+    const testDir = path.join(__dirname, 'test-assets');
+
+    const input = createInput(testDir);
+    const actual = <%= propertyName %>(input);
+    const expected = createCodeFileExpected(testDir);
+
+    const { expectedString, actualString } = createCodeFileComparisonStrings(
+      actual,
+      expected
+    );
+
+    expect(actualString).toEqual(expectedString);
+  });
+});
+
+function createInput(testDir: string): <%= className %>Input {
+  const initialFiles: <%= className %>InitialFiles = {
+    input: readTextSync(path.join(testDir, 'input/input.ts.txt')),
+  };
+
+  return {
+    initialFiles,
+    options: {
+      appsMonorepo: {
+        npmScope: 'gmjs-apps',
+        libsDir: 'libs',
+        baseProjectName: '<%= fileName %>',
+      },
+      interfacePrefixes: {
+        db: 'db',
+        app: 'app',
+      },
+    },
+  };
+}
