@@ -1,13 +1,14 @@
-import { AddMongoDatabaseToBackendInput } from './add-mongo-database-to-backend-input';
-import { appendImports, appendNestModuleImports } from '../../shared/code-util';
+import { BackendMongoDatabaseInput } from './backend-mongo-database-input';
+import {
+  appendImports,
+  appendNestModuleImports,
+} from '../../../shared/code-util';
 import { SourceFile, SyntaxKind, WriterFunction } from 'ts-morph';
 import { kebabCase } from '@gmjs/lib-util';
-import { createTsSourceFile } from '../../shared/source-file-util';
-import { MODULE_NAME_GMJS_NEST_UTIL } from '../shared/constants';
+import { createTsSourceFile } from '../../../shared/source-file-util';
+import { MODULE_NAME_GMJS_NEST_UTIL } from '../../shared/constants';
 
-export function addMongoDatabaseToBackend(
-  input: AddMongoDatabaseToBackendInput
-): string {
+export function backendMongoDatabase(input: BackendMongoDatabaseInput): string {
   return createTsSourceFile((sf) => {
     appendImports(sf, [
       {
@@ -26,7 +27,7 @@ export function addMongoDatabaseToBackend(
 
 function addMongoConfigOptionStatement(
   sf: SourceFile,
-  input: AddMongoDatabaseToBackendInput
+  input: BackendMongoDatabaseInput
 ): void {
   const allStatements = sf.getStatements();
   const appModuleStatementIndex = allStatements.findIndex((s) =>

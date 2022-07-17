@@ -1,4 +1,4 @@
-import { addMongoDatabaseToBackend } from './add-mongo-database-to-backend';
+import { backendMongoDatabase } from './backend-mongo-database';
 import {
   createFileSystemExampleTest,
   ExampleMappingFn,
@@ -6,11 +6,11 @@ import {
 } from '@gmjs/test-util';
 import path from 'path';
 import { identifyFn } from '@gmjs/util';
-import { AddMongoDatabaseToBackendInput } from './add-mongo-database-to-backend-input';
-import { TEST_APPS_MONOREPO_OPTIONS } from '../shared/test-util';
+import { BackendMongoDatabaseInput } from './backend-mongo-database-input';
+import { TEST_APPS_MONOREPO_OPTIONS } from '../../shared/test-util';
 
-describe('add-mongo-database-to-backend', () => {
-  describe('addMongoDatabaseToBackend()', () => {
+describe('backend-mongo-database', () => {
+  describe('backendMongoDatabase()', () => {
     interface TestInput {
       readonly appModule: string;
     }
@@ -36,11 +36,11 @@ describe('add-mongo-database-to-backend', () => {
         createFileSystemExampleTest(
           example,
           () => {
-            const input: AddMongoDatabaseToBackendInput = {
+            const input: BackendMongoDatabaseInput = {
               appModuleFile: example.input.appModule,
               options: TEST_APPS_MONOREPO_OPTIONS,
             };
-            return addMongoDatabaseToBackend(input);
+            return backendMongoDatabase(input);
           },
           identifyFn
         )
