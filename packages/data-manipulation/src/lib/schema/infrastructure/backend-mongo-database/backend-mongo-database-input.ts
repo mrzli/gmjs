@@ -9,6 +9,6 @@ export interface BackendMongoDatabaseInput {
 }
 
 export interface BackendMongoDatabaseOptions {
-  readonly appMonorepo: CodeGenerationAppsMonorepoOptions;
+  readonly appsMonorepo: CodeGenerationAppsMonorepoOptions;
   readonly libModuleNames: CodeGenerationLibsModuleNames;
 }

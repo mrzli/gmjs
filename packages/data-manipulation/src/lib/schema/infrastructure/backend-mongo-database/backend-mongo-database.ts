@@ -42,7 +42,9 @@ function addMongoConfigOptionStatement(
           .writeLine("host: 'localhost',")
           .writeLine('port: 27017,')
           .write(
-            `dbName: '${kebabCase(input.options.appMonorepo.baseProjectName)}',`
+            `dbName: '${kebabCase(
+              input.options.appsMonorepo.baseProjectName
+            )}',`
           );
       });
   };

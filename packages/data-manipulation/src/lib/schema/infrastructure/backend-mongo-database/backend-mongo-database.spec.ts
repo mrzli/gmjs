@@ -40,7 +40,7 @@ describe('backend-mongo-database', () => {
             const input: BackendMongoDatabaseInput = {
               appModuleFile: example.input.appModule,
               options: {
-                appMonorepo: TEST_APPS_MONOREPO_OPTIONS,
+                appsMonorepo: TEST_APPS_MONOREPO_OPTIONS,
                 libModuleNames: DEFAULT_CODE_GENERATION_LIB_MODULE_NAMES,
               },
             };
