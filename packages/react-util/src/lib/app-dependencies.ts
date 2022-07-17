@@ -7,7 +7,7 @@ import {
 } from '@gmjs/browser-util';
 import { AnyObject } from '@gmjs/util';
 
-export interface AppDependencies<
+export interface AppDependenciesBase<
   TAppApi extends AnyObject,
   TSessionStorageKey extends string,
   TLocalStorageKey extends string,
@@ -19,14 +19,19 @@ export interface AppDependencies<
   readonly cookie: CookieWrapper<TCookieKey>;
 }
 
-export function createAppDependencies<
+export function createAppDependenciesBase<
   TAppApi extends AnyObject,
   TSessionStorageKey extends string,
   TLocalStorageKey extends string,
   TCookieKey extends string
 >(
   appApi: TAppApi
-): AppDependencies<TAppApi, TSessionStorageKey, TLocalStorageKey, TCookieKey> {
+): AppDependenciesBase<
+  TAppApi,
+  TSessionStorageKey,
+  TLocalStorageKey,
+  TCookieKey
+> {
   return {
     api: appApi,
     sessionStorage: createSessionStorageWrapper<TSessionStorageKey>(),
