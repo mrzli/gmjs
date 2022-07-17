@@ -9,7 +9,7 @@ export interface CodeGenerationAppsMonorepoOptions {
   readonly baseProjectName: string;
 }
 
-export interface CodeGenerationLibsModuleNames {
+export interface CodeGenerationLibModuleNames {
   readonly util: string;
   readonly mongoUtil: string;
   readonly nestUtil: string;

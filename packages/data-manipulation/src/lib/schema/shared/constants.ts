@@ -1,6 +1,6 @@
 import {
   CodeGenerationInterfacePrefixes,
-  CodeGenerationLibsModuleNames,
+  CodeGenerationLibModuleNames,
 } from './types';
 
 export const DEFAULT_CODE_GENERATION_INTERFACE_PREFIXES: CodeGenerationInterfacePrefixes =
@@ -9,7 +9,7 @@ export const DEFAULT_CODE_GENERATION_INTERFACE_PREFIXES: CodeGenerationInterface
     app: '',
   };
 
-export const DEFAULT_CODE_GENERATION_LIB_MODULE_NAMES: CodeGenerationLibsModuleNames =
+export const DEFAULT_CODE_GENERATION_LIB_MODULE_NAMES: CodeGenerationLibModuleNames =
   {
     util: toGmjsModuleName('util'),
     mongoUtil: toGmjsModuleName('mongo-util'),

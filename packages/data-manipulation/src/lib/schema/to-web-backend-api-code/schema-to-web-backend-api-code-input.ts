@@ -2,7 +2,7 @@ import { MongoJsonSchemaTypeObject } from '@gmjs/mongo-util';
 import {
   CodeGenerationAppsMonorepoOptions,
   CodeGenerationInterfacePrefixes,
-  CodeGenerationLibsModuleNames,
+  CodeGenerationLibModuleNames,
 } from '../shared/types';
 
 export interface SchemaToWebBackendApiCodeInput {
@@ -12,6 +12,6 @@ export interface SchemaToWebBackendApiCodeInput {
 
 export interface SchemaToWebBackendApiCodeOptions {
   readonly appsMonorepo: CodeGenerationAppsMonorepoOptions;
-  readonly libModuleNames: CodeGenerationLibsModuleNames;
+  readonly libModuleNames: CodeGenerationLibModuleNames;
   readonly interfacePrefixes: CodeGenerationInterfacePrefixes;
 }

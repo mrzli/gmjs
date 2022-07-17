@@ -1,6 +1,6 @@
 import {
   CodeGenerationAppsMonorepoOptions,
-  CodeGenerationLibsModuleNames,
+  CodeGenerationLibModuleNames,
 } from '../../shared/types';
 
 export interface BackendMongoDatabaseInput {
@@ -10,5 +10,5 @@ export interface BackendMongoDatabaseInput {
 
 export interface BackendMongoDatabaseOptions {
   readonly appsMonorepo: CodeGenerationAppsMonorepoOptions;
-  readonly libModuleNames: CodeGenerationLibsModuleNames;
+  readonly libModuleNames: CodeGenerationLibModuleNames;
 }
