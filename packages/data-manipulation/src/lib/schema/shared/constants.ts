@@ -1,4 +1,4 @@
-import { SchemaToCodeInterfacePrefixes } from './types';
+import { CodeGenerationInterfacePrefixes } from './types';
 
 const GMJS_NPM_SCOPE = 'gmjs';
 
@@ -11,7 +11,7 @@ function toGmjsModuleName(projectName: string): string {
   return `@${GMJS_NPM_SCOPE}/${projectName}`;
 }
 
-export const DEFAULT_SCHEMA_TO_CODE_INTERFACE_PREFIXES: SchemaToCodeInterfacePrefixes =
+export const DEFAULT_SCHEMA_TO_CODE_INTERFACE_PREFIXES: CodeGenerationInterfacePrefixes =
   {
     db: 'db',
     app: '',

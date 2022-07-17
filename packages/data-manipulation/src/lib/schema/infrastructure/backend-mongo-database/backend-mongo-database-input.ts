@@ -1,6 +1,6 @@
-import { SchemaToCodeAppsMonorepoOptions } from '../../shared/types';
+import { CodeGenerationAppsMonorepoOptions } from '../../shared/types';
 
 export interface BackendMongoDatabaseInput {
   readonly appModuleFile: string;
-  readonly options: SchemaToCodeAppsMonorepoOptions;
+  readonly options: CodeGenerationAppsMonorepoOptions;
 }

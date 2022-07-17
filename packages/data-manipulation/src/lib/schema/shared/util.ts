@@ -1,13 +1,13 @@
-import { SchemaToCodeAppsMonorepoOptions } from './types';
+import { CodeGenerationAppsMonorepoOptions } from './types';
 
 export function getSharedLibraryModuleName(
-  appsMonorepo: SchemaToCodeAppsMonorepoOptions
+  appsMonorepo: CodeGenerationAppsMonorepoOptions
 ): string {
   return `@${appsMonorepo.npmScope}/${appsMonorepo.baseProjectName}-shared`;
 }
 
 export function getSchemasDir(
-  appsMonorepo: SchemaToCodeAppsMonorepoOptions
+  appsMonorepo: CodeGenerationAppsMonorepoOptions
 ): string {
   return `${appsMonorepo.libsDir}/${appsMonorepo.baseProjectName}-data-model/assets/schemas`;
 }

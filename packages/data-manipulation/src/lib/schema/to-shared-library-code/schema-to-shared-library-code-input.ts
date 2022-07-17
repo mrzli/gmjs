@@ -1,5 +1,5 @@
 import { MongoJsonSchemaTypeObject } from '@gmjs/mongo-util';
-import { SchemaToCodeInterfacePrefixes } from '../shared/types';
+import { CodeGenerationInterfacePrefixes } from '../shared/types';
 
 export interface SchemaToSharedLibraryCodeInput {
   readonly schemas: readonly MongoJsonSchemaTypeObject[];
@@ -12,5 +12,5 @@ export interface SchemaToSharedLibraryCodeInitialFiles {
 }
 
 export interface SchemaToSharedLibraryCodeOptions {
-  readonly interfacePrefixes: SchemaToCodeInterfacePrefixes;
+  readonly interfacePrefixes: CodeGenerationInterfacePrefixes;
 }
