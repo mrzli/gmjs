@@ -4,7 +4,7 @@ import {
   getFileSystemTestExamples,
 } from '@gmjs/test-util';
 import path from 'path';
-import { identifyFn, ImmutableMap } from '@gmjs/util';
+import { AnyObject, identifyFn } from '@gmjs/util';
 import { processTsSourceFile } from './source-file-util';
 
 describe('code-util', () => {
@@ -22,9 +22,9 @@ describe('code-util', () => {
       exampleMapping
     );
 
-    const PLACEHOLDER_MAP = ImmutableMap.fromTupleArray<string, string>([
-      ['<<some-value>>', 'actual-value-3'],
-    ]);
+    const SUBSTITUTIONS: AnyObject = {
+      someValue: "'actual-value-3'",
+    };
 
     EXAMPLES.forEach((example) => {
       it(
@@ -33,7 +33,7 @@ describe('code-util', () => {
           example,
           () =>
             processTsSourceFile(example.input, {
-              placeholderMap: PLACEHOLDER_MAP,
+              substitutions: SUBSTITUTIONS,
             }),
           identifyFn
         )

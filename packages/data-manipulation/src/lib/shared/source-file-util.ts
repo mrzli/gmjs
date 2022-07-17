@@ -7,11 +7,12 @@ import {
 } from 'ts-morph';
 import prettier, { Options } from 'prettier';
 import { SetOptional } from 'type-fest';
-import { ImmutableMap } from '@gmjs/util';
+import { AnyObject } from '@gmjs/util';
+import ejs from 'ejs';
 
 export interface ProcessTsSourceFileOptions {
   readonly prettify?: boolean;
-  readonly placeholderMap?: ImmutableMap<string, string>;
+  readonly substitutions?: AnyObject;
 }
 
 const PROJECT_OPTIONS: ProjectOptions = {
@@ -56,15 +57,12 @@ export function processTsSourceFile(
   sourceFileText: string,
   options?: ProcessTsSourceFileOptions
 ): string {
-  const { prettify, placeholderMap } =
+  const { prettify, substitutions } =
     getFinalProcessTsSourceFileOptions(options);
 
-  let replacedText = sourceFileText;
-  if (placeholderMap !== undefined) {
-    for (const { key, value } of placeholderMap.entryPairs()) {
-      replacedText = replacedText.replace(key, value);
-    }
-  }
+  const replacedText = substitutions
+    ? ejs.render(sourceFileText, substitutions)
+    : sourceFileText;
 
   return prettify
     ? prettier.format(replacedText, PRETTIER_OPTIONS)
@@ -73,9 +71,9 @@ export function processTsSourceFile(
 
 function getFinalProcessTsSourceFileOptions(
   options?: ProcessTsSourceFileOptions
-): SetOptional<Required<ProcessTsSourceFileOptions>, 'placeholderMap'> {
+): SetOptional<Required<ProcessTsSourceFileOptions>, 'substitutions'> {
   return {
     prettify: options?.prettify ?? true,
-    placeholderMap: options?.placeholderMap,
+    substitutions: options?.substitutions,
   };
 }
