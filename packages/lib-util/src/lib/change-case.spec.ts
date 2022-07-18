@@ -11,6 +11,7 @@ describe('change-case', () => {
       pascalCased: 'SomeWordsHere',
       camelCased: 'someWordsHere',
       kebabCased: 'some-words-here',
+      constantCased: 'SOME_WORDS_HERE',
     };
 
     const EXAMPLES: readonly Example[] = [
@@ -20,6 +21,7 @@ describe('change-case', () => {
           pascalCased: '',
           camelCased: '',
           kebabCased: '',
+          constantCased: '',
         },
       },
       {
@@ -28,6 +30,7 @@ describe('change-case', () => {
           pascalCased: '',
           camelCased: '',
           kebabCased: '',
+          constantCased: '',
         },
       },
       {
@@ -36,6 +39,7 @@ describe('change-case', () => {
           pascalCased: 'A',
           camelCased: 'a',
           kebabCased: 'a',
+          constantCased: 'A',
         },
       },
       {

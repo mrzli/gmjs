@@ -4,6 +4,7 @@ import {
   paramCase as _paramCase,
   pascalCase as _pascalCase,
   capitalCase as _capitalCase,
+  constantCase as _constantCase,
 } from 'change-case';
 
 export function kebabCase<T extends string>(value: T): KebabCase<T> {
@@ -30,10 +31,15 @@ export function capitalCase(value: string): string {
   return _capitalCase(value);
 }
 
+export function constantCase(value: string): string {
+  return _constantCase(value);
+}
+
 export interface CasedNames {
   readonly pascalCased: string;
   readonly camelCased: string;
   readonly kebabCased: string;
+  readonly constantCased: string;
 }
 
 export function casedNames(...values: readonly string[]): CasedNames {
@@ -42,5 +48,6 @@ export function casedNames(...values: readonly string[]): CasedNames {
     pascalCased: pascalCase(joinedValues),
     camelCased: camelCase(joinedValues),
     kebabCased: kebabCase(joinedValues),
+    constantCased: constantCase(joinedValues),
   };
 }
