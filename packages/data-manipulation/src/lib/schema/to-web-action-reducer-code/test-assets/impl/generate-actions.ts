@@ -1,6 +1,6 @@
 import { SchemaToWebActionReducerCodeInput } from '../../schema-to-web-action-reducer-code-input';
 import { PathContentPair } from '@gmjs/fs-util';
-import { sortSchemas } from '../../../shared/util';
+import { getSharedLibraryModuleName, sortSchemas } from '../../../shared/util';
 import { MongoJsonSchemaTypeObject } from '@gmjs/mongo-util';
 import {
   FunctionDeclarationStructure,
@@ -34,7 +34,7 @@ function generateEntityAction(
   );
 
   const content = createTsSourceFile((sf) => {
-    const importDeclarations = getImportDeclarations(input);
+    const importDeclarations = getImportDeclarations(input, typeName);
     sf.addImportDeclarations(importDeclarations);
 
     const endpointList = getEndpointList(typeName);
@@ -70,7 +70,8 @@ function generateEntityAction(
 }
 
 function getImportDeclarations(
-  input: SchemaToWebActionReducerCodeInput
+  input: SchemaToWebActionReducerCodeInput,
+  typeName: string
 ): readonly OptionalKind<ImportDeclarationStructure>[] {
   const libModuleNames = input.options.libModuleNames;
 
@@ -82,6 +83,10 @@ function getImportDeclarations(
     {
       namedImports: ['WithoutId'],
       moduleSpecifier: libModuleNames.mongoUtil,
+    },
+    {
+      namedImports: [typeName],
+      moduleSpecifier: getSharedLibraryModuleName(input.options.appsMonorepo),
     },
   ];
 }
