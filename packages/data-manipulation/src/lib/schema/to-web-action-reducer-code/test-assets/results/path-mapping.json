@@ -1,0 +1,14 @@
+[
+  {
+    "testFile": "store-entity-action.txt",
+    "path": "store/entity/action.ts"
+  },
+  {
+    "testFile": "store-entity2-action.txt",
+    "path": "store/entity2/action.ts"
+  },
+  {
+    "testFile": "store-another-entity-action.txt",
+    "path": "store/another-entity/action.ts"
+  }
+]

@@ -1,0 +1,348 @@
+import { AppActionBase } from '@gmjs/react-util';
+import { WithoutId } from '@gmjs/mongo-util';
+
+export const ACTION_TYPE_ENTITY_GET_ALL = 'EntityGetAll';
+export type ActionTypeEntityGetAll = typeof ACTION_TYPE_ENTITY_GET_ALL;
+export type ActionEntityGetAll = AppActionBase<
+  ActionTypeEntityGetAll,
+  undefined
+>;
+
+export function actionEntityGetAll(): ActionEntityGetAll {
+  return {
+    type: ACTION_TYPE_ENTITY_GET_ALL,
+    payload: undefined,
+  };
+}
+
+export const ACTION_TYPE_ENTITY_GET_ALL_PENDING = 'EntityGetAllPending';
+export type ActionTypeEntityGetAllPending =
+  typeof ACTION_TYPE_ENTITY_GET_ALL_PENDING;
+export type ActionEntityGetAllPending = AppActionBase<
+  ActionTypeEntityGetAllPending,
+  undefined
+>;
+
+export function actionEntityGetAllPending(): ActionEntityGetAllPending {
+  return {
+    type: ACTION_TYPE_ENTITY_GET_ALL_PENDING,
+    payload: undefined,
+  };
+}
+
+export const ACTION_TYPE_ENTITY_GET_ALL_FULFILLED = 'EntityGetAllFulfilled';
+export type ActionTypeEntityGetAllFulfilled =
+  typeof ACTION_TYPE_ENTITY_GET_ALL_FULFILLED;
+export type ActionEntityGetAllFulfilled = AppActionBase<
+  ActionTypeEntityGetAllFulfilled,
+  readonly AppEntity[]
+>;
+
+export function actionEntityGetAllFulfilled(
+  payload: readonly AppEntity[]
+): ActionEntityGetAllFulfilled {
+  return {
+    type: ACTION_TYPE_ENTITY_GET_ALL_FULFILLED,
+    payload,
+  };
+}
+
+export const ACTION_TYPE_ENTITY_GET_ALL_REJECTED = 'EntityGetAllRejected';
+export type ActionTypeEntityGetAllRejected =
+  typeof ACTION_TYPE_ENTITY_GET_ALL_REJECTED;
+export type ActionEntityGetAllRejected = AppActionBase<
+  ActionTypeEntityGetAllRejected,
+  undefined
+>;
+
+export function actionEntityGetAllRejected(): ActionEntityGetAllRejected {
+  return {
+    type: ACTION_TYPE_ENTITY_GET_ALL_REJECTED,
+    payload: undefined,
+  };
+}
+
+export const ACTION_TYPE_ENTITY_GET_BY_ID = 'EntityGetById';
+export type ActionTypeEntityGetById = typeof ACTION_TYPE_ENTITY_GET_BY_ID;
+export type ActionEntityGetById = AppActionBase<
+  ActionTypeEntityGetById,
+  string
+>;
+
+export function actionEntityGetById(payload: string): ActionEntityGetById {
+  return {
+    type: ACTION_TYPE_ENTITY_GET_BY_ID,
+    payload,
+  };
+}
+
+export const ACTION_TYPE_ENTITY_GET_BY_ID_PENDING = 'EntityGetByIdPending';
+export type ActionTypeEntityGetByIdPending =
+  typeof ACTION_TYPE_ENTITY_GET_BY_ID_PENDING;
+export type ActionEntityGetByIdPending = AppActionBase<
+  ActionTypeEntityGetByIdPending,
+  undefined
+>;
+
+export function actionEntityGetByIdPending(): ActionEntityGetByIdPending {
+  return {
+    type: ACTION_TYPE_ENTITY_GET_BY_ID_PENDING,
+    payload: undefined,
+  };
+}
+
+export const ACTION_TYPE_ENTITY_GET_BY_ID_FULFILLED = 'EntityGetByIdFulfilled';
+export type ActionTypeEntityGetByIdFulfilled =
+  typeof ACTION_TYPE_ENTITY_GET_BY_ID_FULFILLED;
+export type ActionEntityGetByIdFulfilled = AppActionBase<
+  ActionTypeEntityGetByIdFulfilled,
+  AppEntity
+>;
+
+export function actionEntityGetByIdFulfilled(
+  payload: AppEntity
+): ActionEntityGetByIdFulfilled {
+  return {
+    type: ACTION_TYPE_ENTITY_GET_BY_ID_FULFILLED,
+    payload,
+  };
+}
+
+export const ACTION_TYPE_ENTITY_GET_BY_ID_REJECTED = 'EntityGetByIdRejected';
+export type ActionTypeEntityGetByIdRejected =
+  typeof ACTION_TYPE_ENTITY_GET_BY_ID_REJECTED;
+export type ActionEntityGetByIdRejected = AppActionBase<
+  ActionTypeEntityGetByIdRejected,
+  undefined
+>;
+
+export function actionEntityGetByIdRejected(): ActionEntityGetByIdRejected {
+  return {
+    type: ACTION_TYPE_ENTITY_GET_BY_ID_REJECTED,
+    payload: undefined,
+  };
+}
+
+export const ACTION_TYPE_ENTITY_CREATE = 'EntityCreate';
+export type ActionTypeEntityCreate = typeof ACTION_TYPE_ENTITY_CREATE;
+export type ActionEntityCreate = AppActionBase<
+  ActionTypeEntityCreate,
+  WithoutId<AppEntity>
+>;
+
+export function actionEntityCreate(
+  payload: WithoutId<AppEntity>
+): ActionEntityCreate {
+  return {
+    type: ACTION_TYPE_ENTITY_CREATE,
+    payload,
+  };
+}
+
+export const ACTION_TYPE_ENTITY_CREATE_PENDING = 'EntityCreatePending';
+export type ActionTypeEntityCreatePending =
+  typeof ACTION_TYPE_ENTITY_CREATE_PENDING;
+export type ActionEntityCreatePending = AppActionBase<
+  ActionTypeEntityCreatePending,
+  undefined
+>;
+
+export function actionEntityCreatePending(): ActionEntityCreatePending {
+  return {
+    type: ACTION_TYPE_ENTITY_CREATE_PENDING,
+    payload: undefined,
+  };
+}
+
+export const ACTION_TYPE_ENTITY_CREATE_FULFILLED = 'EntityCreateFulfilled';
+export type ActionTypeEntityCreateFulfilled =
+  typeof ACTION_TYPE_ENTITY_CREATE_FULFILLED;
+export type ActionEntityCreateFulfilled = AppActionBase<
+  ActionTypeEntityCreateFulfilled,
+  AppEntity
+>;
+
+export function actionEntityCreateFulfilled(
+  payload: AppEntity
+): ActionEntityCreateFulfilled {
+  return {
+    type: ACTION_TYPE_ENTITY_CREATE_FULFILLED,
+    payload,
+  };
+}
+
+export const ACTION_TYPE_ENTITY_CREATE_REJECTED = 'EntityCreateRejected';
+export type ActionTypeEntityCreateRejected =
+  typeof ACTION_TYPE_ENTITY_CREATE_REJECTED;
+export type ActionEntityCreateRejected = AppActionBase<
+  ActionTypeEntityCreateRejected,
+  undefined
+>;
+
+export function actionEntityCreateRejected(): ActionEntityCreateRejected {
+  return {
+    type: ACTION_TYPE_ENTITY_CREATE_REJECTED,
+    payload: undefined,
+  };
+}
+
+export const ACTION_TYPE_ENTITY_UPDATE = 'EntityUpdate';
+export type ActionTypeEntityUpdate = typeof ACTION_TYPE_ENTITY_UPDATE;
+export type ActionEntityUpdate = AppActionBase<
+  ActionTypeEntityUpdate,
+  AppEntity
+>;
+
+export function actionEntityUpdate(payload: AppEntity): ActionEntityUpdate {
+  return {
+    type: ACTION_TYPE_ENTITY_UPDATE,
+    payload,
+  };
+}
+
+export const ACTION_TYPE_ENTITY_UPDATE_PENDING = 'EntityUpdatePending';
+export type ActionTypeEntityUpdatePending =
+  typeof ACTION_TYPE_ENTITY_UPDATE_PENDING;
+export type ActionEntityUpdatePending = AppActionBase<
+  ActionTypeEntityUpdatePending,
+  undefined
+>;
+
+export function actionEntityUpdatePending(): ActionEntityUpdatePending {
+  return {
+    type: ACTION_TYPE_ENTITY_UPDATE_PENDING,
+    payload: undefined,
+  };
+}
+
+export const ACTION_TYPE_ENTITY_UPDATE_FULFILLED = 'EntityUpdateFulfilled';
+export type ActionTypeEntityUpdateFulfilled =
+  typeof ACTION_TYPE_ENTITY_UPDATE_FULFILLED;
+export type ActionEntityUpdateFulfilled = AppActionBase<
+  ActionTypeEntityUpdateFulfilled,
+  AppEntity
+>;
+
+export function actionEntityUpdateFulfilled(
+  payload: AppEntity
+): ActionEntityUpdateFulfilled {
+  return {
+    type: ACTION_TYPE_ENTITY_UPDATE_FULFILLED,
+    payload,
+  };
+}
+
+export const ACTION_TYPE_ENTITY_UPDATE_REJECTED = 'EntityUpdateRejected';
+export type ActionTypeEntityUpdateRejected =
+  typeof ACTION_TYPE_ENTITY_UPDATE_REJECTED;
+export type ActionEntityUpdateRejected = AppActionBase<
+  ActionTypeEntityUpdateRejected,
+  undefined
+>;
+
+export function actionEntityUpdateRejected(): ActionEntityUpdateRejected {
+  return {
+    type: ACTION_TYPE_ENTITY_UPDATE_REJECTED,
+    payload: undefined,
+  };
+}
+
+export const ACTION_TYPE_ENTITY_REMOVE = 'EntityRemove';
+export type ActionTypeEntityRemove = typeof ACTION_TYPE_ENTITY_REMOVE;
+export type ActionEntityRemove = AppActionBase<ActionTypeEntityRemove, string>;
+
+export function actionEntityRemove(payload: string): ActionEntityRemove {
+  return {
+    type: ACTION_TYPE_ENTITY_REMOVE,
+    payload,
+  };
+}
+
+export const ACTION_TYPE_ENTITY_REMOVE_PENDING = 'EntityRemovePending';
+export type ActionTypeEntityRemovePending =
+  typeof ACTION_TYPE_ENTITY_REMOVE_PENDING;
+export type ActionEntityRemovePending = AppActionBase<
+  ActionTypeEntityRemovePending,
+  undefined
+>;
+
+export function actionEntityRemovePending(): ActionEntityRemovePending {
+  return {
+    type: ACTION_TYPE_ENTITY_REMOVE_PENDING,
+    payload: undefined,
+  };
+}
+
+export const ACTION_TYPE_ENTITY_REMOVE_FULFILLED = 'EntityRemoveFulfilled';
+export type ActionTypeEntityRemoveFulfilled =
+  typeof ACTION_TYPE_ENTITY_REMOVE_FULFILLED;
+export type ActionEntityRemoveFulfilled = AppActionBase<
+  ActionTypeEntityRemoveFulfilled,
+  undefined
+>;
+
+export function actionEntityRemoveFulfilled(): ActionEntityRemoveFulfilled {
+  return {
+    type: ACTION_TYPE_ENTITY_REMOVE_FULFILLED,
+    payload: undefined,
+  };
+}
+
+export const ACTION_TYPE_ENTITY_REMOVE_REJECTED = 'EntityRemoveRejected';
+export type ActionTypeEntityRemoveRejected =
+  typeof ACTION_TYPE_ENTITY_REMOVE_REJECTED;
+export type ActionEntityRemoveRejected = AppActionBase<
+  ActionTypeEntityRemoveRejected,
+  undefined
+>;
+
+export function actionEntityRemoveRejected(): ActionEntityRemoveRejected {
+  return {
+    type: ACTION_TYPE_ENTITY_REMOVE_REJECTED,
+    payload: undefined,
+  };
+}
+
+export type ActionTypeEntity =
+  | ActionTypeEntityGetAll
+  | ActionTypeEntityGetAllPending
+  | ActionTypeEntityGetAllFulfilled
+  | ActionTypeEntityGetAllRejected
+  | ActionTypeEntityGetById
+  | ActionTypeEntityGetByIdPending
+  | ActionTypeEntityGetByIdFulfilled
+  | ActionTypeEntityGetByIdRejected
+  | ActionTypeEntityCreate
+  | ActionTypeEntityCreatePending
+  | ActionTypeEntityCreateFulfilled
+  | ActionTypeEntityCreateRejected
+  | ActionTypeEntityUpdate
+  | ActionTypeEntityUpdatePending
+  | ActionTypeEntityUpdateFulfilled
+  | ActionTypeEntityUpdateRejected
+  | ActionTypeEntityRemove
+  | ActionTypeEntityRemovePending
+  | ActionTypeEntityRemoveFulfilled
+  | ActionTypeEntityRemoveRejected;
+
+export type ActionEntity =
+  | ActionEntityGetAll
+  | ActionEntityGetAllPending
+  | ActionEntityGetAllFulfilled
+  | ActionEntityGetAllRejected
+  | ActionEntityGetById
+  | ActionEntityGetByIdPending
+  | ActionEntityGetByIdFulfilled
+  | ActionEntityGetByIdRejected
+  | ActionEntityCreate
+  | ActionEntityCreatePending
+  | ActionEntityCreateFulfilled
+  | ActionEntityCreateRejected
+  | ActionEntityUpdate
+  | ActionEntityUpdatePending
+  | ActionEntityUpdateFulfilled
+  | ActionEntityUpdateRejected
+  | ActionEntityRemove
+  | ActionEntityRemovePending
+  | ActionEntityRemoveFulfilled
+  | ActionEntityRemoveRejected;

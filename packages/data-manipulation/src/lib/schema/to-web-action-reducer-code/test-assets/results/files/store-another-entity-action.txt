@@ -1,0 +1,377 @@
+import { AppActionBase } from '@gmjs/react-util';
+import { WithoutId } from '@gmjs/mongo-util';
+
+export const ACTION_TYPE_ANOTHER_ENTITY_GET_ALL = 'AnotherEntityGetAll';
+export type ActionTypeAnotherEntityGetAll =
+  typeof ACTION_TYPE_ANOTHER_ENTITY_GET_ALL;
+export type ActionAnotherEntityGetAll = AppActionBase<
+  ActionTypeAnotherEntityGetAll,
+  undefined
+>;
+
+export function actionAnotherEntityGetAll(): ActionAnotherEntityGetAll {
+  return {
+    type: ACTION_TYPE_ANOTHER_ENTITY_GET_ALL,
+    payload: undefined,
+  };
+}
+
+export const ACTION_TYPE_ANOTHER_ENTITY_GET_ALL_PENDING =
+  'AnotherEntityGetAllPending';
+export type ActionTypeAnotherEntityGetAllPending =
+  typeof ACTION_TYPE_ANOTHER_ENTITY_GET_ALL_PENDING;
+export type ActionAnotherEntityGetAllPending = AppActionBase<
+  ActionTypeAnotherEntityGetAllPending,
+  undefined
+>;
+
+export function actionAnotherEntityGetAllPending(): ActionAnotherEntityGetAllPending {
+  return {
+    type: ACTION_TYPE_ANOTHER_ENTITY_GET_ALL_PENDING,
+    payload: undefined,
+  };
+}
+
+export const ACTION_TYPE_ANOTHER_ENTITY_GET_ALL_FULFILLED =
+  'AnotherEntityGetAllFulfilled';
+export type ActionTypeAnotherEntityGetAllFulfilled =
+  typeof ACTION_TYPE_ANOTHER_ENTITY_GET_ALL_FULFILLED;
+export type ActionAnotherEntityGetAllFulfilled = AppActionBase<
+  ActionTypeAnotherEntityGetAllFulfilled,
+  readonly AppAnotherEntity[]
+>;
+
+export function actionAnotherEntityGetAllFulfilled(
+  payload: readonly AppAnotherEntity[]
+): ActionAnotherEntityGetAllFulfilled {
+  return {
+    type: ACTION_TYPE_ANOTHER_ENTITY_GET_ALL_FULFILLED,
+    payload,
+  };
+}
+
+export const ACTION_TYPE_ANOTHER_ENTITY_GET_ALL_REJECTED =
+  'AnotherEntityGetAllRejected';
+export type ActionTypeAnotherEntityGetAllRejected =
+  typeof ACTION_TYPE_ANOTHER_ENTITY_GET_ALL_REJECTED;
+export type ActionAnotherEntityGetAllRejected = AppActionBase<
+  ActionTypeAnotherEntityGetAllRejected,
+  undefined
+>;
+
+export function actionAnotherEntityGetAllRejected(): ActionAnotherEntityGetAllRejected {
+  return {
+    type: ACTION_TYPE_ANOTHER_ENTITY_GET_ALL_REJECTED,
+    payload: undefined,
+  };
+}
+
+export const ACTION_TYPE_ANOTHER_ENTITY_GET_BY_ID = 'AnotherEntityGetById';
+export type ActionTypeAnotherEntityGetById =
+  typeof ACTION_TYPE_ANOTHER_ENTITY_GET_BY_ID;
+export type ActionAnotherEntityGetById = AppActionBase<
+  ActionTypeAnotherEntityGetById,
+  string
+>;
+
+export function actionAnotherEntityGetById(
+  payload: string
+): ActionAnotherEntityGetById {
+  return {
+    type: ACTION_TYPE_ANOTHER_ENTITY_GET_BY_ID,
+    payload,
+  };
+}
+
+export const ACTION_TYPE_ANOTHER_ENTITY_GET_BY_ID_PENDING =
+  'AnotherEntityGetByIdPending';
+export type ActionTypeAnotherEntityGetByIdPending =
+  typeof ACTION_TYPE_ANOTHER_ENTITY_GET_BY_ID_PENDING;
+export type ActionAnotherEntityGetByIdPending = AppActionBase<
+  ActionTypeAnotherEntityGetByIdPending,
+  undefined
+>;
+
+export function actionAnotherEntityGetByIdPending(): ActionAnotherEntityGetByIdPending {
+  return {
+    type: ACTION_TYPE_ANOTHER_ENTITY_GET_BY_ID_PENDING,
+    payload: undefined,
+  };
+}
+
+export const ACTION_TYPE_ANOTHER_ENTITY_GET_BY_ID_FULFILLED =
+  'AnotherEntityGetByIdFulfilled';
+export type ActionTypeAnotherEntityGetByIdFulfilled =
+  typeof ACTION_TYPE_ANOTHER_ENTITY_GET_BY_ID_FULFILLED;
+export type ActionAnotherEntityGetByIdFulfilled = AppActionBase<
+  ActionTypeAnotherEntityGetByIdFulfilled,
+  AppAnotherEntity
+>;
+
+export function actionAnotherEntityGetByIdFulfilled(
+  payload: AppAnotherEntity
+): ActionAnotherEntityGetByIdFulfilled {
+  return {
+    type: ACTION_TYPE_ANOTHER_ENTITY_GET_BY_ID_FULFILLED,
+    payload,
+  };
+}
+
+export const ACTION_TYPE_ANOTHER_ENTITY_GET_BY_ID_REJECTED =
+  'AnotherEntityGetByIdRejected';
+export type ActionTypeAnotherEntityGetByIdRejected =
+  typeof ACTION_TYPE_ANOTHER_ENTITY_GET_BY_ID_REJECTED;
+export type ActionAnotherEntityGetByIdRejected = AppActionBase<
+  ActionTypeAnotherEntityGetByIdRejected,
+  undefined
+>;
+
+export function actionAnotherEntityGetByIdRejected(): ActionAnotherEntityGetByIdRejected {
+  return {
+    type: ACTION_TYPE_ANOTHER_ENTITY_GET_BY_ID_REJECTED,
+    payload: undefined,
+  };
+}
+
+export const ACTION_TYPE_ANOTHER_ENTITY_CREATE = 'AnotherEntityCreate';
+export type ActionTypeAnotherEntityCreate =
+  typeof ACTION_TYPE_ANOTHER_ENTITY_CREATE;
+export type ActionAnotherEntityCreate = AppActionBase<
+  ActionTypeAnotherEntityCreate,
+  WithoutId<AppAnotherEntity>
+>;
+
+export function actionAnotherEntityCreate(
+  payload: WithoutId<AppAnotherEntity>
+): ActionAnotherEntityCreate {
+  return {
+    type: ACTION_TYPE_ANOTHER_ENTITY_CREATE,
+    payload,
+  };
+}
+
+export const ACTION_TYPE_ANOTHER_ENTITY_CREATE_PENDING =
+  'AnotherEntityCreatePending';
+export type ActionTypeAnotherEntityCreatePending =
+  typeof ACTION_TYPE_ANOTHER_ENTITY_CREATE_PENDING;
+export type ActionAnotherEntityCreatePending = AppActionBase<
+  ActionTypeAnotherEntityCreatePending,
+  undefined
+>;
+
+export function actionAnotherEntityCreatePending(): ActionAnotherEntityCreatePending {
+  return {
+    type: ACTION_TYPE_ANOTHER_ENTITY_CREATE_PENDING,
+    payload: undefined,
+  };
+}
+
+export const ACTION_TYPE_ANOTHER_ENTITY_CREATE_FULFILLED =
+  'AnotherEntityCreateFulfilled';
+export type ActionTypeAnotherEntityCreateFulfilled =
+  typeof ACTION_TYPE_ANOTHER_ENTITY_CREATE_FULFILLED;
+export type ActionAnotherEntityCreateFulfilled = AppActionBase<
+  ActionTypeAnotherEntityCreateFulfilled,
+  AppAnotherEntity
+>;
+
+export function actionAnotherEntityCreateFulfilled(
+  payload: AppAnotherEntity
+): ActionAnotherEntityCreateFulfilled {
+  return {
+    type: ACTION_TYPE_ANOTHER_ENTITY_CREATE_FULFILLED,
+    payload,
+  };
+}
+
+export const ACTION_TYPE_ANOTHER_ENTITY_CREATE_REJECTED =
+  'AnotherEntityCreateRejected';
+export type ActionTypeAnotherEntityCreateRejected =
+  typeof ACTION_TYPE_ANOTHER_ENTITY_CREATE_REJECTED;
+export type ActionAnotherEntityCreateRejected = AppActionBase<
+  ActionTypeAnotherEntityCreateRejected,
+  undefined
+>;
+
+export function actionAnotherEntityCreateRejected(): ActionAnotherEntityCreateRejected {
+  return {
+    type: ACTION_TYPE_ANOTHER_ENTITY_CREATE_REJECTED,
+    payload: undefined,
+  };
+}
+
+export const ACTION_TYPE_ANOTHER_ENTITY_UPDATE = 'AnotherEntityUpdate';
+export type ActionTypeAnotherEntityUpdate =
+  typeof ACTION_TYPE_ANOTHER_ENTITY_UPDATE;
+export type ActionAnotherEntityUpdate = AppActionBase<
+  ActionTypeAnotherEntityUpdate,
+  AppAnotherEntity
+>;
+
+export function actionAnotherEntityUpdate(
+  payload: AppAnotherEntity
+): ActionAnotherEntityUpdate {
+  return {
+    type: ACTION_TYPE_ANOTHER_ENTITY_UPDATE,
+    payload,
+  };
+}
+
+export const ACTION_TYPE_ANOTHER_ENTITY_UPDATE_PENDING =
+  'AnotherEntityUpdatePending';
+export type ActionTypeAnotherEntityUpdatePending =
+  typeof ACTION_TYPE_ANOTHER_ENTITY_UPDATE_PENDING;
+export type ActionAnotherEntityUpdatePending = AppActionBase<
+  ActionTypeAnotherEntityUpdatePending,
+  undefined
+>;
+
+export function actionAnotherEntityUpdatePending(): ActionAnotherEntityUpdatePending {
+  return {
+    type: ACTION_TYPE_ANOTHER_ENTITY_UPDATE_PENDING,
+    payload: undefined,
+  };
+}
+
+export const ACTION_TYPE_ANOTHER_ENTITY_UPDATE_FULFILLED =
+  'AnotherEntityUpdateFulfilled';
+export type ActionTypeAnotherEntityUpdateFulfilled =
+  typeof ACTION_TYPE_ANOTHER_ENTITY_UPDATE_FULFILLED;
+export type ActionAnotherEntityUpdateFulfilled = AppActionBase<
+  ActionTypeAnotherEntityUpdateFulfilled,
+  AppAnotherEntity
+>;
+
+export function actionAnotherEntityUpdateFulfilled(
+  payload: AppAnotherEntity
+): ActionAnotherEntityUpdateFulfilled {
+  return {
+    type: ACTION_TYPE_ANOTHER_ENTITY_UPDATE_FULFILLED,
+    payload,
+  };
+}
+
+export const ACTION_TYPE_ANOTHER_ENTITY_UPDATE_REJECTED =
+  'AnotherEntityUpdateRejected';
+export type ActionTypeAnotherEntityUpdateRejected =
+  typeof ACTION_TYPE_ANOTHER_ENTITY_UPDATE_REJECTED;
+export type ActionAnotherEntityUpdateRejected = AppActionBase<
+  ActionTypeAnotherEntityUpdateRejected,
+  undefined
+>;
+
+export function actionAnotherEntityUpdateRejected(): ActionAnotherEntityUpdateRejected {
+  return {
+    type: ACTION_TYPE_ANOTHER_ENTITY_UPDATE_REJECTED,
+    payload: undefined,
+  };
+}
+
+export const ACTION_TYPE_ANOTHER_ENTITY_REMOVE = 'AnotherEntityRemove';
+export type ActionTypeAnotherEntityRemove =
+  typeof ACTION_TYPE_ANOTHER_ENTITY_REMOVE;
+export type ActionAnotherEntityRemove = AppActionBase<
+  ActionTypeAnotherEntityRemove,
+  string
+>;
+
+export function actionAnotherEntityRemove(
+  payload: string
+): ActionAnotherEntityRemove {
+  return {
+    type: ACTION_TYPE_ANOTHER_ENTITY_REMOVE,
+    payload,
+  };
+}
+
+export const ACTION_TYPE_ANOTHER_ENTITY_REMOVE_PENDING =
+  'AnotherEntityRemovePending';
+export type ActionTypeAnotherEntityRemovePending =
+  typeof ACTION_TYPE_ANOTHER_ENTITY_REMOVE_PENDING;
+export type ActionAnotherEntityRemovePending = AppActionBase<
+  ActionTypeAnotherEntityRemovePending,
+  undefined
+>;
+
+export function actionAnotherEntityRemovePending(): ActionAnotherEntityRemovePending {
+  return {
+    type: ACTION_TYPE_ANOTHER_ENTITY_REMOVE_PENDING,
+    payload: undefined,
+  };
+}
+
+export const ACTION_TYPE_ANOTHER_ENTITY_REMOVE_FULFILLED =
+  'AnotherEntityRemoveFulfilled';
+export type ActionTypeAnotherEntityRemoveFulfilled =
+  typeof ACTION_TYPE_ANOTHER_ENTITY_REMOVE_FULFILLED;
+export type ActionAnotherEntityRemoveFulfilled = AppActionBase<
+  ActionTypeAnotherEntityRemoveFulfilled,
+  undefined
+>;
+
+export function actionAnotherEntityRemoveFulfilled(): ActionAnotherEntityRemoveFulfilled {
+  return {
+    type: ACTION_TYPE_ANOTHER_ENTITY_REMOVE_FULFILLED,
+    payload: undefined,
+  };
+}
+
+export const ACTION_TYPE_ANOTHER_ENTITY_REMOVE_REJECTED =
+  'AnotherEntityRemoveRejected';
+export type ActionTypeAnotherEntityRemoveRejected =
+  typeof ACTION_TYPE_ANOTHER_ENTITY_REMOVE_REJECTED;
+export type ActionAnotherEntityRemoveRejected = AppActionBase<
+  ActionTypeAnotherEntityRemoveRejected,
+  undefined
+>;
+
+export function actionAnotherEntityRemoveRejected(): ActionAnotherEntityRemoveRejected {
+  return {
+    type: ACTION_TYPE_ANOTHER_ENTITY_REMOVE_REJECTED,
+    payload: undefined,
+  };
+}
+
+export type ActionTypeAnotherEntity =
+  | ActionTypeAnotherEntityGetAll
+  | ActionTypeAnotherEntityGetAllPending
+  | ActionTypeAnotherEntityGetAllFulfilled
+  | ActionTypeAnotherEntityGetAllRejected
+  | ActionTypeAnotherEntityGetById
+  | ActionTypeAnotherEntityGetByIdPending
+  | ActionTypeAnotherEntityGetByIdFulfilled
+  | ActionTypeAnotherEntityGetByIdRejected
+  | ActionTypeAnotherEntityCreate
+  | ActionTypeAnotherEntityCreatePending
+  | ActionTypeAnotherEntityCreateFulfilled
+  | ActionTypeAnotherEntityCreateRejected
+  | ActionTypeAnotherEntityUpdate
+  | ActionTypeAnotherEntityUpdatePending
+  | ActionTypeAnotherEntityUpdateFulfilled
+  | ActionTypeAnotherEntityUpdateRejected
+  | ActionTypeAnotherEntityRemove
+  | ActionTypeAnotherEntityRemovePending
+  | ActionTypeAnotherEntityRemoveFulfilled
+  | ActionTypeAnotherEntityRemoveRejected;
+
+export type ActionAnotherEntity =
+  | ActionAnotherEntityGetAll
+  | ActionAnotherEntityGetAllPending
+  | ActionAnotherEntityGetAllFulfilled
+  | ActionAnotherEntityGetAllRejected
+  | ActionAnotherEntityGetById
+  | ActionAnotherEntityGetByIdPending
+  | ActionAnotherEntityGetByIdFulfilled
+  | ActionAnotherEntityGetByIdRejected
+  | ActionAnotherEntityCreate
+  | ActionAnotherEntityCreatePending
+  | ActionAnotherEntityCreateFulfilled
+  | ActionAnotherEntityCreateRejected
+  | ActionAnotherEntityUpdate
+  | ActionAnotherEntityUpdatePending
+  | ActionAnotherEntityUpdateFulfilled
+  | ActionAnotherEntityUpdateRejected
+  | ActionAnotherEntityRemove
+  | ActionAnotherEntityRemovePending
+  | ActionAnotherEntityRemoveFulfilled
+  | ActionAnotherEntityRemoveRejected;
