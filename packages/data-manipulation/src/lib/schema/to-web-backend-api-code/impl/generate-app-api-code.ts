@@ -1,7 +1,7 @@
 import { MongoJsonSchemaTypeObject } from '@gmjs/mongo-util';
 import { PathContentPair } from '@gmjs/fs-util';
 import { SchemaToWebBackendApiCodeInput } from '../schema-to-web-backend-api-code-input';
-import { casedNames, pascalCase } from '@gmjs/lib-util';
+import { casedNames } from '@gmjs/lib-util';
 import {
   FunctionDeclarationStructure,
   ImportDeclarationStructure,
@@ -10,18 +10,13 @@ import {
   PropertySignatureStructure,
 } from 'ts-morph';
 import { createTsSourceFile } from '../../../shared/source-file-util';
-import {
-  compareFnStringAsc,
-  sortArray,
-  sortArrayByStringAsc,
-} from '@gmjs/util';
+import { sortArrayByStringAsc } from '@gmjs/util';
+import { sortSchemas } from '../../shared/util';
 
 export function generateAppApiCode(
   input: SchemaToWebBackendApiCodeInput
 ): PathContentPair {
-  const schemas = sortArray(input.schemas, (s1, s2) =>
-    compareFnStringAsc(pascalCase(s1.title), pascalCase(s2.title))
-  );
+  const schemas = sortSchemas(input.schemas);
 
   const content = createTsSourceFile((sf) => {
     const importDeclarations = getImportDeclarations(schemas);
