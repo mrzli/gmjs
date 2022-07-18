@@ -10,7 +10,7 @@ import {
   WriterFunction,
 } from 'ts-morph';
 import { casedNames, constantCase, pascalCase } from '@gmjs/lib-util';
-import { createTsSourceFile } from '@gmjs/data-manipulation';
+import { createTsSourceFile } from '../../../../shared/source-file-util';
 import { flatMap } from '@gmjs/util';
 
 export function generateActions(
