@@ -10,6 +10,8 @@ import {
   createCodeFileComparisonStrings,
   createCodeFileExpected,
 } from '../../shared/test-util';
+import { TEST_APPS_MONOREPO_OPTIONS } from '../shared/test-util';
+import { DEFAULT_CODE_GENERATION_LIB_MODULE_NAMES } from '../shared/constants';
 
 describe('schema-to-<%= fileName %>-code', () => {
   it('schemaTo<%= className %>Code()', () => {
@@ -40,11 +42,8 @@ function createInput(testDir: string): SchemaTo<%= className %>CodeInput {
     schemas,
     initialFiles,
     options: {
-      appsMonorepo: {
-        npmScope: 'gmjs-apps',
-        libsDir: 'libs',
-        baseProjectName: '<%= fileName %>',
-      },
+      appsMonorepo: TEST_APPS_MONOREPO_OPTIONS,
+      libModuleNames: DEFAULT_CODE_GENERATION_LIB_MODULE_NAMES,
       interfacePrefixes: {
         db: 'db',
         app: 'app',
