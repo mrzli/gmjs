@@ -19,13 +19,18 @@ export function createEmptyNormalizedItems<
   };
 }
 
-export function toNormalizedItems<T extends ObjectWithId>(
+export function setNormalizedItems<T extends ObjectWithId>(
+  normalizedItems: Draft<NormalizedItems<T>>,
   items: readonly T[]
-): Draft<NormalizedItems<T>> {
-  return {
-    ids: items.map((item) => item.id),
-    items: items.reduce((acc, item) => ({ ...acc, [item.id]: item }), {}),
-  };
+): void {
+  normalizedItems.ids = items.map((item) => item.id);
+  normalizedItems.items = items.reduce(
+    (acc, item) => ({
+      ...acc,
+      [item.id]: item,
+    }),
+    {}
+  );
 }
 
 export function updateNormalizedItem<T extends ObjectWithId>(
