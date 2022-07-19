@@ -1,5 +1,6 @@
 import { AppActionBase } from '@gmjs/react-util';
 import { WithoutId } from '@gmjs/mongo-util';
+import { AppEntity2 } from '@gmjs-apps/example-shared';
 
 export const ACTION_TYPE_ENTITY2_GET_ALL = 'Entity2GetAll';
 export type ActionTypeEntity2GetAll = typeof ACTION_TYPE_ENTITY2_GET_ALL;

@@ -1,5 +1,6 @@
 import { AppActionBase } from '@gmjs/react-util';
 import { WithoutId } from '@gmjs/mongo-util';
+import { AppAnotherEntity } from '@gmjs-apps/example-shared';
 
 export const ACTION_TYPE_ANOTHER_ENTITY_GET_ALL = 'AnotherEntityGetAll';
 export type ActionTypeAnotherEntityGetAll =
