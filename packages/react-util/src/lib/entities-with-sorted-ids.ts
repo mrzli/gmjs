@@ -16,7 +16,7 @@ export function createEmptyEntitiesWithSortedIds<
   };
 }
 
-function toEntitiesWithSortedIds<T extends ObjectWithId>(
+export function toEntitiesWithSortedIds<T extends ObjectWithId>(
   entities: readonly T[]
 ): EntitiesWithSortedIds<T> {
   // TODO GM: remove cast if this start working
