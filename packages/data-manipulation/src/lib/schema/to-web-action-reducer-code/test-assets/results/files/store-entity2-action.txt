@@ -283,13 +283,15 @@ export type ActionTypeEntity2RemoveFulfilled =
   typeof ACTION_TYPE_ENTITY2_REMOVE_FULFILLED;
 export type ActionEntity2RemoveFulfilled = AppActionBase<
   ActionTypeEntity2RemoveFulfilled,
-  undefined
+  string
 >;
 
-export function actionEntity2RemoveFulfilled(): ActionEntity2RemoveFulfilled {
+export function actionEntity2RemoveFulfilled(
+  payload: string
+): ActionEntity2RemoveFulfilled {
   return {
     type: ACTION_TYPE_ENTITY2_REMOVE_FULFILLED,
-    payload: undefined,
+    payload,
   };
 }
 

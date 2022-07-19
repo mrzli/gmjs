@@ -93,36 +93,36 @@ function getImportDeclarations(
 
 interface EndpointData {
   readonly name: string;
-  readonly inputType: string;
-  readonly returnType: string;
+  readonly basePayloadType: string;
+  readonly fulfilledPayloadType: string;
 }
 
 function getEndpointList(typeName: string): readonly EndpointData[] {
   return [
     {
       name: 'getAll',
-      inputType: 'undefined',
-      returnType: `readonly ${typeName}[]`,
+      basePayloadType: 'undefined',
+      fulfilledPayloadType: `readonly ${typeName}[]`,
     },
     {
       name: 'getById',
-      inputType: 'string',
-      returnType: typeName,
+      basePayloadType: 'string',
+      fulfilledPayloadType: typeName,
     },
     {
       name: 'create',
-      inputType: `WithoutId<${typeName}>`,
-      returnType: typeName,
+      basePayloadType: `WithoutId<${typeName}>`,
+      fulfilledPayloadType: typeName,
     },
     {
       name: 'update',
-      inputType: typeName,
-      returnType: typeName,
+      basePayloadType: typeName,
+      fulfilledPayloadType: typeName,
     },
     {
       name: 'remove',
-      inputType: 'string',
-      returnType: 'undefined',
+      basePayloadType: 'string',
+      fulfilledPayloadType: 'string',
     },
   ];
 }
@@ -260,11 +260,11 @@ function getPayloadType(
 ): string {
   switch (apiCallActionType) {
     case 'Base':
-      return endpointData.inputType;
+      return endpointData.basePayloadType;
     case 'Pending':
       return 'undefined';
     case 'Fulfilled':
-      return endpointData.returnType;
+      return endpointData.fulfilledPayloadType;
     case 'Rejected':
       return 'undefined';
   }
