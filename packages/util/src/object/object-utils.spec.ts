@@ -5,9 +5,19 @@ import {
   objectPickFields,
   objectRemoveUndefined,
   objectGetEntries,
+  objectFromArray,
 } from './object-utils';
 import { ConditionalKeys } from 'type-fest';
-import { AnyObject, AnyValue, ObjectEntry } from '../types/generic';
+import {
+  AnyObject,
+  AnyValue,
+  ObjectEntry,
+  ReadonlyRecord,
+} from '../types/generic';
+import {
+  fillArrayOfLengthWithValueMapper,
+  padNonNegativeIntWithZeroes,
+} from '@gmjs/util';
 
 describe('object-utils', () => {
   interface ObjectType {
@@ -15,6 +25,8 @@ describe('object-utils', () => {
     readonly field2: string;
     readonly field3: number;
   }
+
+  type KeyofObjectType = keyof ObjectType;
 
   const INPUT_OBJECT: ObjectType = {
     field1: 'value1',
@@ -24,9 +36,18 @@ describe('object-utils', () => {
 
   const COPY_OF_INPUT_OBJECT = { ...INPUT_OBJECT };
 
+  function createObjectType(id: number): ObjectType {
+    const idStr = padNonNegativeIntWithZeroes(id, 3);
+    return {
+      field1: `field1-${idStr}`,
+      field2: `field2-${idStr}`,
+      field3: id,
+    };
+  }
+
   describe('objectGetKeys()', () => {
     it('example', () => {
-      const actual: readonly (keyof ObjectType)[] = objectGetKeys(INPUT_OBJECT);
+      const actual: readonly KeyofObjectType[] = objectGetKeys(INPUT_OBJECT);
       expect(actual).toEqual(['field1', 'field2', 'field3']);
     });
   });
@@ -46,7 +67,7 @@ describe('object-utils', () => {
   describe('objectOmitFields()', () => {
     interface Example {
       readonly input: {
-        readonly fieldsToOmit: readonly (keyof ObjectType)[];
+        readonly fieldsToOmit: readonly KeyofObjectType[];
       };
       readonly expected: AnyObject;
     }
@@ -99,7 +120,7 @@ describe('object-utils', () => {
   describe('objectPickFields()', () => {
     interface Example {
       readonly input: {
-        readonly fieldsToPick: readonly (keyof ObjectType)[];
+        readonly fieldsToPick: readonly KeyofObjectType[];
       };
       readonly expected: AnyObject;
     }
@@ -141,7 +162,7 @@ describe('object-utils', () => {
         expect(actual).toEqual(example.expected);
 
         const fieldsToOmit = (
-          Object.keys(INPUT_OBJECT) as (keyof ObjectType)[]
+          Object.keys(INPUT_OBJECT) as KeyofObjectType[]
         ).filter((key) => !example.input.fieldsToPick.includes(key));
 
         for (const field of fieldsToOmit) {
@@ -279,6 +300,49 @@ describe('object-utils', () => {
           );
           expect(hasProperty).toBe(false);
         }
+      });
+    });
+  });
+
+  describe('objectFromArray()', () => {
+    interface Example {
+      readonly input: {
+        readonly keyField: ConditionalKeys<ObjectType, string>;
+      };
+      readonly expected: ReadonlyRecord<string, ObjectType>;
+    }
+
+    const INPUT_OBJECTS = fillArrayOfLengthWithValueMapper(3, (index) =>
+      createObjectType(index + 1)
+    );
+
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: {
+          keyField: 'field1',
+        },
+        expected: {
+          'field1-001': INPUT_OBJECTS[0],
+          'field1-002': INPUT_OBJECTS[1],
+          'field1-003': INPUT_OBJECTS[2],
+        },
+      },
+      {
+        input: {
+          keyField: 'field2',
+        },
+        expected: {
+          'field2-001': INPUT_OBJECTS[0],
+          'field2-002': INPUT_OBJECTS[1],
+          'field2-003': INPUT_OBJECTS[2],
+        },
+      },
+    ];
+
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        const actual = objectFromArray(INPUT_OBJECTS, example.input.keyField);
+        expect(actual).toEqual(example.expected);
       });
     });
   });

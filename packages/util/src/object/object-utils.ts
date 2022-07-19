@@ -85,3 +85,15 @@ export function objectRemoveUndefined<T extends AnyObject>(obj: T): Partial<T> {
   }
   return newObj;
 }
+
+export function objectFromArray<
+  T extends AnyObject,
+  K extends ConditionalKeys<T, string>
+>(array: readonly T[], keyField: K): ReadonlyRecord<string, T> {
+  const obj: Record<string, T> = {};
+  for (const item of array) {
+    const key = item[keyField];
+    obj[key] = item;
+  }
+  return obj;
+}
