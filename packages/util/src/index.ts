@@ -1,6 +1,7 @@
 export * from './array/array-checker';
 export * from './array/array-creation-utils';
 export * from './array/array-find';
+export * from './array/array-mutation';
 export * from './array/array-sort';
 export * from './array/array-utils';
 export * from './array/array-min-length-utils';
