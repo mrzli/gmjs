@@ -14,10 +14,8 @@ import {
   ObjectEntry,
   ReadonlyRecord,
 } from '../types/generic';
-import {
-  fillArrayOfLengthWithValueMapper,
-  padNonNegativeIntWithZeroes,
-} from '@gmjs/util';
+import { fillArrayOfLengthWithValueMapper } from '../array/array-creation-utils';
+import { padNonNegativeIntWithZeroes } from '../number/number-utils';
 
 describe('object-utils', () => {
   interface ObjectType {
