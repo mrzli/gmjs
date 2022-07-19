@@ -10,7 +10,7 @@ export interface NormalizedItems<T extends ObjectWithId> {
   readonly items: ReadonlyRecord<string, T>;
 }
 
-export function createNormalizedItems<
+export function createEmptyNormalizedItems<
   T extends ObjectWithId
 >(): NormalizedItems<T> {
   return {
