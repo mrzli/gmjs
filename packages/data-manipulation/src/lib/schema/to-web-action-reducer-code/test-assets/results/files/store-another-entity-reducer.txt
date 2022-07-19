@@ -1,0 +1,110 @@
+import {
+  createEmptyNormalizedItems,
+  createReducer,
+  NormalizedItems,
+  removeNormalizedItem,
+  setNormalizedItems,
+  updateNormalizedItem,
+} from '@gmjs/react-util';
+import { AppAnotherEntity } from '@gmjs-apps/example-shared';
+import {
+  ACTION_TYPE_ANOTHER_ENTITY_CREATE,
+  ACTION_TYPE_ANOTHER_ENTITY_CREATE_FULFILLED,
+  ACTION_TYPE_ANOTHER_ENTITY_CREATE_PENDING,
+  ACTION_TYPE_ANOTHER_ENTITY_CREATE_REJECTED,
+  ACTION_TYPE_ANOTHER_ENTITY_GET_ALL,
+  ACTION_TYPE_ANOTHER_ENTITY_GET_ALL_FULFILLED,
+  ACTION_TYPE_ANOTHER_ENTITY_GET_ALL_PENDING,
+  ACTION_TYPE_ANOTHER_ENTITY_GET_ALL_REJECTED,
+  ACTION_TYPE_ANOTHER_ENTITY_GET_BY_ID,
+  ACTION_TYPE_ANOTHER_ENTITY_GET_BY_ID_FULFILLED,
+  ACTION_TYPE_ANOTHER_ENTITY_GET_BY_ID_PENDING,
+  ACTION_TYPE_ANOTHER_ENTITY_GET_BY_ID_REJECTED,
+  ACTION_TYPE_ANOTHER_ENTITY_REMOVE,
+  ACTION_TYPE_ANOTHER_ENTITY_REMOVE_FULFILLED,
+  ACTION_TYPE_ANOTHER_ENTITY_REMOVE_PENDING,
+  ACTION_TYPE_ANOTHER_ENTITY_REMOVE_REJECTED,
+  ACTION_TYPE_ANOTHER_ENTITY_UPDATE,
+  ACTION_TYPE_ANOTHER_ENTITY_UPDATE_FULFILLED,
+  ACTION_TYPE_ANOTHER_ENTITY_UPDATE_PENDING,
+  ACTION_TYPE_ANOTHER_ENTITY_UPDATE_REJECTED,
+  ActionAnotherEntity,
+} from './action';
+
+export interface AnotherEntityState {
+  readonly isLoading: boolean;
+  readonly items: NormalizedItems<AppAnotherEntity>;
+}
+
+export const ANOTHER_ENTITY_INITIAL_STATE: AnotherEntityState = {
+  isLoading: false,
+  items: createEmptyNormalizedItems(),
+};
+
+export const anotherEntityReducer = createReducer<
+  AnotherEntityState,
+  ActionAnotherEntity
+>(ANOTHER_ENTITY_INITIAL_STATE, (action) => (state) => {
+  switch (action.type) {
+    case ACTION_TYPE_ANOTHER_ENTITY_GET_ALL:
+      break;
+    case ACTION_TYPE_ANOTHER_ENTITY_GET_ALL_PENDING:
+      state.isLoading = true;
+      break;
+    case ACTION_TYPE_ANOTHER_ENTITY_GET_ALL_FULFILLED:
+      setNormalizedItems(state.items, action.payload);
+      state.isLoading = false;
+      break;
+    case ACTION_TYPE_ANOTHER_ENTITY_GET_ALL_REJECTED:
+      state.isLoading = false;
+      break;
+    case ACTION_TYPE_ANOTHER_ENTITY_GET_BY_ID:
+      break;
+    case ACTION_TYPE_ANOTHER_ENTITY_GET_BY_ID_PENDING:
+      state.isLoading = true;
+      break;
+    case ACTION_TYPE_ANOTHER_ENTITY_GET_BY_ID_FULFILLED:
+      updateNormalizedItem(state.items, action.payload);
+      state.isLoading = false;
+      break;
+    case ACTION_TYPE_ANOTHER_ENTITY_GET_BY_ID_REJECTED:
+      state.isLoading = false;
+      break;
+    case ACTION_TYPE_ANOTHER_ENTITY_CREATE:
+      break;
+    case ACTION_TYPE_ANOTHER_ENTITY_CREATE_PENDING:
+      state.isLoading = true;
+      break;
+    case ACTION_TYPE_ANOTHER_ENTITY_CREATE_FULFILLED:
+      updateNormalizedItem(state.items, action.payload);
+      state.isLoading = false;
+      break;
+    case ACTION_TYPE_ANOTHER_ENTITY_CREATE_REJECTED:
+      state.isLoading = false;
+      break;
+    case ACTION_TYPE_ANOTHER_ENTITY_UPDATE:
+      break;
+    case ACTION_TYPE_ANOTHER_ENTITY_UPDATE_PENDING:
+      state.isLoading = true;
+      break;
+    case ACTION_TYPE_ANOTHER_ENTITY_UPDATE_FULFILLED:
+      updateNormalizedItem(state.items, action.payload);
+      state.isLoading = false;
+      break;
+    case ACTION_TYPE_ANOTHER_ENTITY_UPDATE_REJECTED:
+      state.isLoading = false;
+      break;
+    case ACTION_TYPE_ANOTHER_ENTITY_REMOVE:
+      break;
+    case ACTION_TYPE_ANOTHER_ENTITY_REMOVE_PENDING:
+      state.isLoading = true;
+      break;
+    case ACTION_TYPE_ANOTHER_ENTITY_REMOVE_FULFILLED:
+      removeNormalizedItem(state.items, action.payload);
+      state.isLoading = false;
+      break;
+    case ACTION_TYPE_ANOTHER_ENTITY_REMOVE_REJECTED:
+      state.isLoading = false;
+      break;
+  }
+});
