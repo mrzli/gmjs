@@ -3,6 +3,7 @@ import { PathContentPair } from '@gmjs/fs-util';
 import { getSharedLibraryModuleName, sortSchemas } from '../../../shared/util';
 import { MongoJsonSchemaTypeObject } from '@gmjs/mongo-util';
 import {
+  FunctionDeclarationStructure,
   ImportDeclarationStructure,
   InterfaceDeclarationStructure,
   OptionalKind,
@@ -11,11 +12,7 @@ import {
 import { casedNames } from '@gmjs/lib-util';
 import { createTsSourceFile } from '../../../../shared/source-file-util';
 import { sortArrayByStringAsc } from '@gmjs/util';
-import {
-  ActionValues,
-  ApiCallActionType,
-  getEndpointAllActionValues,
-} from './util/util';
+import { ActionValues, getEndpointAllActionValues } from './util/util';
 
 export function generateReducers(
   input: SchemaToWebActionReducerCodeInput
@@ -62,14 +59,16 @@ function generateEntityReducer(
       constantName
     );
 
-    const reducerStatement = getReducerStatement(
+    sf.addStatements(['\n', initialStateStatement, '\n']);
+
+    const reducerFunctionDeclaration = getReducerFunction(
       entityBaseName,
       variableName,
       constantName,
       allActionValues
     );
 
-    sf.addStatements(['\n', initialStateStatement, '\n', reducerStatement]);
+    sf.addFunction(reducerFunctionDeclaration);
   });
 
   return {
@@ -95,10 +94,9 @@ function getImportDeclarations(
     {
       namedImports: [
         'createEmptyNormalizedItems',
-        'createReducer',
+        'createNormalizedItems',
         'NormalizedItems',
         'removeNormalizedItem',
-        'setNormalizedItems',
         'updateNormalizedItem',
       ],
       moduleSpecifier: libModuleNames.reactUtil,
@@ -154,79 +152,92 @@ function getInitialStateStatement(
   };
 }
 
-function getReducerStatement(
+function getReducerFunction(
   entityBaseName: string,
   variableName: string,
   constantName: string,
   allActionValues: readonly ActionValues[]
-): WriterFunction {
-  return (writer) => {
-    writer
-      .writeLine(
-        `export const ${variableName}Reducer = createReducer<${entityBaseName}State, Action${entityBaseName}>(`
-      )
-      .indent(() => {
-        writer
-          .writeLine(`${constantName}_INITIAL_STATE,`)
-          .write('(action) => (state) => ')
-          .inlineBlock(() => {
-            writer.write('switch (action.type) ').inlineBlock(() => {
-              for (const actionValues of allActionValues) {
-                const { actionTypeConstant, apiCallActionType, endpointName } =
-                  actionValues;
-
-                writer.writeLine(`case ${actionTypeConstant}:`).indent(() => {
-                  switch (apiCallActionType) {
-                    case 'Base':
-                      break;
-                    case 'Pending':
-                      writer.writeLine('state.isLoading = true;');
-                      break;
-                    case 'Fulfilled':
-                      switch (endpointName) {
-                        case 'getAll':
-                          writer.writeLine(
-                            ' setNormalizedItems(state.items, action.payload);'
-                          );
-                          break;
-                        case 'getById':
-                          writer.writeLine(
-                            ' updateNormalizedItem(state.items, action.payload);'
-                          );
-                          break;
-                        case 'create':
-                          writer.writeLine(
-                            ' updateNormalizedItem(state.items, action.payload);'
-                          );
-                          break;
-                        case 'update':
-                          writer.writeLine(
-                            ' updateNormalizedItem(state.items, action.payload);'
-                          );
-                          break;
-                        case 'remove':
-                          writer.writeLine(
-                            ' removeNormalizedItem(state.items, action.payload);'
-                          );
-                          break;
-                      }
-                      writer.writeLine('state.isLoading = false;');
-                      break;
-                    case 'Rejected':
-                      writer.writeLine('state.isLoading = false;');
-                      break;
-                  }
-                  writer.writeLine('break;');
-                });
-              }
-            });
-          });
-      })
-      .writeLine(');');
+): OptionalKind<FunctionDeclarationStructure> {
+  return {
+    name: `${variableName}Reducer`,
+    isExported: true,
+    parameters: [
+      {
+        name: 'state',
+        type: `${entityBaseName}State = ${constantName}_INITIAL_STATE`,
+      },
+      {
+        name: 'action',
+        type: `Action${entityBaseName}`,
+      },
+    ],
+    returnType: `${entityBaseName}State`,
+    statements: [getReducerFunctionStatement(allActionValues)],
   };
 }
 
-const ENDING_API_CALL_ACTION_TYPES: readonly ApiCallActionType[] = [
-  'Fulfilled',
-  'Rejected',
-];
+function getReducerFunctionStatement(
+  allActionValues: readonly ActionValues[]
+): WriterFunction {
+  return (writer) => {
+    writer.write('switch (action.type) ').inlineBlock(() => {
+      for (const actionValues of allActionValues) {
+        const { actionTypeConstant, apiCallActionType, endpointName } =
+          actionValues;
+
+        writer.writeLine(`case ${actionTypeConstant}:`).indent(() => {
+          switch (apiCallActionType) {
+            case 'Base':
+              writer.writeLine('return state;');
+              break;
+            case 'Pending':
+            case 'Fulfilled':
+            case 'Rejected':
+              writer
+                .write('return ')
+                .inlineBlock(() => {
+                  const isLoadingValue =
+                    apiCallActionType === 'Pending' ? 'true' : 'false';
+
+                  writer
+                    .writeLine('...state,')
+                    .writeLine(`isLoading: ${isLoadingValue},`);
+
+                  if (apiCallActionType === 'Fulfilled') {
+                    switch (endpointName) {
+                      case 'getAll':
+                        writer.writeLine(
+                          'items: createNormalizedItems(action.payload),'
+                        );
+                        break;
+                      case 'getById':
+                        writer.writeLine(
+                          'items: updateNormalizedItem(state.items, action.payload),'
+                        );
+                        break;
+                      case 'create':
+                        writer.writeLine(
+                          'items: updateNormalizedItem(state.items, action.payload),'
+                        );
+                        break;
+                      case 'update':
+                        writer.writeLine(
+                          'items: updateNormalizedItem(state.items, action.payload),'
+                        );
+                        break;
+                      case 'remove':
+                        writer.writeLine(
+                          'items: removeNormalizedItem(state.items, action.payload),'
+                        );
+                        break;
+                    }
+                  }
+                })
+                .writeLine(';');
+              break;
+          }
+        });
+      }
+    });
+  };
+}

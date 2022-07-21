@@ -1,9 +1,8 @@
 import {
   createEmptyNormalizedItems,
-  createReducer,
+  createNormalizedItems,
   NormalizedItems,
   removeNormalizedItem,
-  setNormalizedItems,
   updateNormalizedItem,
 } from '@gmjs/react-util';
 import { AppAnotherEntity } from '@gmjs-apps/example-shared';
@@ -41,70 +40,100 @@ export const ANOTHER_ENTITY_INITIAL_STATE: AnotherEntityState = {
   items: createEmptyNormalizedItems(),
 };
 
-export const anotherEntityReducer = createReducer<
-  AnotherEntityState,
-  ActionAnotherEntity
->(ANOTHER_ENTITY_INITIAL_STATE, (action) => (state) => {
+export function anotherEntityReducer(
+  state: AnotherEntityState = ANOTHER_ENTITY_INITIAL_STATE,
+  action: ActionAnotherEntity
+): AnotherEntityState {
   switch (action.type) {
     case ACTION_TYPE_ANOTHER_ENTITY_GET_ALL:
-      break;
+      return state;
     case ACTION_TYPE_ANOTHER_ENTITY_GET_ALL_PENDING:
-      state.isLoading = true;
-      break;
+      return {
+        ...state,
+        isLoading: true,
+      };
     case ACTION_TYPE_ANOTHER_ENTITY_GET_ALL_FULFILLED:
-      setNormalizedItems(state.items, action.payload);
-      state.isLoading = false;
-      break;
+      return {
+        ...state,
+        isLoading: false,
+        items: createNormalizedItems(action.payload),
+      };
     case ACTION_TYPE_ANOTHER_ENTITY_GET_ALL_REJECTED:
-      state.isLoading = false;
-      break;
+      return {
+        ...state,
+        isLoading: false,
+      };
     case ACTION_TYPE_ANOTHER_ENTITY_GET_BY_ID:
-      break;
+      return state;
     case ACTION_TYPE_ANOTHER_ENTITY_GET_BY_ID_PENDING:
-      state.isLoading = true;
-      break;
+      return {
+        ...state,
+        isLoading: true,
+      };
     case ACTION_TYPE_ANOTHER_ENTITY_GET_BY_ID_FULFILLED:
-      updateNormalizedItem(state.items, action.payload);
-      state.isLoading = false;
-      break;
+      return {
+        ...state,
+        isLoading: false,
+        items: updateNormalizedItem(state.items, action.payload),
+      };
     case ACTION_TYPE_ANOTHER_ENTITY_GET_BY_ID_REJECTED:
-      state.isLoading = false;
-      break;
+      return {
+        ...state,
+        isLoading: false,
+      };
     case ACTION_TYPE_ANOTHER_ENTITY_CREATE:
-      break;
+      return state;
     case ACTION_TYPE_ANOTHER_ENTITY_CREATE_PENDING:
-      state.isLoading = true;
-      break;
+      return {
+        ...state,
+        isLoading: true,
+      };
     case ACTION_TYPE_ANOTHER_ENTITY_CREATE_FULFILLED:
-      updateNormalizedItem(state.items, action.payload);
-      state.isLoading = false;
-      break;
+      return {
+        ...state,
+        isLoading: false,
+        items: updateNormalizedItem(state.items, action.payload),
+      };
     case ACTION_TYPE_ANOTHER_ENTITY_CREATE_REJECTED:
-      state.isLoading = false;
-      break;
+      return {
+        ...state,
+        isLoading: false,
+      };
     case ACTION_TYPE_ANOTHER_ENTITY_UPDATE:
-      break;
+      return state;
     case ACTION_TYPE_ANOTHER_ENTITY_UPDATE_PENDING:
-      state.isLoading = true;
-      break;
+      return {
+        ...state,
+        isLoading: true,
+      };
     case ACTION_TYPE_ANOTHER_ENTITY_UPDATE_FULFILLED:
-      updateNormalizedItem(state.items, action.payload);
-      state.isLoading = false;
-      break;
+      return {
+        ...state,
+        isLoading: false,
+        items: updateNormalizedItem(state.items, action.payload),
+      };
     case ACTION_TYPE_ANOTHER_ENTITY_UPDATE_REJECTED:
-      state.isLoading = false;
-      break;
+      return {
+        ...state,
+        isLoading: false,
+      };
     case ACTION_TYPE_ANOTHER_ENTITY_REMOVE:
-      break;
+      return state;
     case ACTION_TYPE_ANOTHER_ENTITY_REMOVE_PENDING:
-      state.isLoading = true;
-      break;
+      return {
+        ...state,
+        isLoading: true,
+      };
     case ACTION_TYPE_ANOTHER_ENTITY_REMOVE_FULFILLED:
-      removeNormalizedItem(state.items, action.payload);
-      state.isLoading = false;
-      break;
+      return {
+        ...state,
+        isLoading: false,
+        items: removeNormalizedItem(state.items, action.payload),
+      };
     case ACTION_TYPE_ANOTHER_ENTITY_REMOVE_REJECTED:
-      state.isLoading = false;
-      break;
+      return {
+        ...state,
+        isLoading: false,
+      };
   }
-});
+}
