@@ -1,9 +1,5 @@
-import {
-  arrayMutateRemoveSingleItemByEquals,
-  ReadonlyRecord,
-} from '@gmjs/util';
+import { objectFromArray, objectOmitFields, ReadonlyRecord } from '@gmjs/util';
 import { ObjectWithId } from '@gmjs/mongo-util';
-import { Draft } from 'immer';
 
 export interface NormalizedItems<T extends ObjectWithId> {
   readonly ids: readonly string[];
@@ -19,42 +15,45 @@ export function createEmptyNormalizedItems<
   };
 }
 
-export function setNormalizedItems<T extends ObjectWithId>(
-  normalizedItems: Draft<NormalizedItems<T>>,
+export function createNormalizedItems<T extends ObjectWithId>(
   items: readonly T[]
-): void {
-  normalizedItems.ids = items.map((item) => item.id);
-  normalizedItems.items = items.reduce(
-    (acc, item) => ({
-      ...acc,
-      [item.id]: item,
-    }),
-    {}
-  );
+): NormalizedItems<T> {
+  return {
+    ids: items.map((item) => item.id),
+    items: objectFromArray(items, 'id'),
+  };
 }
 
 export function updateNormalizedItem<T extends ObjectWithId>(
-  normalizedItems: Draft<NormalizedItems<T>>,
-  item: Draft<T>
-): void {
+  normalizedItems: NormalizedItems<T>,
+  item: T
+): NormalizedItems<T> {
   const previousItem = normalizedItems.items[item.id];
-  normalizedItems.items[item.id] = item;
   if (previousItem === undefined) {
-    normalizedItems.ids.push(item.id);
+    return {
+      ids: [...normalizedItems.ids, item.id],
+      items: {
+        ...normalizedItems.items,
+        [item.id]: item,
+      },
+    };
+  } else {
+    return {
+      ...normalizedItems,
+      items: {
+        ...normalizedItems.items,
+        [item.id]: item,
+      },
+    };
   }
 }
 
 export function removeNormalizedItem<T extends ObjectWithId>(
-  normalizedItems: Draft<NormalizedItems<T>>,
+  normalizedItems: NormalizedItems<T>,
   id: string
-): void {
-  arrayMutateRemoveSingleItemByEquals(normalizedItems.ids, id);
-  delete normalizedItems.items[id];
-}
-
-export function clearNormalizedItems<T extends ObjectWithId>(
-  normalizedItems: Draft<NormalizedItems<T>>
-): void {
-  normalizedItems.ids = [];
-  normalizedItems.items = {};
+): NormalizedItems<T> {
+  return {
+    ids: normalizedItems.ids.filter((currId) => currId !== id),
+    items: objectOmitFields(normalizedItems.items, [id]),
+  };
 }

@@ -31,14 +31,11 @@ export function objectOmitFields<T extends AnyObject, K extends keyof T>(
   obj: T,
   fieldsToOmit: readonly K[]
 ): Except<T, K> {
-  const fieldsToOmitSet = new Set<K>(fieldsToOmit);
-  const result = objectGetKeys<T, K>(obj).reduce((acc, key) => {
-    if (!fieldsToOmitSet.has(key)) {
-      acc[key] = obj[key];
-    }
-    return acc;
-  }, {} as Partial<T>);
-  return result as unknown as Except<T, K>;
+  const objCopy = { ...obj };
+  for (const key of fieldsToOmit) {
+    delete objCopy[key];
+  }
+  return objCopy;
 }
 
 export function objectPickFields<T extends AnyObject, K extends keyof T>(
@@ -86,10 +83,10 @@ export function objectRemoveUndefined<T extends AnyObject>(obj: T): Partial<T> {
   return newObj;
 }
 
-export function objectFromArray<
-  T extends AnyObject,
-  K extends string & ConditionalKeys<T, string>
->(array: readonly T[], keyField: K): ReadonlyRecord<string, T> {
+export function objectFromArray<T extends AnyObject, K extends keyof T>(
+  array: readonly T[],
+  keyField: K
+): ReadonlyRecord<string, T> {
   const obj: Record<string, T> = {};
   for (const item of array) {
     const key = item[keyField];
