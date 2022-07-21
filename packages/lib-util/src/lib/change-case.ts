@@ -1,4 +1,3 @@
-import { CamelCase, KebabCase, PascalCase } from 'type-fest';
 import {
   camelCase as _camelCase,
   paramCase as _paramCase,
@@ -7,32 +6,49 @@ import {
   constantCase as _constantCase,
 } from 'change-case';
 
-export function kebabCase<T extends string>(value: T): KebabCase<T> {
-  return _paramCase(value) as KebabCase<T>;
+export function pascalCase(value: string): string {
+  return _pascalCase(value);
 }
 
-// TODO GM: PascalCase<T> resolves to never if value is string
-//  returning only string until this is resolved
-export function pascalCase<T extends string>(
-  value: T
-): string /* PascalCase<T> */ {
-  return _pascalCase(value) as PascalCase<T>;
+export function camelCase(value: string): string {
+  return _camelCase(value);
 }
 
-// TODO GM: CamelCase<T> resolves to never if value is string
-//  returning only string until this is resolved
-export function camelCase<T extends string>(
-  value: T
-): string /* CamelCase<T> */ {
-  return _camelCase(value) as CamelCase<T>;
+export function kebabCase(value: string): string {
+  return _paramCase(value);
+}
+
+export function constantCase(value: string): string {
+  return _constantCase(value);
 }
 
 export function capitalCase(value: string): string {
   return _capitalCase(value);
 }
 
-export function constantCase(value: string): string {
-  return _constantCase(value);
+export function pascalCaseJoined(...values: readonly string[]): string {
+  const joinedValues = values.join(' ');
+  return _pascalCase(joinedValues);
+}
+
+export function camelCaseJoined(...values: readonly string[]): string {
+  const joinedValues = values.join(' ');
+  return _camelCase(joinedValues);
+}
+
+export function kebabCaseJoined(...values: readonly string[]): string {
+  const joinedValues = values.join(' ');
+  return _paramCase(joinedValues);
+}
+
+export function constantCaseJoined(...values: readonly string[]): string {
+  const joinedValues = values.join(' ');
+  return _constantCase(joinedValues);
+}
+
+export function capitalCaseJoined(...values: readonly string[]): string {
+  const joinedValues = values.join(' ');
+  return _capitalCase(joinedValues);
 }
 
 export interface CasedNames {
