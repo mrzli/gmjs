@@ -9,16 +9,28 @@ import {
 export function findDirsShallowSync(
   rootDir: string
 ): readonly FileSystemFindInfo[] {
-  return findFsEntriesShallowSync(rootDir, { fsType: 'd' });
+  return findFsEntriesSync(rootDir, { fsType: 'd', deep: false });
 }
 
 export function findFilesShallowSync(
   rootDir: string
 ): readonly FileSystemFindInfo[] {
-  return findFsEntriesShallowSync(rootDir, { fsType: 'f' });
+  return findFsEntriesSync(rootDir, { fsType: 'f', deep: false });
 }
 
-export function findFsEntriesShallowSync(
+export function findDirsDeepSync(
+  rootDir: string
+): readonly FileSystemFindInfo[] {
+  return findFsEntriesSync(rootDir, { fsType: 'd', deep: true });
+}
+
+export function findFilesDeepSync(
+  rootDir: string
+): readonly FileSystemFindInfo[] {
+  return findFsEntriesSync(rootDir, { fsType: 'f', deep: true });
+}
+
+export function findFsEntriesSync(
   rootDir: string,
   options?: FileSystemFindOptions
 ): readonly FileSystemFindInfo[] {
@@ -40,7 +52,7 @@ function toKlawSyncOptions(options?: FileSystemFindOptions): klawSync.Options {
   };
 
   return {
-    depthLimit: 0,
+    depthLimit: finalOptions.deep ? -1 : 0,
     ...toKlawSyncFsType(finalOptions.fsType),
   };
 }
