@@ -12,7 +12,7 @@
         "tsConfig": "packages/data-manipulation/tsconfig.lib.json",
         "assets": [
           "packages/data-manipulation/*.md",
-          "packages/data-manipulation/src/assets/**"
+          "packages/data-manipulation/**/assets/**"
         ]
       }
     },
