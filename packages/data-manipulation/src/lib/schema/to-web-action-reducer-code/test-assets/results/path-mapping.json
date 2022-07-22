@@ -26,5 +26,9 @@
   {
     "testFile": "store-app-action.txt",
     "path": "store/app-action.ts"
+  },
+  {
+    "testFile": "store-app-reducer.txt",
+    "path": "store/app-reducer.ts"
   }
 ]

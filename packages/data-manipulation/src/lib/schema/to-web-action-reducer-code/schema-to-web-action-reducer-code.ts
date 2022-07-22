@@ -3,6 +3,7 @@ import { PathContentPair } from '@gmjs/fs-util';
 import { generateActions } from './test-assets/impl/generate-actions';
 import { generateReducers } from './test-assets/impl/generate-reducers';
 import { generateAppAction } from './test-assets/impl/generate-app-action';
+import { generateAppReducer } from './test-assets/impl/generate-app-reducer';
 
 export function schemaToWebActionReducerCode(
   input: SchemaToWebActionReducerCodeInput
@@ -11,5 +12,6 @@ export function schemaToWebActionReducerCode(
     ...generateActions(input),
     generateAppAction(input),
     ...generateReducers(input),
+    generateAppReducer(input),
   ];
 }
