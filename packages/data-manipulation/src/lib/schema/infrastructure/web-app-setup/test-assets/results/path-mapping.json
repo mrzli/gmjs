@@ -1,0 +1,14 @@
+[
+  {
+    "testFile": "app-setup-server.txt",
+    "path": "app-setup/server.ts"
+  },
+  {
+    "testFile": "app-setup-app-dependencies.txt",
+    "path": "app-setup/app-dependencies.ts"
+  },
+  {
+    "testFile": "app-setup-app-context.txt",
+    "path": "app-setup/app-context.ts"
+  }
+]

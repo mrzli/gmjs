@@ -1,0 +1,21 @@
+import { AxiosInstance } from 'axios';
+import { AppApi, createAppApi } from '../api/app-api';
+import {
+  AppDependenciesBase,
+  createAppDependenciesBase,
+} from '<%= moduleNameReactUtil %>';
+
+export type SessionStorageKey = 'test';
+export type LocalStorageKey = 'test';
+export type CookieKey = 'test';
+
+export type AppDependencies = AppDependenciesBase<
+  AppApi,
+  SessionStorageKey,
+  LocalStorageKey,
+  CookieKey
+>;
+
+export function createAppDependencies(server: AxiosInstance): AppDependencies {
+  return createAppDependenciesBase(createAppApi(server));
+}
