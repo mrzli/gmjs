@@ -1,6 +1,6 @@
-import { SchemaToWebActionReducerCodeInput } from '../../schema-to-web-action-reducer-code-input';
+import { SchemaToWebActionReducerCodeInput } from '../schema-to-web-action-reducer-code-input';
 import { PathContentPair } from '@gmjs/fs-util';
-import { getSharedLibraryModuleName, sortSchemas } from '../../../shared/util';
+import { getSharedLibraryModuleName, sortSchemas } from '../../shared/util';
 import { MongoJsonSchemaTypeObject } from '@gmjs/mongo-util';
 import {
   FunctionDeclarationStructure,
@@ -10,7 +10,7 @@ import {
   WriterFunction,
 } from 'ts-morph';
 import { casedNames } from '@gmjs/lib-util';
-import { createTsSourceFile } from '../../../../shared/source-file-util';
+import { createTsSourceFile } from '../../../shared/source-file-util';
 import { sortArrayByStringAsc } from '@gmjs/util';
 import { ActionValues, getEndpointAllActionValues } from './util/util';
 

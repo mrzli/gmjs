@@ -1,7 +1,7 @@
 import { PathContentPair } from '@gmjs/fs-util';
-import { createTsSourceFile } from '../../../../shared/source-file-util';
+import { createTsSourceFile } from '../../../shared/source-file-util';
 import { camelCase, casedNames, pascalCase } from '@gmjs/lib-util';
-import { SchemaToWebActionReducerCodeInput } from '../../schema-to-web-action-reducer-code-input';
+import { SchemaToWebActionReducerCodeInput } from '../schema-to-web-action-reducer-code-input';
 import {
   ImportDeclarationStructure,
   InterfaceDeclarationStructure,
