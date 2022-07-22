@@ -1,0 +1,13 @@
+import { AppActionBase } from '<%= moduleNameReactUtil %>';
+
+export const ACTION_TYPE_GENERIC_NOOP = 'GenericNoop';
+type ActionTypeGenericNoop = typeof ACTION_TYPE_GENERIC_NOOP;
+type ActionGenericNoop = AppActionBase<ActionTypeGenericNoop, undefined>;
+
+export function actionGenericNoop(): ActionGenericNoop {
+  return { type: ACTION_TYPE_GENERIC_NOOP, payload: undefined };
+}
+
+export type ActionTypeGeneric = ActionTypeGenericNoop;
+
+export type ActionGeneric = ActionGenericNoop;

@@ -17,11 +17,16 @@ export function generateAppAction(
     const importDeclarations = getImportDeclarations(entityBaseNames);
     sf.addImportDeclarations(importDeclarations);
 
+    const entityBaseNamesWithGeneric: readonly string[] = [
+      'Generic',
+      ...entityBaseNames,
+    ];
+
     sf.addStatements([
       '\n',
-      getActionTypeUnion(entityBaseNames),
+      getActionTypeUnion(entityBaseNamesWithGeneric),
       '\n',
-      getActionUnion(entityBaseNames),
+      getActionUnion(entityBaseNamesWithGeneric),
     ]);
   });
 
@@ -34,7 +39,13 @@ export function generateAppAction(
 function getImportDeclarations(
   entityBaseNames: readonly string[]
 ): readonly OptionalKind<ImportDeclarationStructure>[] {
-  return entityBaseNames.map(getImportDeclaration);
+  return [
+    {
+      namedImports: ['ActionGeneric', 'ActionTypeGeneric'],
+      moduleSpecifier: './generic-action',
+    },
+    ...entityBaseNames.map(getImportDeclaration),
+  ];
 }
 
 function getImportDeclaration(
