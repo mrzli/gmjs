@@ -3,7 +3,7 @@ import path from 'path';
 import { WebAppSetupInput } from './web-app-setup-input';
 import {
   createCodeFileComparisonStrings,
-  createCodeFileExpected,
+  createCodeFileExpectedWithPathMapping,
 } from '../../../shared/test-util';
 import { TEST_APPS_MONOREPO_OPTIONS } from '../../shared/test-util';
 import { DEFAULT_CODE_GENERATION_LIB_MODULE_NAMES } from '../../shared/constants';
@@ -14,7 +14,7 @@ describe('web-app-setup', () => {
 
     const input = createInput();
     const actual = webAppSetup(input);
-    const expected = createCodeFileExpected(testDir);
+    const expected = createCodeFileExpectedWithPathMapping(testDir);
 
     const { expectedString, actualString } = createCodeFileComparisonStrings(
       actual,

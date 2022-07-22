@@ -5,13 +5,14 @@ import {
   readTextFilesInDirSync,
 } from '@gmjs/fs-util';
 import { flatMap, ImmutableMap, ImmutableSet } from '@gmjs/util';
+import { generateFiles } from './file-util';
 
 interface TestPathMapping {
   readonly testFile: string;
   readonly path: string;
 }
 
-export function createCodeFileExpected(
+export function createCodeFileExpectedWithPathMapping(
   testDir: string
 ): readonly PathContentPair[] {
   const testResultsDir = path.join(testDir, 'results');
@@ -26,6 +27,13 @@ export function createCodeFileExpected(
     path: p.path,
     content: testResultFiles.files[p.testFile],
   }));
+}
+
+export function createCodeFileExpected(
+  testDir: string
+): readonly PathContentPair[] {
+  const testResultsDir = path.join(testDir, 'results');
+  return generateFiles(testResultsDir, { template: '' });
 }
 
 const TEXT_DELIMITER = '-'.repeat(20);

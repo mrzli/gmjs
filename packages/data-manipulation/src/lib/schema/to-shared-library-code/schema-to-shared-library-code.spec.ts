@@ -8,7 +8,7 @@ import { readJsonSync, readTextSync } from '@gmjs/fs-util';
 import { MongoJsonSchemaTypeObject } from '@gmjs/mongo-util';
 import {
   createCodeFileComparisonStrings,
-  createCodeFileExpected,
+  createCodeFileExpectedWithPathMapping,
 } from '../../shared/test-util';
 
 describe('schema-to-shared-library-code', () => {
@@ -17,7 +17,7 @@ describe('schema-to-shared-library-code', () => {
 
     const input = createInput(testDir);
     const actual = schemaToSharedLibraryCode(input);
-    const expected = createCodeFileExpected(testDir);
+    const expected = createCodeFileExpectedWithPathMapping(testDir);
 
     const { expectedString, actualString } = createCodeFileComparisonStrings(
       actual,

@@ -5,7 +5,7 @@ import { readJsonSync } from '@gmjs/fs-util';
 import { MongoJsonSchemaTypeObject } from '@gmjs/mongo-util';
 import {
   createCodeFileComparisonStrings,
-  createCodeFileExpected,
+  createCodeFileExpectedWithPathMapping,
 } from '../../shared/test-util';
 import { TEST_APPS_MONOREPO_OPTIONS } from '../shared/test-util';
 import { DEFAULT_CODE_GENERATION_LIB_MODULE_NAMES } from '../shared/constants';
@@ -16,7 +16,7 @@ describe('schema-to-web-backend-api-code', () => {
 
     const input = createInput(testDir);
     const actual = schemaToWebBackendApiCode(input);
-    const expected = createCodeFileExpected(testDir);
+    const expected = createCodeFileExpectedWithPathMapping(testDir);
 
     const { expectedString, actualString } = createCodeFileComparisonStrings(
       actual,
