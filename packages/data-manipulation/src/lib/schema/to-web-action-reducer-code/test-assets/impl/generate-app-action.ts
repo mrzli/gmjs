@@ -1,5 +1,5 @@
 import { PathContentPair } from '@gmjs/fs-util';
-import { createTsSourceFile } from '@gmjs/data-manipulation';
+import { createTsSourceFile } from '../../../../shared/source-file-util';
 import { kebabCase, pascalCase } from '@gmjs/lib-util';
 import { SchemaToWebActionReducerCodeInput } from '../../schema-to-web-action-reducer-code-input';
 import { ACTION_PREFIX, ACTION_TYPE_PREFIX } from './util/util';

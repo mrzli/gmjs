@@ -1,0 +1,29 @@
+import { Dispatch } from 'redux';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { AppAction } from './app-action';
+import { AppState } from './app-reducer';
+import { EntityState } from './entity/reducer';
+import { Entity2State } from './entity2/reducer';
+import { AnotherEntityState } from './another-entity/reducer';
+
+export const useAppDispatch = (): Dispatch<AppAction> =>
+  useDispatch<Dispatch<AppAction>>();
+export const useAppSelector: TypedUseSelectorHook<AppState> = useSelector;
+
+export function useStateSelector<K extends keyof AppState>(
+  stateName: K
+): AppState[K] {
+  return useAppSelector((state) => state[stateName]);
+}
+
+export function useEntitySelector(): EntityState {
+  return useStateSelector('entity');
+}
+
+export function useEntity2Selector(): Entity2State {
+  return useStateSelector('entity2');
+}
+
+export function useAnotherEntitySelector(): AnotherEntityState {
+  return useStateSelector('anotherEntity');
+}
