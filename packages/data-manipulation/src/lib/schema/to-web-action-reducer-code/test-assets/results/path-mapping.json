@@ -22,5 +22,9 @@
   {
     "testFile": "store-another-entity-reducer.txt",
     "path": "store/another-entity/reducer.ts"
+  },
+  {
+    "testFile": "store-app-action.txt",
+    "path": "store/app-action.ts"
   }
 ]

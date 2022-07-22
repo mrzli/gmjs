@@ -1,0 +1,13 @@
+import { ActionEntity, ActionTypeEntity } from './entity/action';
+import { ActionEntity2, ActionTypeEntity2 } from './entity2/action';
+import {
+  ActionAnotherEntity,
+  ActionTypeAnotherEntity,
+} from './another-entity/action';
+
+export type AppActionType =
+  | ActionTypeEntity
+  | ActionTypeEntity2
+  | ActionTypeAnotherEntity;
+
+export type AppAction = ActionEntity | ActionEntity2 | ActionAnotherEntity;

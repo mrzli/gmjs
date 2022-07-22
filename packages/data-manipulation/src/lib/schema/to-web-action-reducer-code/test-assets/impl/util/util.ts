@@ -1,4 +1,9 @@
-import { casedNames, constantCase, pascalCase } from '@gmjs/lib-util';
+import {
+  constantCase,
+  constantCaseJoined,
+  pascalCase,
+  pascalCaseJoined,
+} from '@gmjs/lib-util';
 import { flatMap } from '@gmjs/util';
 
 const API_CALL_ACTION_TYPE_LIST = [
@@ -16,6 +21,11 @@ export type EndpointName =
   | 'remove';
 
 export type ApiCallActionType = typeof API_CALL_ACTION_TYPE_LIST[number];
+
+export const ACTION_TYPE_CONSTANT_PREFIX = 'ACTION_TYPE';
+export const ACTION_TYPE_PREFIX = 'ActionType';
+export const ACTION_PREFIX = 'Action';
+export const ACTION_FUNCTION_PREFIX = 'action';
 
 export interface ActionValues {
   readonly endpointName: EndpointName;
@@ -102,18 +112,12 @@ function getEndpointSingleActionValues(
     apiCallActionType
   );
 
-  const actionBaseName = casedNames(
-    entityBaseName,
-    endpointData.name
-  ).pascalCased;
+  const actionBaseName = pascalCaseJoined(entityBaseName, endpointData.name);
   const typeSuffix = getApiCallActionTypeSuffix(apiCallActionType);
-  const actionNameWithSuffix = casedNames(
-    actionBaseName,
-    typeSuffix
-  ).pascalCased;
-  const actionTypeName = `ActionType${actionNameWithSuffix}`;
-  const actionName = `Action${actionNameWithSuffix}`;
-  const actionCreateFunctionName = `action${actionNameWithSuffix}`;
+  const actionNameWithSuffix = pascalCaseJoined(actionBaseName, typeSuffix);
+  const actionTypeName = `${ACTION_TYPE_PREFIX}${actionNameWithSuffix}`;
+  const actionName = `${ACTION_PREFIX}${actionNameWithSuffix}`;
+  const actionCreateFunctionName = `${ACTION_FUNCTION_PREFIX}${actionNameWithSuffix}`;
 
   const payloadType = getPayloadType(endpointData, apiCallActionType);
 
@@ -135,8 +139,12 @@ function getActionTypeConstant(
   apiCallActionType: ApiCallActionType
 ): string {
   const suffix = getApiCallActionConstantSuffix(apiCallActionType);
-  return casedNames('ACTION_TYPE', entityBaseName, actionEndpointName, suffix)
-    .constantCased;
+  return constantCaseJoined(
+    ACTION_TYPE_CONSTANT_PREFIX,
+    entityBaseName,
+    actionEndpointName,
+    suffix
+  );
 }
 
 function getApiCallActionConstantSuffix(type: ApiCallActionType): string {

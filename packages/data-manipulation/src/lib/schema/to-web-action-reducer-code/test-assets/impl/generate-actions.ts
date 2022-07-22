@@ -10,14 +10,18 @@ import {
 } from 'ts-morph';
 import { casedNames } from '@gmjs/lib-util';
 import { createTsSourceFile } from '../../../../shared/source-file-util';
-import { ActionValues, getEndpointAllActionValues } from './util/util';
+import {
+  ACTION_PREFIX,
+  ACTION_TYPE_PREFIX,
+  ActionValues,
+  getEndpointAllActionValues,
+} from './util/util';
 
 export function generateActions(
   input: SchemaToWebActionReducerCodeInput
 ): readonly PathContentPair[] {
   const schemas = sortSchemas(input.schemas);
-
-  return [...schemas.map((schema) => generateEntityAction(input, schema))];
+  return schemas.map((schema) => generateEntityAction(input, schema));
 }
 
 function generateEntityAction(
@@ -154,7 +158,7 @@ function getEntityActionTypeUnion(
   actionTypes: readonly string[]
 ): string {
   const union = actionTypes.join(' | ');
-  return `export type ActionType${entityBaseName} = ${union};`;
+  return `export type ${ACTION_TYPE_PREFIX}${entityBaseName} = ${union};`;
 }
 
 function getEntityActionUnion(
@@ -162,5 +166,5 @@ function getEntityActionUnion(
   actions: readonly string[]
 ): string {
   const union = actions.join(' | ');
-  return `export type Action${entityBaseName} = ${union};`;
+  return `export type ${ACTION_PREFIX}${entityBaseName} = ${union};`;
 }

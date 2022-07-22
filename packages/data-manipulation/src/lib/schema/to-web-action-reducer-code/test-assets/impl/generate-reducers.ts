@@ -18,8 +18,7 @@ export function generateReducers(
   input: SchemaToWebActionReducerCodeInput
 ): readonly PathContentPair[] {
   const schemas = sortSchemas(input.schemas);
-
-  return [...schemas.map((schema) => generateEntityReducer(input, schema))];
+  return schemas.map((schema) => generateEntityReducer(input, schema));
 }
 
 function generateEntityReducer(
