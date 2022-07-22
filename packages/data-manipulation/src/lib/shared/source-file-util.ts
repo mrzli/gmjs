@@ -8,7 +8,7 @@ import {
 import prettier, { Options } from 'prettier';
 import { SetOptional } from 'type-fest';
 import { AnyObject } from '@gmjs/util';
-import ejs from 'ejs';
+import { processTemplateFile } from './file-util';
 
 export interface ProcessTsSourceFileOptions {
   readonly prettify?: boolean;
@@ -60,9 +60,7 @@ export function processTsSourceFile(
   const { prettify, substitutions } =
     getFinalProcessTsSourceFileOptions(options);
 
-  const replacedText = substitutions
-    ? ejs.render(sourceFileText, substitutions)
-    : sourceFileText;
+  const replacedText = processTemplateFile(sourceFileText, substitutions);
 
   return prettify
     ? prettier.format(replacedText, PRETTIER_OPTIONS)
