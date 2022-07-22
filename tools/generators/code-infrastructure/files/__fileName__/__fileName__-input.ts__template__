@@ -1,6 +1,7 @@
 import {
   CodeGenerationAppsMonorepoOptions,
   CodeGenerationInterfacePrefixes,
+  CodeGenerationLibModuleNames,
 } from '../../shared/types';
 
 export interface <%= className %>Input {
@@ -14,5 +15,6 @@ export interface <%= className %>InitialFiles {
 
 export interface <%= className %>Options {
   readonly appsMonorepo: CodeGenerationAppsMonorepoOptions;
+  readonly libModuleNames: CodeGenerationLibModuleNames;
   readonly interfacePrefixes: CodeGenerationInterfacePrefixes;
 }
