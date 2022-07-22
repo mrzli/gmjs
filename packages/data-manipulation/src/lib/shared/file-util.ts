@@ -7,7 +7,7 @@ import {
 } from '@gmjs/fs-util';
 import path from 'path';
 
-export function processTemplateFile(
+export function processTemplateContent(
   content: string,
   substitutions?: AnyObject
 ): string {
@@ -20,8 +20,8 @@ export function generateFiles(
 ): readonly PathContentPair[] {
   const relativeFilePaths = getRelativeFilePaths(filesDir);
   return relativeFilePaths.map((p) => ({
-    path: p,
-    content: processTemplateFile(
+    path: substituteFilePath(p, substitutions),
+    content: processTemplateContent(
       readTextSync(path.join(filesDir, p)),
       substitutions
     ),
@@ -31,4 +31,19 @@ export function generateFiles(
 function getRelativeFilePaths(dir: string): readonly string[] {
   const results = findFilesDeepSync(dir);
   return results.map((r) => path.relative(dir, r.fullPath));
+}
+
+function substituteFilePath(
+  filePath: string,
+  substitutions?: AnyObject
+): string {
+  if (!substitutions) {
+    return filePath;
+  }
+
+  let resultPath = filePath;
+  Object.entries(substitutions).forEach(([propertyName, value]) => {
+    resultPath = resultPath.split(`__${propertyName}__`).join(value);
+  });
+  return resultPath;
 }
