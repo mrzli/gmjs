@@ -41,30 +41,12 @@
         "plugin:@nrwl/nx/typescript"
       ],
       "rules": {
-        "@typescript-eslint/explicit-function-return-type": [
-          "error",
-          {
-            "allowExpressions": true
-          }
-        ],
-        "@typescript-eslint/explicit-member-accessibility": [
-          "error"
-        ],
-        "@typescript-eslint/no-unused-vars": [
-          "warn",
-          {
-            "argsIgnorePattern": "^_"
-          }
-        ]
       }
     },
     {
       "files": [
         "*.js",
         "*.jsx"
-      ],
-      "extends": [
-        "plugin:@nrwl/nx/javascript"
       ],
       "rules": {}
     },
@@ -75,17 +57,6 @@
       ],
       "extends": [],
       "rules": {
-        "react/jsx-boolean-value": [
-          "error",
-          "always"
-        ],
-        "react/jsx-curly-brace-presence": [
-          "error",
-          {
-            "props": "always",
-            "children": "ignore"
-          }
-        ]
       }
     }
   ]
