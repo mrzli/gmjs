@@ -1,5 +1,5 @@
 import { objectFromArray, objectOmitFields, ReadonlyRecord } from '@gmjs/util';
-import { ObjectWithId } from '@gmjs/mongo-util';
+import { ObjectWithId } from '@gmjs/db-util';
 
 export interface NormalizedItems<T extends ObjectWithId> {
   readonly ids: readonly string[];
