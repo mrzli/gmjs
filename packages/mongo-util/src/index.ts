@@ -1,5 +1,6 @@
 export * from './lib/types';
 export * from './lib/util';
+export * from './lib/data-converters';
 export * from './lib/execute-mongo';
 export * from './lib/mongo-operations';
 export * from './lib/mongo-json-schema/mongo-json-schema';
