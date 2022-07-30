@@ -10,11 +10,11 @@ export class DatabaseServiceWrapper implements OnModuleInit, OnModuleDestroy {
   ) {}
 
   public async onModuleInit(): Promise<void> {
-    this.databaseService.init();
+    await this.databaseService.init();
   }
 
   public async onModuleDestroy(): Promise<void> {
-    this.databaseService.destroy();
+    await this.databaseService.destroy();
   }
 
   public getDatabaseService<T extends DatabaseService>(): T {
