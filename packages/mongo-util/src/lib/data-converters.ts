@@ -1,14 +1,14 @@
 import { transformIfExists } from '@gmjs/util';
 import { Decimal128, Double, Long, ObjectId } from 'mongodb';
 
-export function mongoObjectIdDbToApp(value: ObjectId): string {
+export function mongoIdDbToApp(value: ObjectId): string {
   return value.toString();
 }
 
-export function mongoObjectIdOptionalDbToApp(
+export function mongoIdOptionalDbToApp(
   value: ObjectId | undefined
 ): string | undefined {
-  return transformIfExists(value, mongoObjectIdDbToApp, undefined);
+  return transformIfExists(value, mongoIdDbToApp, undefined);
 }
 
 export function mongoLongDbToApp(value: Long): number {
@@ -51,14 +51,14 @@ export function mongoDateOptionalDbToApp(
   return transformIfExists(value, mongoDateDbToApp, undefined);
 }
 
-export function mongoObjectIdAppToDb(value: string): ObjectId {
+export function mongoIdAppToDb(value: string): ObjectId {
   return new ObjectId(value);
 }
 
-export function mongoObjectIdOptionalAppToDb(
+export function mongoIdOptionalAppToDb(
   value: string | undefined
 ): ObjectId | undefined {
-  return transformIfExists(value, mongoObjectIdAppToDb, undefined);
+  return transformIfExists(value, mongoIdAppToDb, undefined);
 }
 
 export function mongoLongAppToDb(value: number): Long {
