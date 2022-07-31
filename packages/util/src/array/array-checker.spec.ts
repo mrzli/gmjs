@@ -1,4 +1,5 @@
 import {
+  arrayHasItems,
   arrayHasPrimitiveDuplicates,
   isArrayWithPrimitivesEqual,
 } from './array-checker';
@@ -137,6 +138,43 @@ describe('array-checker', () => {
           example.input.array1,
           example.input.array2
         );
+        expect(actual).toEqual(example.expected);
+      });
+    });
+  });
+
+  describe('arrayHasItems()', () => {
+    interface Example {
+      readonly input: Nullish<readonly unknown[]>;
+      readonly expected: boolean;
+    }
+
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: undefined,
+        expected: false,
+      },
+      {
+        input: null,
+        expected: false,
+      },
+      {
+        input: [],
+        expected: false,
+      },
+      {
+        input: [undefined],
+        expected: true,
+      },
+      {
+        input: [1, 2],
+        expected: true,
+      },
+    ];
+
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        const actual = arrayHasItems(example.input);
         expect(actual).toEqual(example.expected);
       });
     });
