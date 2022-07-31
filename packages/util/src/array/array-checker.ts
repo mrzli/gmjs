@@ -36,6 +36,6 @@ export function isArrayWithPrimitivesEqual<TItem extends SimpleValue>(
   return true;
 }
 
-export function arrayHasItems<T>(array: Nullish<readonly T[]>): boolean {
+export function arrayHasItems<T>(array: Nullish<readonly T[]>): array is readonly T[] {
   return !!array && array.length > 0;
 } 
