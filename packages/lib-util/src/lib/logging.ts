@@ -6,7 +6,7 @@
 import { inspect } from 'util';
 
 export function logErrorWithFullValue(e: unknown): void {
-  console.error(inspectFullValue(e));
+  console.error(inspectValue(e));
 }
 
 export function logErrorWithFullValueAndRethrow(e: unknown): void {
@@ -15,13 +15,17 @@ export function logErrorWithFullValueAndRethrow(e: unknown): void {
 }
 
 export function logWithFullValue(value: unknown): void {
-  console.log(inspectFullValue(value));
+  logWithDepth(value);
 }
 
-function inspectFullValue(value: unknown): string {
+export function logWithDepth(value: unknown, depth?: number): void {
+  console.log(inspectValue(value, depth))
+}
+
+function inspectValue(value: unknown, depth?: number): string {
   return inspect(value, {
     showHidden: false,
-    depth: null,
+    depth: depth ?? Number.POSITIVE_INFINITY,
     colors: true,
   });
 }
