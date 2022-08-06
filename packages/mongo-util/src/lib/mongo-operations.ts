@@ -1,32 +1,39 @@
-import {
-  Db,
-  Document,
-  InsertManyResult,
-  InsertOneResult,
-  ObjectId,
-} from 'mongodb';
+import { Db, Document, InsertManyResult, InsertOneResult } from 'mongodb';
+import { mongoIdDbToApp } from './data-converters';
 
-export async function insertOne<TCollectionName extends string>(
+export async function insertOne<
+  TCollectionName extends string,
+  TAppModel,
+  TDbModel extends Document
+>(
   db: Db,
   collectionName: TCollectionName,
-  doc: Document
-): Promise<ObjectId> {
+  doc: TAppModel,
+  appToDbConverterFn: (doc: TAppModel) => TDbModel
+): Promise<string> {
+  const dbDoc = appToDbConverterFn(doc);
   const result: InsertOneResult = await db
     .collection(collectionName)
-    .insertOne(doc);
-  return result.insertedId;
+    .insertOne(dbDoc);
+  return mongoIdDbToApp(result.insertedId);
 }
 
-export async function insertMany<TCollectionName extends string>(
+export async function insertMany<
+  TCollectionName extends string,
+  TAppModel,
+  TDbModel extends Document
+>(
   db: Db,
   collectionName: TCollectionName,
-  docs: readonly Document[]
-): Promise<readonly ObjectId[]> {
+  docs: readonly TAppModel[],
+  appToDbConverterFn: (doc: TAppModel) => TDbModel
+): Promise<readonly string[]> {
+  const dbDocs = docs.map(appToDbConverterFn);
   const result: InsertManyResult = await db
     .collection(collectionName)
-    .insertMany(docs as Document[]);
+    .insertMany(dbDocs);
   const insertedIds = result.insertedIds;
-  return (Object.keys(insertedIds) as unknown[] as number[]).map(
-    (k) => insertedIds[k]
+  return (Object.keys(insertedIds) as unknown[] as number[]).map((k) =>
+    mongoIdDbToApp(insertedIds[k])
   );
 }
