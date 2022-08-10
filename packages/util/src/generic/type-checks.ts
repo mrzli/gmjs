@@ -21,7 +21,7 @@ export function isDate(value: unknown): value is Date {
   return Object.prototype.toString.call(value) === '[object Date]';
 }
 
-export function isArray(value: unknown): value is Array<unknown> {
+export function isArray<T = unknown>(value: unknown): value is Array<T> {
   return Array.isArray(value);
 }
 
