@@ -104,3 +104,7 @@ export function filterOutNullish<TElement>(
     isNotNullish(item)
   ) as unknown as readonly NonNullable<TElement>[];
 }
+
+export function arrayReverse<TElement>(array: readonly TElement[]): readonly TElement[] {
+  return [...array].reverse();
+}

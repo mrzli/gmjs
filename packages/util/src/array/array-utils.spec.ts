@@ -1,5 +1,6 @@
 import {
   arrayGetPrimitiveDuplicates,
+  arrayReverse,
   distinctItems,
   distinctItemsBy,
   filterOutNullish,
@@ -389,6 +390,49 @@ describe('array-utils', () => {
       it(JSON.stringify(example), () => {
         const actual = filterOutNullish(example.input);
         expect(actual).toEqual(example.expected);
+      });
+    });
+  });
+
+  describe('arrayReverse()', () => {
+    interface Example {
+      readonly input: readonly number[];
+      readonly expected: {
+        readonly updated: readonly number[];
+        readonly original: readonly number[];
+      };
+    }
+  
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: [],
+        expected: {
+          updated: [],
+          original: []
+        }
+      },
+      {
+        input: [1],
+        expected: {
+          updated: [1],
+          original: [1]
+        }
+      },
+      {
+        input: [1, 3, 5],
+        expected: {
+          updated: [5, 3, 1],
+          original: [1, 3, 5]
+        }
+      },
+    ];
+  
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        const original = example.input;
+        const actual = arrayReverse(example.input);
+        expect(original).toEqual(example.expected.original);
+        expect(actual).toEqual(example.expected.updated);
       });
     });
   });
