@@ -8,6 +8,7 @@
     "lib-util": "packages/lib-util",
     "mongo-util": "packages/mongo-util",
     "nest-util": "packages/nest-util",
+    "postgres-util": "packages/postgres-util",
     "react-util": "packages/react-util",
     "test-util": "packages/test-util",
     "util": "packages/util",
