@@ -2,12 +2,7 @@ import { Db, MongoClient } from 'mongodb';
 import { invariant } from '@gmjs/util';
 import { DatabaseService } from '@gmjs/db-util';
 import { Except } from 'type-fest';
-
-export interface MongoDatabaseInputParams {
-  readonly host: string;
-  readonly port: number;
-  readonly dbName: string;
-}
+import { MongoDatabaseInputParams } from './types';
 
 export class MongoDatabaseService implements DatabaseService {
   private _dbClient: MongoClient | undefined;

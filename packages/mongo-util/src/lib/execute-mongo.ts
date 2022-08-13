@@ -1,13 +1,8 @@
 import { Db, MongoClient } from 'mongodb';
-
-export interface MongoConnectionParameters {
-  readonly host: string;
-  readonly port: number;
-  readonly dbName: string;
-}
+import { MongoDatabaseInputParams } from './types';
 
 function mongoConnectionParametersToUrl(
-  params: MongoConnectionParameters
+  params: MongoDatabaseInputParams
 ): string {
   return `mongodb://${params.host}:${params.port}/${params.dbName}`;
 }
@@ -15,7 +10,7 @@ function mongoConnectionParametersToUrl(
 export type MongoDbExecutorFn = (db: Db) => Promise<void>;
 
 export async function executeMongo(
-  params: MongoConnectionParameters,
+  params: MongoDatabaseInputParams,
   executor: MongoDbExecutorFn
 ): Promise<void> {
   const mongoUrl = mongoConnectionParametersToUrl(params);

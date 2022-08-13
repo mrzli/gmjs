@@ -1,8 +1,9 @@
 import { Db } from 'mongodb';
-import { executeMongo, MongoConnectionParameters } from '../execute-mongo';
+import { executeMongo } from '../execute-mongo';
+import { MongoDatabaseInputParams } from '../types';
 
 export async function dropDb(
-  mongoParams: MongoConnectionParameters
+  mongoParams: MongoDatabaseInputParams
 ): Promise<void> {
   await executeMongo(mongoParams, async (db: Db) => {
     await db.dropDatabase();
