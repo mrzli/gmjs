@@ -1,5 +1,5 @@
 import { Db, Document, InsertManyResult, InsertOneResult } from 'mongodb';
-import { mongoIdDbToApp } from './data-converters';
+import { mongoIdDbToApp } from '../data-converters';
 
 export async function insertOne<
   TCollectionName extends string,

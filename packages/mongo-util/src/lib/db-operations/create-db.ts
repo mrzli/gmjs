@@ -1,5 +1,5 @@
 import { Db } from 'mongodb';
-import { executeMongo } from '../execute-mongo';
+import { executeMongo } from './execute-mongo';
 import { MongoJsonSchemaTypeObject } from '../mongo-json-schema/mongo-json-schema';
 import { pascalCase } from '@gmjs/lib-util';
 import { MongoDatabaseInputParams } from '../types';

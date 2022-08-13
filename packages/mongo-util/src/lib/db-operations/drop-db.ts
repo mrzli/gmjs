@@ -1,5 +1,5 @@
 import { Db } from 'mongodb';
-import { executeMongo } from '../execute-mongo';
+import { executeMongo } from './execute-mongo';
 import { MongoDatabaseInputParams } from '../types';
 
 export async function dropDb(

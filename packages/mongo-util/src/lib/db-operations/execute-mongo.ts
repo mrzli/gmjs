@@ -1,5 +1,5 @@
 import { Db, MongoClient } from 'mongodb';
-import { MongoDatabaseInputParams } from './types';
+import { MongoDatabaseInputParams } from '../types';
 
 function mongoConnectionParametersToUrl(
   params: MongoDatabaseInputParams
