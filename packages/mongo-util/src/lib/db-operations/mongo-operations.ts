@@ -1,5 +1,5 @@
 import { Db, Document, InsertManyResult, InsertOneResult } from 'mongodb';
-import { mongoIdDbToApp } from '../data-converters';
+import { propIdDbToApp } from '../db-converters/data-converters';
 
 export async function insertOne<
   TCollectionName extends string,
@@ -15,7 +15,7 @@ export async function insertOne<
   const result: InsertOneResult = await db
     .collection(collectionName)
     .insertOne(dbDoc);
-  return mongoIdDbToApp(result.insertedId);
+  return propIdDbToApp(result.insertedId);
 }
 
 export async function insertMany<
@@ -34,6 +34,6 @@ export async function insertMany<
     .insertMany(dbDocs);
   const insertedIds = result.insertedIds;
   return (Object.keys(insertedIds) as unknown[] as number[]).map((k) =>
-    mongoIdDbToApp(insertedIds[k])
+    propIdDbToApp(insertedIds[k])
   );
 }

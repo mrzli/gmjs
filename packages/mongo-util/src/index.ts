@@ -1,6 +1,6 @@
 export * from './lib/types';
 export * from './lib/mongo-util';
-export * from './lib/data-converters';
+export * from './lib/db-converters/data-converters';
 export * from './lib/db-operations/execute-mongo';
 export * from './lib/db-operations/mongo-operations';
 export * from './lib/mongo-database-service';

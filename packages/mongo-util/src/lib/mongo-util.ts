@@ -2,7 +2,7 @@ import { ObjectId } from 'mongodb';
 import { textToJson } from '@gmjs/lib-util';
 import { readTextsByExtensionSync } from '@gmjs/fs-util';
 import { MongoJsonSchemaTypeObject } from './mongo-json-schema/mongo-json-schema';
-import { mongoIdAppToDb } from './data-converters';
+import { propIdAppToDb } from './db-converters/data-converters';
 
 export function getSchemasFromDir(
   dirPath: string
@@ -18,7 +18,7 @@ export interface MongoIdFilter {
 
 export function mongoIdFilter(id: string): MongoIdFilter {
   return {
-    _id: mongoIdAppToDb(id),
+    _id: propIdAppToDb(id),
   };
 }
 
