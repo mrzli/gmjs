@@ -1,4 +1,4 @@
-export function modelItemAppToDb<TAppModel>(
+export function pgModelToInsert<TAppModel>(
   item: TAppModel,
   tableName: string,
   columnNames: string,
@@ -8,7 +8,7 @@ export function modelItemAppToDb<TAppModel>(
   return `INSERT INTO ${tableName} (${columnNames}) VALUES ${values}`;
 }
 
-export function modelItemsAppToDb<TAppModel>(
+export function pgModelsToInsert<TAppModel>(
   items: readonly TAppModel[],
   tableName: string,
   columnNames: string,
