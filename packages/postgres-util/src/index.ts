@@ -4,4 +4,3 @@ export * from './lib/pg-database-id-generator';
 export * from './lib/db-converters/prop-converters';
 export * from './lib/db-converters/model-converters';
 export * from './lib/db-operations/execute-postgres';
-export * from './lib/db-operations/pg-operations';
