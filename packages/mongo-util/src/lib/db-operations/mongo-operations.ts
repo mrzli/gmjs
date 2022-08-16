@@ -1,5 +1,5 @@
 import { Db, Document, InsertManyResult, InsertOneResult } from 'mongodb';
-import { propIdDbToApp } from '../db-converters/data-converters';
+import { propIdDbToApp } from '../db-converters/prop-converters';
 
 export async function insertOne<
   TCollectionName extends string,

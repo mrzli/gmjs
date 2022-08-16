@@ -2,7 +2,7 @@ import { ObjectId } from 'mongodb';
 import { textToJson } from '@gmjs/lib-util';
 import { readTextsByExtensionSync } from '@gmjs/fs-util';
 import { MongoJsonSchemaTypeObject } from './mongo-json-schema/mongo-json-schema';
-import { propIdAppToDb } from './db-converters/data-converters';
+import { propIdAppToDb } from './db-converters/prop-converters';
 
 export function getSchemasFromDir(
   dirPath: string
