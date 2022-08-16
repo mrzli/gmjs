@@ -3,3 +3,4 @@ export * from './lib/pg-database-service';
 export * from './lib/pg-database-id-generator';
 export * from './lib/db-converters/data-converters';
 export * from './lib/db-operations/execute-postgres';
+export * from './lib/db-operations/pg-operations';
