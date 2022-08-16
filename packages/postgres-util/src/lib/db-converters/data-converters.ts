@@ -2,76 +2,76 @@ import { transformIfExists } from '@gmjs/util';
 
 const NULL = 'NULL';
 
-export function pgIdAppToDb(value: string): string {
+export function propIdAppToDb(value: string): string {
   return value;
 }
 
-export function pgIdOptionalAppToDb(value: string | undefined): string {
-  return transformIfExistsOrDbNull(value, pgIdAppToDb);
+export function propIdOptionalAppToDb(value: string | undefined): string {
+  return transformIfExistsOrDbNull(value, propIdAppToDb);
 }
 
-export function pgStringAppToDb(value: string): string {
+export function propStringAppToDb(value: string): string {
   return `'${value}'`;
 }
 
-export function pgStringOptionalAppToDb(value: string | undefined): string {
-  return transformIfExistsOrDbNull(value, pgStringAppToDb);
+export function propStringOptionalAppToDb(value: string | undefined): string {
+  return transformIfExistsOrDbNull(value, propStringAppToDb);
 }
 
-export function pgIntegerAppToDb(value: number): string {
+export function propIntegerAppToDb(value: number): string {
   return value.toString();
 }
 
-export function pgIntegerOptionalAppToDb(value: number | undefined): string {
-  return transformIfExistsOrDbNull(value, pgIntegerAppToDb);
+export function propIntegerOptionalAppToDb(value: number | undefined): string {
+  return transformIfExistsOrDbNull(value, propIntegerAppToDb);
 }
 
-export function pgLongAppToDb(value: number): string {
+export function propLongAppToDb(value: number): string {
   return value.toString();
 }
 
-export function pgLongOptionalAppToDb(value: number | undefined): string {
-  return transformIfExistsOrDbNull(value, pgLongAppToDb);
+export function propLongOptionalAppToDb(value: number | undefined): string {
+  return transformIfExistsOrDbNull(value, propLongAppToDb);
 }
 
-export function pgFloatAppToDb(value: number): string {
+export function propFloatAppToDb(value: number): string {
   return value.toString();
 }
 
-export function pgFloatOptionalAppToDb(value: number | undefined): string {
-  return transformIfExistsOrDbNull(value, pgFloatAppToDb);
+export function propFloatOptionalAppToDb(value: number | undefined): string {
+  return transformIfExistsOrDbNull(value, propFloatAppToDb);
 }
 
-export function pgDoubleAppToDb(value: number): string {
+export function propDoubleAppToDb(value: number): string {
   return value.toString();
 }
 
-export function pgDoubleOptionalAppToDb(value: number | undefined): string {
-  return transformIfExistsOrDbNull(value, pgDoubleAppToDb);
+export function propDoubleOptionalAppToDb(value: number | undefined): string {
+  return transformIfExistsOrDbNull(value, propDoubleAppToDb);
 }
 
-export function pgDecimalAppToDb(value: string): string {
+export function propDecimalAppToDb(value: string): string {
   return value;
 }
 
-export function pgDecimalOptionalAppToDb(value: string | undefined): string {
-  return transformIfExistsOrDbNull(value, pgDecimalAppToDb);
+export function propDecimalOptionalAppToDb(value: string | undefined): string {
+  return transformIfExistsOrDbNull(value, propDecimalAppToDb);
 }
 
-export function pgBooleanAppToDb(value: boolean): string {
+export function propBooleanAppToDb(value: boolean): string {
   return value ? 'TRUE' : 'FALSE';
 }
 
-export function pgBooleanOptionalAppToDb(value: boolean | undefined): string {
-  return transformIfExistsOrDbNull(value, pgBooleanAppToDb);
+export function propBooleanOptionalAppToDb(value: boolean | undefined): string {
+  return transformIfExistsOrDbNull(value, propBooleanAppToDb);
 }
 
-export function pgDateAppToDb(value: string): string {
+export function propDateAppToDb(value: string): string {
   return `'${value}'`;
 }
 
-export function pgDateOptionalAppToDb(value: string | undefined): string {
-  return transformIfExistsOrDbNull(value, pgDateAppToDb);
+export function propDateOptionalAppToDb(value: string | undefined): string {
+  return transformIfExistsOrDbNull(value, propDateAppToDb);
 }
 
 function transformIfExistsOrDbNull<T>(
