@@ -16,4 +16,8 @@ export class PgDatabaseService implements DatabaseService {
   public async destroy(): Promise<void> {
     await this._dbClient.end();
   }
+
+  public get client(): Client {
+    return this._dbClient;
+  }
 }
