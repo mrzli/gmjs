@@ -1,6 +1,5 @@
 import { transformIfExists } from '@gmjs/util';
-
-const NULL = 'NULL';
+import { NULL, quoteValue } from './util';
 
 export function propIdAppToDb(value: string): string {
   return value;
@@ -11,7 +10,7 @@ export function propIdOptionalAppToDb(value: string | undefined): string {
 }
 
 export function propStringAppToDb(value: string): string {
-  return `'${value}'`;
+  return quoteValue(value);
 }
 
 export function propStringOptionalAppToDb(value: string | undefined): string {
@@ -67,7 +66,7 @@ export function propBooleanOptionalAppToDb(value: boolean | undefined): string {
 }
 
 export function propDateAppToDb(value: string): string {
-  return `'${value}'`;
+  return quoteValue(value);
 }
 
 export function propDateOptionalAppToDb(value: string | undefined): string {
