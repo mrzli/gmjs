@@ -1,3 +1,4 @@
+/* eslint-disable */
 export default {
   displayName: 'nest-util',
   preset: '../../jest.preset.js',
