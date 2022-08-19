@@ -4,7 +4,7 @@ import {
   getFileSystemTestExamples,
 } from '@gmjs/test-util';
 import path from 'path';
-import { AnyObject, identifyFn } from '@gmjs/util';
+import { AnyObject, identityFn } from '@gmjs/util';
 import { processTsSourceFile } from './source-file-util';
 
 describe('code-util', () => {
@@ -35,7 +35,7 @@ describe('code-util', () => {
             processTsSourceFile(example.input, {
               substitutions: SUBSTITUTIONS,
             }),
-          identifyFn
+          identityFn
         )
       );
     });

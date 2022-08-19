@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 export function emptyFn(): void {}
 
-export function identifyFn<T>(value: T): T {
+export function identityFn<T>(value: T): T {
   return value;
 }
 

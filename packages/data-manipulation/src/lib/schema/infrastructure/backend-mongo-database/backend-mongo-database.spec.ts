@@ -5,7 +5,7 @@ import {
   getFileSystemTestExamples,
 } from '@gmjs/test-util';
 import path from 'path';
-import { identifyFn } from '@gmjs/util';
+import { identityFn } from '@gmjs/util';
 import { BackendMongoDatabaseInput } from './backend-mongo-database-input';
 import { TEST_APPS_MONOREPO_OPTIONS } from '../../shared/test-util';
 import { DEFAULT_CODE_GENERATION_LIB_MODULE_NAMES } from '../../shared/constants';
@@ -46,7 +46,7 @@ describe('backend-mongo-database', () => {
             };
             return backendMongoDatabase(input);
           },
-          identifyFn
+          identityFn
         )
       );
     });

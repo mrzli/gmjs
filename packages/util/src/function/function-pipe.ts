@@ -1,6 +1,6 @@
-import { identifyFn } from './generic-function-utils';
-import { Fn1 } from "../types/function";
-import { AnyValue } from "../types/generic";
+import { identityFn } from './generic-function-utils';
+import { Fn1 } from '../types/function';
+import { AnyValue } from '../types/generic';
 
 export function transformPipe(): Fn1<AnyValue, AnyValue>;
 export function transformPipe<A, B>(fn1: Fn1<A, B>): Fn1<A, B>;
@@ -32,7 +32,7 @@ export function transformPipe<A, B, C, D, E, F, G>(
   fn3: Fn1<C, D>,
   fn4: Fn1<D, E>,
   fn5: Fn1<E, F>,
-  fn6: Fn1<F, G>,
+  fn6: Fn1<F, G>
 ): Fn1<A, F>;
 export function transformPipe<A, B, C, D, E, F, G, H>(
   fn1: Fn1<A, B>,
@@ -41,7 +41,7 @@ export function transformPipe<A, B, C, D, E, F, G, H>(
   fn4: Fn1<D, E>,
   fn5: Fn1<E, F>,
   fn6: Fn1<F, G>,
-  fn7: Fn1<G, H>,
+  fn7: Fn1<G, H>
 ): Fn1<A, H>;
 export function transformPipe<A, B, C, D, E, F, G, H, I>(
   fn1: Fn1<A, B>,
@@ -51,17 +51,15 @@ export function transformPipe<A, B, C, D, E, F, G, H, I>(
   fn5: Fn1<E, F>,
   fn6: Fn1<F, G>,
   fn7: Fn1<G, H>,
-  fn8: Fn1<H, I>,
+  fn8: Fn1<H, I>
 ): Fn1<A, I>;
 export function transformPipe<TInput, TOutput>(
   ...ops: readonly Fn1<AnyValue, AnyValue>[]
 ): Fn1<TInput, TOutput> {
-  return ops.reduce(pipeFunction, identifyFn);
+  return ops.reduce(pipeFunction, identityFn);
 }
 
-export function transformPipeMono<T>(
-  ...ops: readonly Fn1<T, T>[]
-): Fn1<T, T> {
+export function transformPipeMono<T>(...ops: readonly Fn1<T, T>[]): Fn1<T, T> {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   return transformPipe(...ops);

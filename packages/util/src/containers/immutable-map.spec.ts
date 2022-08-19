@@ -4,7 +4,7 @@ import {
   ImmutableMapTuple,
 } from './immutable-map';
 import { AnyValue } from '../types/generic';
-import { identifyFn } from '../function/generic-function-utils';
+import { identityFn } from '../function/generic-function-utils';
 
 describe('ImmutableMap', () => {
   it.skip('performance-test', () => {
@@ -339,7 +339,7 @@ describe('ImmutableMap', () => {
       const KEY_MAPPING_A = (item: ExampleItem): string => item.keyA;
       const KEY_MAPPING_B = (item: ExampleItem): string => item.keyB;
 
-      const VALUE_MAPPING_IDENTITY = identifyFn;
+      const VALUE_MAPPING_IDENTITY = identityFn;
       const VALUE_MAPPING_VALUE = (item: ExampleItem): string => item.value;
 
       interface Example {

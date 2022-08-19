@@ -1,7 +1,7 @@
 import {
   alwaysFalsePredicate,
   alwaysTruePredicate,
-  identifyFn,
+  identityFn,
 } from './generic-function-utils';
 
 describe('generic-function-utils', () => {
@@ -17,7 +17,7 @@ describe('generic-function-utils', () => {
     expect(EXAMPLE_ARRAY.filter(alwaysFalsePredicate)).toHaveLength(0);
   });
 
-  describe('identifyFn()', () => {
+  describe('identityFn()', () => {
     interface Example {
       readonly input: number | string;
       readonly expected: number | string;
@@ -31,7 +31,7 @@ describe('generic-function-utils', () => {
 
     EXAMPLES.forEach((example) => {
       it(JSON.stringify(example), () => {
-        expect(identifyFn(example.input)).toEqual(example.expected);
+        expect(identityFn(example.input)).toEqual(example.expected);
       });
     });
   });

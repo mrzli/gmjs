@@ -1,4 +1,4 @@
-import { identifyFn, ReadonlyRecord } from '@gmjs/util';
+import { identityFn, ReadonlyRecord } from '@gmjs/util';
 import { findFilesShallowSync } from './find';
 import path from 'path';
 import { readTextSync } from './file-system/file-system';
@@ -16,7 +16,7 @@ export type FileContentTransformerFn<T> = (
 export function readTextFilesInDirSync(
   dir: string
 ): DirFilesReadResult<string> {
-  return readFilesInDirSync(dir, identifyFn);
+  return readFilesInDirSync(dir, identityFn);
 }
 
 export function readFilesInDirSync<T>(
