@@ -2,22 +2,33 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/react-util/src",
   "projectType": "library",
+  "tags": [],
   "targets": {
     "build": {
-      "executor": "@nrwl/js:tsc",
+      "executor": "@nrwl/web:rollup",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/react-util",
-        "main": "packages/react-util/src/index.ts",
         "tsConfig": "packages/react-util/tsconfig.lib.json",
-        "assets": ["packages/react-util/*.md"]
+        "project": "packages/react-util/package.json",
+        "entryFile": "packages/react-util/src/index.ts",
+        "external": ["react/jsx-runtime"],
+        "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+        "compiler": "babel",
+        "assets": [
+          {
+            "glob": "packages/react-util/README.md",
+            "input": ".",
+            "output": "."
+          }
+        ]
       }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/react-util/**/*.ts"]
+        "lintFilePatterns": ["packages/react-util/**/*.{ts,tsx,js,jsx}"]
       }
     },
     "test": {
@@ -28,6 +39,5 @@
         "passWithNoTests": true
       }
     }
-  },
-  "tags": []
+  }
 }

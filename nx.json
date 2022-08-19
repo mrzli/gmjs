@@ -21,5 +21,12 @@
     "build": {
       "dependsOn": ["^build"]
     }
+  },
+  "generators": {
+    "@nrwl/react": {
+      "application": {
+        "babel": true
+      }
+    }
   }
 }
