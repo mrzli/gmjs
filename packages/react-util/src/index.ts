@@ -1,3 +1,4 @@
+export * from './lib/app-setup/create-app';
 export * from './lib/app-setup/app-wrapper';
 export * from './lib/app-setup/app-dependencies';
 export * from './lib/app-setup/app-action';
