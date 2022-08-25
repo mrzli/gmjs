@@ -1,5 +1,6 @@
+import { isObject } from '@gmjs/util';
 import { useRef, useEffect, useMemo } from 'react';
-import { Observable, OperatorFunction, Subject } from 'rxjs';
+import { Observable, Observer, OperatorFunction, Subject } from 'rxjs';
 
 // https://blog.logrocket.com/how-to-get-previous-props-state-with-react-hooks/
 export function usePrevious<T>(value: T): T | undefined {
@@ -22,9 +23,11 @@ export function useObservable<TValue>(
   }, [observable$, callback]);
 }
 
+export type ObserverNextFn<T> = (value: T) => void;
+
 export function useSubject<TInputValue, TOutputValue>(
   pipeline: OperatorFunction<TInputValue, TOutputValue>,
-  callback: (value: TOutputValue) => void
+  observer?: Partial<Observer<TOutputValue>> | ObserverNextFn<TOutputValue>
 ): Subject<TInputValue> {
   const subject$ = useMemo<Subject<TInputValue>>(() => {
     return new Subject<TInputValue>();
@@ -32,11 +35,14 @@ export function useSubject<TInputValue, TOutputValue>(
 
   useEffect(() => {
     const obs$ = subject$.pipe(pipeline);
-    const subscription = obs$.subscribe(callback);
+    const subscription =
+      observer instanceof Function
+        ? obs$.subscribe(observer)
+        : obs$.subscribe(observer);
     return () => {
       subscription.unsubscribe();
     };
-  }, [subject$, pipeline, callback]);
+  }, [subject$, pipeline, observer]);
 
   return subject$;
 }
