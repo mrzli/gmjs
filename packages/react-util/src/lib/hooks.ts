@@ -1,5 +1,5 @@
-import { useRef, useEffect } from 'react';
-import { Observable, Subject, Unsubscribable } from 'rxjs';
+import { useRef, useEffect, useMemo } from 'react';
+import { Observable, OperatorFunction, Subject } from 'rxjs';
 
 // https://blog.logrocket.com/how-to-get-previous-props-state-with-react-hooks/
 export function usePrevious<T>(value: T): T | undefined {
@@ -9,44 +9,6 @@ export function usePrevious<T>(value: T): T | undefined {
   }, [value]);
   return ref.current;
 }
-
-export type SubjectPipeline<TInputValue, TOutputValue> = (
-  source$: Observable<TInputValue>
-) => Observable<TOutputValue>;
-export type MonoTypeSubjectPipeline<TValue> = SubjectPipeline<TValue, TValue>;
-export type ObservableSubscribe<TValue> = (value: TValue) => {
-  readonly unsubscribe: Unsubscribable;
-};
-
-export type SubjectOrUndefined<T> = Subject<T> | undefined;
-export type MutableRefSubject<T> = React.MutableRefObject<
-  SubjectOrUndefined<T>
->;
-
-export function useSubjectRef<TInputValue, TOutputValue>(
-  pipeline: SubjectPipeline<TInputValue, TOutputValue>,
-  callback: (value: TOutputValue) => void
-): MutableRefSubject<TInputValue> {
-  const subjectRef: MutableRefSubject<TInputValue> =
-    useRef<SubjectOrUndefined<TInputValue>>(undefined);
-
-  useEffect(() => {
-    const subject$ = new Subject<TInputValue>();
-    const subscription = pipeline(subject$).subscribe(callback);
-    subjectRef.current = subject$;
-    return () => {
-      subscription.unsubscribe();
-      subjectRef.current = undefined;
-    };
-  }, [pipeline, callback]);
-
-  return subjectRef;
-}
-
-export const useMonoTypeSubjectRef: <TValue>(
-  pipeline: MonoTypeSubjectPipeline<TValue>,
-  callback: (value: TValue) => void
-) => MutableRefSubject<TValue> = useSubjectRef;
 
 export function useObservable<TValue>(
   observable$: Observable<TValue>,
@@ -58,4 +20,23 @@ export function useObservable<TValue>(
       subscription.unsubscribe();
     };
   }, [observable$, callback]);
+}
+
+export function useSubject<TInputValue, TOutputValue>(
+  pipeline: OperatorFunction<TInputValue, TOutputValue>,
+  callback: (value: TOutputValue) => void
+): Subject<TInputValue> {
+  const subject$ = useMemo<Subject<TInputValue>>(() => {
+    return new Subject<TInputValue>();
+  }, []);
+
+  useEffect(() => {
+    const obs$ = subject$.pipe(pipeline);
+    const subscription = obs$.subscribe(callback);
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [subject$, pipeline, callback]);
+
+  return subject$;
 }
