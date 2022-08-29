@@ -1,4 +1,3 @@
-import { isObject } from '@gmjs/util';
 import { useRef, useEffect, useMemo } from 'react';
 import { Observable, Observer, OperatorFunction, Subject } from 'rxjs';
 
