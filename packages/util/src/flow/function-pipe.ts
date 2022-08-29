@@ -56,7 +56,7 @@ export function transformPipe<A, B, C, D, E, F, G, H, I>(
 export function transformPipe<TInput, TOutput>(
   ...ops: readonly Fn1<AnyValue, AnyValue>[]
 ): Fn1<TInput, TOutput> {
-  return ops.reduce(pipeFunction, identityFn);
+  return ops.reduce(composeFunction, identityFn);
 }
 
 export function transformPipeMono<T>(...ops: readonly Fn1<T, T>[]): Fn1<T, T> {
@@ -65,6 +65,6 @@ export function transformPipeMono<T>(...ops: readonly Fn1<T, T>[]): Fn1<T, T> {
   return transformPipe(...ops);
 }
 
-function pipeFunction<A, B, C>(f1: Fn1<A, B>, f2: Fn1<B, C>): Fn1<A, C> {
+function composeFunction<A, B, C>(f1: Fn1<A, B>, f2: Fn1<B, C>): Fn1<A, C> {
   return (s: A) => f2(f1(s));
 }
