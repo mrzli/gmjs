@@ -1,4 +1,4 @@
-import { AnyValue } from './../types/generic';
+import { AnyValue } from '../types/generic';
 import { Fn1 } from '../types/function';
 import { transformPipe, transformPipeMono } from './function-pipe'
 

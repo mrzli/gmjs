@@ -1,4 +1,4 @@
-import { identityFn } from './generic-function-utils';
+import { identityFn } from '../function/generic-function-utils';
 import { Fn1 } from '../types/function';
 import { AnyValue } from '../types/generic';
 
