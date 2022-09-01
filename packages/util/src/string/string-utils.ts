@@ -18,3 +18,11 @@ export function trim(value: string, chars: string): string {
   const startTrimmed = trimStart(value, chars);
   return trimEnd(startTrimmed, chars);
 }
+
+export function isCharUppercase(value: string): boolean {
+  return value.length === 1 && value === value.toLocaleUpperCase() && value !== value.toLocaleLowerCase();
+}
+
+export function isCharLowercase(value: string): boolean {
+  return value.length === 1 && value === value.toLocaleLowerCase() && value !== value.toLocaleUpperCase();
+}

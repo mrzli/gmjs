@@ -68,3 +68,7 @@ export function transformPipeMono<T>(...ops: readonly Fn1<T, T>[]): Fn1<T, T> {
 function composeFunction<A, B, C>(f1: Fn1<A, B>, f2: Fn1<B, C>): Fn1<A, C> {
   return (s: A) => f2(f1(s));
 }
+
+export function applyFn<TInput, TOutput>(value: TInput, fn: Fn1<TInput, TOutput>): TOutput {
+  return fn(value);
+}

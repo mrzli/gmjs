@@ -1,6 +1,6 @@
 import { AnyValue } from '../types/generic';
 import { Fn1 } from '../types/function';
-import { transformPipe, transformPipeMono } from './function-pipe'
+import { applyFn, transformPipe, transformPipeMono } from './function-pipe'
 
 describe('function-pipe', () => {
   describe('transformPipe()', () => {
@@ -97,6 +97,29 @@ describe('function-pipe', () => {
     EXAMPLES.forEach((example) => {
       it(JSON.stringify(example), () => {
         const actual = transformPipeMono(...example.input.fns)(example.input.value);
+        expect(actual).toEqual(example.expected);
+      });
+    });
+  });
+
+  describe('apply()', () => {
+    interface Example {
+      readonly input: number;
+      readonly expected: number;
+    }
+
+    const FN: Fn1<number, number> = (value: number) => value * 2;
+  
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: 1,
+        expected: 2,
+      },
+    ];
+  
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        const actual = applyFn(example.input, FN);
         expect(actual).toEqual(example.expected);
       });
     });

@@ -1,4 +1,4 @@
-import { capitalize, trim, trimEnd, trimStart } from './string-utils';
+import { capitalize, isCharLowercase, isCharUppercase, trim, trimEnd, trimStart } from './string-utils';
 
 describe('string-utils', () => {
   describe('capitalize()', () => {
@@ -281,6 +281,80 @@ describe('string-utils', () => {
           const actual = trim(example.input.value, example.input.chars);
           expect(actual).toEqual(example.expected);
         });
+      });
+    });
+  });
+
+  describe('isCharUppercase()', () => {
+    interface Example {
+      readonly input: string;
+      readonly expected: boolean;
+    }
+  
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: '',
+        expected: false,
+      },
+      {
+        input: 'AA',
+        expected: false,
+      },
+      {
+        input: 'a',
+        expected: false,
+      },
+      {
+        input: '1',
+        expected: false,
+      },
+      {
+        input: 'A',
+        expected: true,
+      },
+    ];
+  
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        const actual = isCharUppercase(example.input);
+        expect(actual).toEqual(example.expected);
+      });
+    });
+  });
+
+  describe('isCharLowercase()', () => {
+    interface Example {
+      readonly input: string;
+      readonly expected: boolean;
+    }
+  
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: '',
+        expected: false,
+      },
+      {
+        input: 'aa',
+        expected: false,
+      },
+      {
+        input: 'A',
+        expected: false,
+      },
+      {
+        input: '1',
+        expected: false,
+      },
+      {
+        input: 'a',
+        expected: true,
+      },
+    ];
+  
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        const actual = isCharLowercase(example.input);
+        expect(actual).toEqual(example.expected);
       });
     });
   });
