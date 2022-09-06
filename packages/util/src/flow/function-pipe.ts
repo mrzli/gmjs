@@ -2,7 +2,7 @@ import { identityFn } from '../function/generic-function-utils';
 import { Fn1 } from '../types/function';
 import { AnyValue } from '../types/generic';
 
-export function transformPipe(): Fn1<AnyValue, AnyValue>;
+export function transformPipe<A>(): Fn1<A, A>;
 export function transformPipe<A, B>(fn1: Fn1<A, B>): Fn1<A, B>;
 export function transformPipe<A, B, C>(
   fn1: Fn1<A, B>,

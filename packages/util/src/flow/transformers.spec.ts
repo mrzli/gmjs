@@ -1,6 +1,13 @@
-import { Fn1 } from "../types/function";
-import { transformPipe } from "./function-pipe";
-import { filter, flatten, map } from './transformers';
+import { Fn1 } from '../types/function';
+import { applyFn, transformPipe } from './function-pipe';
+import {
+  combineWithEachItem,
+  filter,
+  flatten,
+  map,
+  mapCombineWithEachItem,
+  toArray,
+} from './transformers';
 
 describe('transformers', () => {
   describe('map()', () => {
@@ -10,7 +17,7 @@ describe('transformers', () => {
     }
 
     const MAPPER: Fn1<number, string> = (item: number) => `${item * 2}x`;
-  
+
     const EXAMPLES: readonly Example[] = [
       {
         input: [],
@@ -25,10 +32,10 @@ describe('transformers', () => {
         expected: ['2x', '4x', '6x'],
       },
     ];
-  
+
     EXAMPLES.forEach((example) => {
       it(JSON.stringify(example), () => {
-        const actual = [...transformPipe(map(MAPPER))(example.input)];
+        const actual = getArrayResult(example.input, map(MAPPER));
         expect(actual).toEqual(example.expected);
       });
     });
@@ -39,7 +46,7 @@ describe('transformers', () => {
       readonly input: readonly (readonly number[])[];
       readonly expected: readonly number[];
     }
-  
+
     const EXAMPLES: readonly Example[] = [
       {
         input: [],
@@ -66,7 +73,10 @@ describe('transformers', () => {
         expected: [1, 2],
       },
       {
-        input: [[1, 2], [3, 4]],
+        input: [
+          [1, 2],
+          [3, 4],
+        ],
         expected: [1, 2, 3, 4],
       },
       {
@@ -74,10 +84,10 @@ describe('transformers', () => {
         expected: [1, 2],
       },
     ];
-  
+
     EXAMPLES.forEach((example) => {
       it(JSON.stringify(example), () => {
-        const actual = [...transformPipe(flatten())(example.input)];
+        const actual = getArrayResult(example.input, flatten());
         expect(actual).toEqual(example.expected);
       });
     });
@@ -90,7 +100,7 @@ describe('transformers', () => {
     }
 
     const PREDICATE: Fn1<number, boolean> = (item: number) => item % 2 === 0;
-  
+
     const EXAMPLES: readonly Example[] = [
       {
         input: [],
@@ -105,12 +115,166 @@ describe('transformers', () => {
         expected: [2, 4],
       },
     ];
-  
+
     EXAMPLES.forEach((example) => {
       it(JSON.stringify(example), () => {
-        const actual = [...transformPipe(filter(PREDICATE))(example.input)];
+        const actual = getArrayResult(example.input, filter(PREDICATE));
         expect(actual).toEqual(example.expected);
       });
     });
   });
-})
+
+  describe('combineWithEachItem()', () => {
+    interface Example {
+      readonly input: {
+        readonly input: string;
+        readonly array: readonly string[];
+      },
+      readonly expected: readonly string[];
+    }
+
+    const COMBINE_FN = (i1: string, i2: string): string => i1 + i2;
+
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: {
+          input: '',
+          array: []
+        },
+        expected: [],
+      },
+      {
+        input: {
+          input: '',
+          array: []
+        },
+        expected: [],
+      },
+      {
+        input: {
+          input: 'a',
+          array: []
+        },
+        expected: [],
+      },
+      {
+        input: {
+          input: '',
+          array: ['1', '2', '3']
+        },
+        expected: ['1', '2', '3'],
+      },
+      {
+        input: {
+          input: 'a',
+          array: ['', '', '']
+        },
+        expected: ['a', 'a', 'a'],
+      },
+      {
+        input: {
+          input: 'a',
+          array: ['1', '2', '3']
+        },
+        expected: ['a1', 'a2', 'a3'],
+      },
+    ];
+
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        const actual = getArrayResult(
+          example.input.input,
+          combineWithEachItem(example.input.array, COMBINE_FN)
+        );
+        expect(actual).toEqual(example.expected);
+      });
+    });
+  });
+
+  describe('mapCombineWithEachItem()', () => {
+    interface Example {
+      readonly input: {
+        readonly input: readonly string[];
+        readonly array: readonly string[];
+      },
+      readonly expected: readonly string[];
+    }
+
+    const COMBINE_FN = (i1: string, i2: string): string => i1 + i2;
+
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: {
+          input: [],
+          array: []
+        },
+        expected: [],
+      },
+      {
+        input: {
+          input: ['a'],
+          array: []
+        },
+        expected: [],
+      },
+      {
+        input: {
+          input: [],
+          array: ['1']
+        },
+        expected: [],
+      },{
+        input: {
+          input: ['a'],
+          array: ['']
+        },
+        expected: ['a'],
+      },
+      {
+        input: {
+          input: [''],
+          array: ['1']
+        },
+        expected: ['1'],
+      },
+      {
+        input: {
+          input: ['a'],
+          array: ['1']
+        },
+        expected: ['a1'],
+      },
+      {
+        input: {
+          input: ['', ''],
+          array: ['', '']
+        },
+        expected: ['', '', '', ''],
+      },
+      {
+        input: {
+          input: ['a', 'b'],
+          array: ['1', '2']
+        },
+        expected: ['a1', 'a2', 'b1', 'b2'],
+      },
+    ];
+
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        const actual = getArrayResult(
+          example.input.input,
+          mapCombineWithEachItem(example.input.array, COMBINE_FN)
+        );
+        expect(actual).toEqual(example.expected);
+      });
+    });
+  });
+
+  function getArrayResult<T, U>(
+    input: T,
+    transformer: Fn1<T, Iterable<U>>
+  ): readonly U[] {
+    return applyFn(input, transformPipe(transformer, toArray()));
+  }
+});

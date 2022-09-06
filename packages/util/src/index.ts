@@ -12,6 +12,7 @@ export * from './containers/map';
 export * from './enum/enum-utils';
 export * from './flow/chainable';
 export * from './flow/function-pipe';
+export * from './flow/transformers';
 export * from './function/generic-function-utils';
 export * from './generic/generic';
 export * from './generic/type-checks';
