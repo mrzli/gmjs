@@ -2,6 +2,7 @@ import { Fn1 } from '../types/function';
 import { applyFn, transformPipe } from './function-pipe';
 import {
   combineWithEachItem,
+  conditionalConvert,
   filter,
   flatten,
   map,
@@ -129,7 +130,7 @@ describe('transformers', () => {
       readonly input: {
         readonly input: string;
         readonly array: readonly string[];
-      },
+      };
       readonly expected: readonly string[];
     }
 
@@ -139,42 +140,42 @@ describe('transformers', () => {
       {
         input: {
           input: '',
-          array: []
+          array: [],
         },
         expected: [],
       },
       {
         input: {
           input: '',
-          array: []
+          array: [],
         },
         expected: [],
       },
       {
         input: {
           input: 'a',
-          array: []
+          array: [],
         },
         expected: [],
       },
       {
         input: {
           input: '',
-          array: ['1', '2', '3']
+          array: ['1', '2', '3'],
         },
         expected: ['1', '2', '3'],
       },
       {
         input: {
           input: 'a',
-          array: ['', '', '']
+          array: ['', '', ''],
         },
         expected: ['a', 'a', 'a'],
       },
       {
         input: {
           input: 'a',
-          array: ['1', '2', '3']
+          array: ['1', '2', '3'],
         },
         expected: ['a1', 'a2', 'a3'],
       },
@@ -196,7 +197,7 @@ describe('transformers', () => {
       readonly input: {
         readonly input: readonly string[];
         readonly array: readonly string[];
-      },
+      };
       readonly expected: readonly string[];
     }
 
@@ -206,55 +207,56 @@ describe('transformers', () => {
       {
         input: {
           input: [],
-          array: []
+          array: [],
         },
         expected: [],
       },
       {
         input: {
           input: ['a'],
-          array: []
+          array: [],
         },
         expected: [],
       },
       {
         input: {
           input: [],
-          array: ['1']
+          array: ['1'],
         },
         expected: [],
-      },{
+      },
+      {
         input: {
           input: ['a'],
-          array: ['']
+          array: [''],
         },
         expected: ['a'],
       },
       {
         input: {
           input: [''],
-          array: ['1']
+          array: ['1'],
         },
         expected: ['1'],
       },
       {
         input: {
           input: ['a'],
-          array: ['1']
+          array: ['1'],
         },
         expected: ['a1'],
       },
       {
         input: {
           input: ['', ''],
-          array: ['', '']
+          array: ['', ''],
         },
         expected: ['', '', '', ''],
       },
       {
         input: {
           input: ['a', 'b'],
-          array: ['1', '2']
+          array: ['1', '2'],
         },
         expected: ['a1', 'a2', 'b1', 'b2'],
       },
@@ -265,6 +267,73 @@ describe('transformers', () => {
         const actual = getArrayResult(
           example.input.input,
           mapCombineWithEachItem(example.input.array, COMBINE_FN)
+        );
+        expect(actual).toEqual(example.expected);
+      });
+    });
+  });
+
+  describe('conditionalConvert()', () => {
+    interface Example {
+      readonly input: {
+        readonly input: string;
+        readonly condition: ((input: string) => boolean) | boolean;
+      };
+      readonly expected: string;
+    }
+
+    const CONVERT_FN = (s: string): string => s + 'x';
+
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: {
+          input: 'a',
+          condition: false,
+        },
+        expected: 'a',
+      },
+      {
+        input: {
+          input: 'a',
+          condition: () => false,
+        },
+        expected: 'a',
+      },
+      {
+        input: {
+          input: 'a',
+          condition: true,
+        },
+        expected: 'ax',
+      },
+      {
+        input: {
+          input: 'a',
+          condition: () => true,
+        },
+        expected: 'ax',
+      },
+      {
+        input: {
+          input: 'a',
+          condition: (input: string) => input === 'a',
+        },
+        expected: 'ax',
+      },
+      {
+        input: {
+          input: 'b',
+          condition: (input: string) => input === 'a',
+        },
+        expected: 'b',
+      },
+    ];
+
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        const actual = applyFn(
+          example.input.input,
+          conditionalConvert(example.input.condition, CONVERT_FN)
         );
         expect(actual).toEqual(example.expected);
       });
