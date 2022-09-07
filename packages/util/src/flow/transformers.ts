@@ -32,6 +32,21 @@ export function filter<T>(
   };
 }
 
+export function distinct<T, THash = T>(
+  distinctByFn?: (item1: T) => THash
+): Fn1<Iterable<T>, Iterable<T>> {
+  return function* (input: Iterable<T>): Iterable<T> {
+    const previousItemsSet = new Set<T | THash>();
+    for (const inputItem of input) {
+      const hash = distinctByFn ? distinctByFn(inputItem) : inputItem;
+      if (!previousItemsSet.has(hash)) {
+        yield inputItem;
+        previousItemsSet.add(hash);
+      }
+    }
+  };
+}
+
 export function combineWithEachItem<T, U, V>(
   iterable: Iterable<U>,
   combine: (input: T, item: U) => V
