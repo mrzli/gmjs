@@ -1,4 +1,11 @@
-import { isInDir, pathDir, pathExtension, pathWithoutExtension } from './path';
+import {
+  isInDir,
+  pathDir,
+  pathExtension,
+  pathFsName,
+  pathFsNameWithExtension,
+  pathWithoutExtension,
+} from './path';
 
 describe('path', () => {
   describe('isInDir()', () => {
@@ -124,6 +131,112 @@ describe('path', () => {
     EXAMPLES.forEach((example) => {
       it(JSON.stringify(example), () => {
         const actual = pathDir(example.input);
+        expect(actual).toEqual(example.expected);
+      });
+    });
+  });
+
+  describe('pathFsName()', () => {
+    interface Example {
+      readonly input: string;
+      readonly expected: string;
+    }
+
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: '',
+        expected: '',
+      },
+      {
+        input: 'a',
+        expected: 'a',
+      },
+      {
+        input: 'a.ext',
+        expected: 'a',
+      },
+      {
+        input: '/a',
+        expected: 'a',
+      },
+      {
+        input: 'a/b',
+        expected: 'b',
+      },
+      {
+        input: 'a/b.ext',
+        expected: 'b',
+      },
+      {
+        input: 'a/b.ext.ext2',
+        expected: 'b.ext',
+      },
+      {
+        input: 'a/b/c.ext',
+        expected: 'c',
+      },
+      {
+        input: 'a/b/c.ext.ext2',
+        expected: 'c.ext',
+      },
+    ];
+
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        const actual = pathFsName(example.input);
+        expect(actual).toEqual(example.expected);
+      });
+    });
+  });
+
+  describe('pathFsNameWithExtension()', () => {
+    interface Example {
+      readonly input: string;
+      readonly expected: string;
+    }
+
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: '',
+        expected: '',
+      },
+      {
+        input: 'a',
+        expected: 'a',
+      },
+      {
+        input: 'a.ext',
+        expected: 'a.ext',
+      },
+      {
+        input: '/a',
+        expected: 'a',
+      },
+      {
+        input: 'a/b',
+        expected: 'b',
+      },
+      {
+        input: 'a/b.ext',
+        expected: 'b.ext',
+      },
+      {
+        input: 'a/b.ext.ext2',
+        expected: 'b.ext.ext2',
+      },
+      {
+        input: 'a/b/c.ext',
+        expected: 'c.ext',
+      },
+      {
+        input: 'a/b/c.ext.ext2',
+        expected: 'c.ext.ext2',
+      },
+    ];
+
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        const actual = pathFsNameWithExtension(example.input);
         expect(actual).toEqual(example.expected);
       });
     });
