@@ -25,7 +25,9 @@ export function isArray<T = unknown>(value: unknown): value is Array<T> {
   return Array.isArray(value);
 }
 
-export function isObject(value: unknown): value is AnyObject {
+export function isObject<T extends AnyObject = AnyObject>(
+  value: unknown
+): value is T {
   return (
     typeof value === 'object' &&
     value !== null &&
