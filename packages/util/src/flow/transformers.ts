@@ -1,3 +1,4 @@
+import { isNotNullish } from '../generic/generic';
 import { Fn1 } from '../types/function';
 
 export function map<T, U>(
@@ -26,6 +27,16 @@ export function filter<T>(
   return function* (input: Iterable<T>): Iterable<T> {
     for (const inputItem of input) {
       if (predicate(inputItem)) {
+        yield inputItem;
+      }
+    }
+  };
+}
+
+export function filterOutNullish<T>(): Fn1<Iterable<T>, Iterable<NonNullable<T>>> {
+  return function* (input: Iterable<T>): Iterable<NonNullable<T>> {
+    for (const inputItem of input) {
+      if (isNotNullish(inputItem)) {
         yield inputItem;
       }
     }

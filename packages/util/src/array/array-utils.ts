@@ -97,16 +97,16 @@ export function mapWithSeparators<TInputElement, TOutputElement>(
   return finalArray;
 }
 
-export function filterOutNullish<TElement>(array: readonly (TElement | undefined)[]): readonly TElement[];
-export function filterOutNullish<TElement>(array: readonly (TElement | null)[]): readonly TElement[];
-export function filterOutNullish<TElement>(
-  array: readonly Nullish<TElement>[]
-): readonly TElement[] {
+export function arrayFilterOutNullish<TElement>(
+  array: readonly TElement[]
+): readonly NonNullable<TElement>[] {
   return array.filter((item) =>
     isNotNullish(item)
-  ) as unknown as readonly TElement[];
+  ) as unknown as readonly NonNullable<TElement>[];
 }
 
-export function arrayReverse<TElement>(array: readonly TElement[]): readonly TElement[] {
+export function arrayReverse<TElement>(
+  array: readonly TElement[]
+): readonly TElement[] {
   return [...array].reverse();
 }

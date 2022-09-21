@@ -1,9 +1,9 @@
 import {
+  arrayFilterOutNullish,
   arrayGetPrimitiveDuplicates,
   arrayReverse,
   distinctItems,
   distinctItemsBy,
-  filterOutNullish,
   flatMap,
   mapWithSeparators,
 } from './array-utils';
@@ -341,7 +341,7 @@ describe('array-utils', () => {
     });
   });
 
-  describe('filterOutNullish()', () => {
+  describe('arrayFilterOutNullish()', () => {
     interface Example {
       readonly input: readonly unknown[];
       readonly expected: readonly unknown[];
@@ -388,7 +388,7 @@ describe('array-utils', () => {
 
     EXAMPLES.forEach((example) => {
       it(JSON.stringify(example), () => {
-        const actual = filterOutNullish(example.input);
+        const actual = arrayFilterOutNullish(example.input);
         expect(actual).toEqual(example.expected);
       });
     });
