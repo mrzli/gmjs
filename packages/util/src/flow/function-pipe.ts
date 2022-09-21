@@ -33,7 +33,7 @@ export function transformPipe<A, B, C, D, E, F, G>(
   fn4: Fn1<D, E>,
   fn5: Fn1<E, F>,
   fn6: Fn1<F, G>
-): Fn1<A, F>;
+): Fn1<A, G>;
 export function transformPipe<A, B, C, D, E, F, G, H>(
   fn1: Fn1<A, B>,
   fn2: Fn1<B, C>,
