@@ -33,7 +33,10 @@ export function filter<T>(
   };
 }
 
-export function filterOutNullish<T>(): Fn1<Iterable<T>, Iterable<NonNullable<T>>> {
+export function filterOutNullish<T>(): Fn1<
+  Iterable<T>,
+  Iterable<NonNullable<T>>
+> {
   return function* (input: Iterable<T>): Iterable<NonNullable<T>> {
     for (const inputItem of input) {
       if (isNotNullish(inputItem)) {
@@ -94,6 +97,21 @@ export function conditionalConvert<T>(
     } else {
       return input;
     }
+  };
+}
+
+export function groupByKey<T, K extends string | number>(
+  keySelector: (item: T) => K
+): Fn1<Iterable<T>, ReadonlyMap<K, readonly T[]>> {
+  return (input: Iterable<T>): ReadonlyMap<K, readonly T[]> => {
+    const map = new Map<K, T[]>();
+    for (const inputItem of input) {
+      const key = keySelector(inputItem);
+      const value = map.get(key) ?? [];
+      value.push(inputItem);
+      map.set(key, value);
+    }
+    return map;
   };
 }
 
