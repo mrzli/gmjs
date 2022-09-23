@@ -46,6 +46,13 @@ export function filterOutNullish<T>(): Fn1<
   };
 }
 
+export function tap<T>(action: (input: T) => void): Fn1<T, T> {
+  return (input: T): T => {
+    action(input);
+    return input;
+  };
+}
+
 export function distinct<T, THash = T>(
   distinctByFn?: (item1: T) => THash
 ): Fn1<Iterable<T>, Iterable<T>> {

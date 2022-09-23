@@ -10,6 +10,7 @@ import {
   groupByKey,
   map,
   mapCombineWithEachItem,
+  tap,
   toArray,
 } from './transformers';
 
@@ -161,6 +162,49 @@ describe('transformers', () => {
       it(JSON.stringify(example), () => {
         const actual = getArrayResult(example.input, filterOutNullish());
         expect(actual).toEqual(example.expected);
+      });
+    });
+  });
+
+  describe('tap()', () => {
+    interface Example {
+      readonly input: number;
+      readonly expected: {
+        readonly sideEffectVar: string;
+        readonly output: number;
+      };
+    }
+
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: 0,
+        expected: {
+          sideEffectVar: 'value0',
+          output: 0
+        },
+      },
+      {
+        input: 1,
+        expected: {
+          sideEffectVar: 'value1',
+          output: 1
+        },
+      },
+    ];
+
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        let sideEffectVar = 'value';
+        const actual = applyFn(
+          example.input,
+          transformPipe(
+            tap((input) => {
+              sideEffectVar += input;
+            })
+          )
+        );
+        expect(actual).toEqual(example.expected.output);
+        expect(sideEffectVar).toEqual(example.expected.sideEffectVar);
       });
     });
   });
