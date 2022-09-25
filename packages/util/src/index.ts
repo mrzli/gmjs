@@ -6,7 +6,6 @@ export * from './array/array-utils';
 export * from './assert/assert';
 export * from './containers/map';
 export * from './enum/enum-utils';
-export * from './flow/chainable';
 export * from './flow/function-pipe';
 export * from './flow/transformers';
 export * from './function/generic-function-utils';
