@@ -40,9 +40,3 @@ export interface Pair<K, V> {
 export type StringEnumLike = ReadonlyRecord<string, string>;
 
 export type KeyOf<T> = keyof T;
-
-export type ArrayMinLength1<T> = readonly [T, ...T[]];
-export type ArrayMinLength2<T> = readonly [T, T, ...T[]];
-export type ArrayMinLength3<T> = readonly [T, T, T, ...T[]];
-export type ArrayMinLength4<T> = readonly [T, T, T, T, ...T[]];
-export type ArrayMinLength5<T> = readonly [T, T, T, T, T, ...T[]];
