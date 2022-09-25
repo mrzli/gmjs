@@ -1,7 +1,7 @@
-import { arrayFindLastIndexOfWithPredicate } from './array-find';
+import { arrayFindLastIndexByPredicate } from './array-find';
 
 describe('array-find', () => {
-  describe('arrayFindLastIndexOfWithPredicate()', () => {
+  describe('arrayFindLastIndexByPredicate()', () => {
     const PREDICATE = (item: number): boolean => item === 5;
 
     interface Example {
@@ -34,10 +34,7 @@ describe('array-find', () => {
 
     EXAMPLES.forEach((example) => {
       it(JSON.stringify(example), () => {
-        const actual = arrayFindLastIndexOfWithPredicate(
-          example.input,
-          PREDICATE
-        );
+        const actual = arrayFindLastIndexByPredicate(example.input, PREDICATE);
         expect(actual).toEqual(example.expected);
       });
     });

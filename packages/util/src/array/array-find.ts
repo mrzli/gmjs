@@ -1,4 +1,4 @@
-export function arrayFindLastIndexOfWithPredicate<TItem>(
+export function arrayFindLastIndexByPredicate<TItem>(
   array: readonly TItem[],
   predicate: (item: TItem) => boolean
 ): number {
