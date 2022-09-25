@@ -1,3 +1,0 @@
-export interface AppSubEntity11 {
-  readonly subfield111: string;
-}

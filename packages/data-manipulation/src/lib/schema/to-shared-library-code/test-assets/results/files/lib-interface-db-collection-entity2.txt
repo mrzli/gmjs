@@ -1,8 +1,0 @@
-import { ObjectId } from 'mongodb';
-import { DbSubEntity1 } from './embedded';
-
-export interface DbEntity2 {
-  readonly _id: ObjectId;
-  readonly field: string;
-  readonly fieldRefFromOtherCollection: DbSubEntity1;
-}

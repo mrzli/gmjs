@@ -1,6 +1,0 @@
-collections:
-  - name: Entity1
-    properties:
-      - name: fieldString
-        type: string
-        invalidProperty: whatever

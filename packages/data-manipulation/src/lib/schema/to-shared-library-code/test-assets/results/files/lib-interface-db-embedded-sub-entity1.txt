@@ -1,8 +1,0 @@
-import { DbSubEntity11 } from './db-sub-entity11';
-
-export interface DbSubEntity1 {
-  readonly subfield11: string;
-  readonly subfield12: number;
-  readonly subfield13: Date;
-  readonly subfield14: DbSubEntity11;
-}

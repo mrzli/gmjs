@@ -16,7 +16,6 @@
     "baseUrl": ".",
     "paths": {
       "@gmjs/browser-util": ["packages/browser-util/src/index.ts"],
-      "@gmjs/data-manipulation": ["packages/data-manipulation/src/index.ts"],
       "@gmjs/db-util": ["packages/db-util/src/index.ts"],
       "@gmjs/fs-util": ["packages/fs-util/src/index.ts"],
       "@gmjs/lib-util": ["packages/lib-util/src/index.ts"],

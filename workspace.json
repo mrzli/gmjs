@@ -2,7 +2,6 @@
   "version": 2,
   "projects": {
     "browser-util": "packages/browser-util",
-    "data-manipulation": "packages/data-manipulation",
     "db-util": "packages/db-util",
     "fs-util": "packages/fs-util",
     "lib-util": "packages/lib-util",

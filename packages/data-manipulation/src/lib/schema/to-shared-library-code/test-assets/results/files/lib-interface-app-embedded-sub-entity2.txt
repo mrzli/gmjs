@@ -1,5 +1,0 @@
-export interface AppSubEntity2 {
-  readonly subfield21: string;
-  readonly subfield22: number;
-  readonly subfield23: string;
-}
