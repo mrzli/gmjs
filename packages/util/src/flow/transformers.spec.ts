@@ -6,6 +6,7 @@ import {
   distinct,
   filter,
   filterOutNullish,
+  flatMap,
   flatten,
   groupByKey,
   map,
@@ -98,6 +99,40 @@ describe('transformers', () => {
     });
   });
 
+  describe('flatMap()', () => {
+    interface Example {
+      readonly input: readonly number[];
+      readonly expected: readonly string[];
+    }
+
+    const MAPPER: Fn1<number, readonly string[]> = (item: number) => [
+      `${item * 2}x`,
+      `${item * 3}y`,
+    ];
+
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: [],
+        expected: [],
+      },
+      {
+        input: [1],
+        expected: ['2x', '3y'],
+      },
+      {
+        input: [1, 2, 3],
+        expected: ['2x', '3y', '4x', '6y', '6x', '9y'],
+      },
+    ];
+
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        const actual = getArrayResult(example.input, flatMap(MAPPER));
+        expect(actual).toEqual(example.expected);
+      });
+    });
+  });
+
   describe('filter()', () => {
     interface Example {
       readonly input: readonly number[];
@@ -180,14 +215,14 @@ describe('transformers', () => {
         input: 0,
         expected: {
           sideEffectVar: 'value0',
-          output: 0
+          output: 0,
         },
       },
       {
         input: 1,
         expected: {
           sideEffectVar: 'value1',
-          output: 1
+          output: 1,
         },
       },
     ];

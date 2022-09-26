@@ -1,5 +1,6 @@
 import { isNotNullish } from '../generic/generic';
 import { Fn1 } from '../types/function';
+import { transformPipe } from './function-pipe';
 
 export function map<T, U>(
   mapper: (item: T) => U
@@ -19,6 +20,12 @@ export function flatten<T>(): Fn1<Iterable<Iterable<T>>, Iterable<T>> {
       }
     }
   };
+}
+
+export function flatMap<T, U>(
+  mapper: (item: T) => Iterable<U>
+): Fn1<Iterable<T>, Iterable<U>> {
+  return transformPipe(map(mapper), flatten());
 }
 
 export function filter<T>(
