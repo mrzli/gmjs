@@ -4,7 +4,6 @@ import {
   arrayReverse,
   distinctItems,
   distinctItemsBy,
-  flatMap,
   mapWithSeparators,
 } from './array-utils';
 import { Nullish, SimpleValue } from '../types/generic';
@@ -77,59 +76,6 @@ describe('array-utils', () => {
           example.expected
         );
       });
-    });
-  });
-
-  describe('flatMap()', () => {
-    describe('without index', () => {
-      const MAPPER = (value: number): readonly string[] => [
-        `${value}-1`,
-        `${value}-2`,
-      ];
-
-      interface Example {
-        readonly input: readonly number[];
-        readonly expected: readonly string[];
-      }
-
-      const EXAMPLES: readonly Example[] = [
-        {
-          input: [],
-          expected: [],
-        },
-        {
-          input: [1],
-          expected: ['1-1', '1-2'],
-        },
-        {
-          input: [1, 1],
-          expected: ['1-1', '1-2', '1-1', '1-2'],
-        },
-        {
-          input: [1, 2, 3],
-          expected: ['1-1', '1-2', '2-1', '2-2', '3-1', '3-2'],
-        },
-      ];
-
-      EXAMPLES.forEach((example) => {
-        it(JSON.stringify(example), () => {
-          const actual = flatMap(example.input, MAPPER);
-          expect(actual).toEqual(example.expected);
-        });
-      });
-    });
-
-    it('with index', () => {
-      const actual = flatMap(['a', 'b'], (item, index) => [
-        `first-${item}-${index}`,
-        `second-${item}-${index}`,
-      ]);
-      expect(actual).toEqual([
-        'first-a-0',
-        'second-a-0',
-        'first-b-1',
-        'second-b-1',
-      ]);
     });
   });
 
