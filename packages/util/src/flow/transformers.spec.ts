@@ -13,6 +13,8 @@ import {
   mapCombineWithEachItem,
   tap,
   toArray,
+  toMap,
+  toSet,
 } from './transformers';
 
 describe('transformers', () => {
@@ -605,6 +607,82 @@ describe('transformers', () => {
     EXAMPLES.forEach((example) => {
       it(JSON.stringify(example), () => {
         const actual = getArrayResult(example.input, groupByKey(KEY_SELECTOR));
+        expect(actual).toEqual(example.expected);
+      });
+    });
+  });
+
+  describe('toSet()', () => {
+    interface Example {
+      readonly input: readonly number[];
+      readonly expected: readonly number[];
+    }
+
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: [],
+        expected: [],
+      },
+      {
+        input: [0],
+        expected: [0],
+      },
+      {
+        input: [1],
+        expected: [1],
+      },
+      {
+        input: [1, 2],
+        expected: [1, 2],
+      },
+      {
+        input: [1, 2, 1, 3],
+        expected: [1, 2, 3],
+      },
+    ];
+
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        const actual = getArrayResult(example.input, toSet());
+        expect(actual).toEqual(example.expected);
+      });
+    });
+  });
+
+  describe('toMap()', () => {
+    type ExampleItem = readonly [string, number];
+
+    interface Example {
+      readonly input: readonly ExampleItem[];
+      readonly expected: readonly ExampleItem[];
+    }
+
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: [],
+        expected: [],
+      },
+      {
+        input: [['0', 0]],
+        expected: [['0', 0]],
+      },
+      {
+        input: [['1', 1]],
+        expected: [['1', 1]],
+      },
+      {
+        input: [['1', 1], ['2', 2]],
+        expected: [['1', 1], ['2', 2]],
+      },
+      {
+        input: [['1', 1], ['2', 2], ['1', 1], ['3', 3]],
+        expected: [['1', 1], ['2', 2], ['3', 3]],
+      },
+    ];
+
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        const actual = getArrayResult(example.input, toMap());
         expect(actual).toEqual(example.expected);
       });
     });

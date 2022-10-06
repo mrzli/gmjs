@@ -134,3 +134,18 @@ export function toArray<T>(): Fn1<Iterable<T>, readonly T[]> {
     return [...input];
   };
 }
+
+export function toSet<T>(): Fn1<Iterable<T>, ReadonlySet<T>> {
+  return (input: Iterable<T>) => {
+    return new Set(input);
+  };
+}
+
+export function toMap<K, V>(): Fn1<
+  Iterable<readonly [K, V]>,
+  ReadonlyMap<K, V>
+> {
+  return (input: Iterable<readonly [K, V]>) => {
+    return new Map(input);
+  };
+}
