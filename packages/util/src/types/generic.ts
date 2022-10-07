@@ -40,3 +40,6 @@ export interface Pair<K, V> {
 export type StringEnumLike = ReadonlyRecord<string, string>;
 
 export type KeyOf<T> = keyof T;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type NotIterable<T> = T extends Iterable<any> ? never : T;

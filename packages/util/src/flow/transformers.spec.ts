@@ -12,6 +12,7 @@ import {
   map,
   mapCombineWithEachItem,
   tap,
+  tapIterable,
   toArray,
   toMap,
   toSet,
@@ -236,6 +237,49 @@ describe('transformers', () => {
           example.input,
           transformPipe(
             tap((input) => {
+              sideEffectVar += input;
+            })
+          )
+        );
+        expect(actual).toEqual(example.expected.output);
+        expect(sideEffectVar).toEqual(example.expected.sideEffectVar);
+      });
+    });
+  });
+
+  describe('tapIterable()', () => {
+    interface Example {
+      readonly input: readonly number[];
+      readonly expected: {
+        readonly sideEffectVar: string;
+        readonly output: readonly number[];
+      };
+    }
+
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: [0],
+        expected: {
+          sideEffectVar: 'value0',
+          output: [0],
+        },
+      },
+      {
+        input: [1, 2, 3],
+        expected: {
+          sideEffectVar: 'value123',
+          output: [1, 2, 3],
+        },
+      },
+    ];
+
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        let sideEffectVar = 'value';
+        const actual = getArrayResult(
+          example.input,
+          transformPipe(
+            tapIterable((input) => {
               sideEffectVar += input;
             })
           )
@@ -671,12 +715,27 @@ describe('transformers', () => {
         expected: [['1', 1]],
       },
       {
-        input: [['1', 1], ['2', 2]],
-        expected: [['1', 1], ['2', 2]],
+        input: [
+          ['1', 1],
+          ['2', 2],
+        ],
+        expected: [
+          ['1', 1],
+          ['2', 2],
+        ],
       },
       {
-        input: [['1', 1], ['2', 2], ['1', 1], ['3', 3]],
-        expected: [['1', 1], ['2', 2], ['3', 3]],
+        input: [
+          ['1', 1],
+          ['2', 2],
+          ['1', 1],
+          ['3', 3],
+        ],
+        expected: [
+          ['1', 1],
+          ['2', 2],
+          ['3', 3],
+        ],
       },
     ];
 
