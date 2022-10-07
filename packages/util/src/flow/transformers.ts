@@ -82,7 +82,23 @@ export function distinct<T, THash = T>(
     for (const inputItem of input) {
       const hash = distinctByFn ? distinctByFn(inputItem) : inputItem;
       if (!previousItemsSet.has(hash)) {
+        previousItemsSet.add(hash);
         yield inputItem;
+      }
+    }
+  };
+}
+
+export function duplicates<T, THash = T>(
+  distinctByFn?: (item: T) => THash
+): Fn1<Iterable<T>, Iterable<T>> {
+  return function* (input: Iterable<T>): Iterable<T> {
+    const previousItemsSet = new Set<T | THash>();
+    for (const inputItem of input) {
+      const hash = distinctByFn ? distinctByFn(inputItem) : inputItem;
+      if (previousItemsSet.has(hash)) {
+        yield inputItem;
+      } else {
         previousItemsSet.add(hash);
       }
     }
