@@ -49,6 +49,13 @@ export async function readJsonAsync<T = AnyValue>(
   return fs.readJson(filePath, ENCODING_UTF8);
 }
 
+export async function writeTextAsync(
+  filePath: string,
+  content: string
+): Promise<void> {
+  await fs.writeFile(filePath, content, ENCODING_UTF8);
+}
+
 export function existsSync(filePath: string): boolean {
   return fs.existsSync(filePath);
 }
