@@ -1,3 +1,14 @@
+import { invariant } from "../assert/assert";
+
+export function arrayFindOrThrow<TItem>(
+  array: readonly TItem[],
+  predicate: (item: TItem) => boolean
+): TItem {
+  const item = array.find(predicate);
+  invariant(!!item, `Item not found.`);
+  return item;
+}
+
 export function arrayFindLastIndexByPredicate<TItem>(
   array: readonly TItem[],
   predicate: (item: TItem) => boolean
