@@ -49,7 +49,7 @@ export async function readJsonAsync<T = AnyValue>(
   return fs.readJson(filePath, ENCODING_UTF8);
 }
 
-export function writTextSync(filePath: string, content: string): void {
+export function writeTextSync(filePath: string, content: string): void {
   fs.writeFileSync(filePath, content, ENCODING_UTF8);
 }
 
