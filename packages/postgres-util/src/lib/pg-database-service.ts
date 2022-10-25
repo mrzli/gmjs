@@ -3,10 +3,16 @@ import { Client } from 'pg';
 import { PgDatabaseInputParams } from './types';
 
 export class PgDatabaseService implements DatabaseService {
-  private _dbClient: Client;
+  private readonly _dbClient: Client;
 
   public constructor(params: PgDatabaseInputParams) {
-    this._dbClient = new Client(params);
+    this._dbClient = new Client({
+      host: params.host,
+      port: params.port,
+      database: params.database,
+      user: params.username,
+      password: params.password,
+    });
   }
 
   public async init(): Promise<void> {
