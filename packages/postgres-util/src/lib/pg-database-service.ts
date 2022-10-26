@@ -6,13 +6,7 @@ export class PgDatabaseService implements DatabaseService {
   private readonly _dbClient: Client;
 
   public constructor(params: PgDatabaseInputParams) {
-    this._dbClient = new Client({
-      host: params.host,
-      port: params.port,
-      database: params.database,
-      user: params.username,
-      password: params.password,
-    });
+    this._dbClient = new Client(params);
   }
 
   public async init(): Promise<void> {
