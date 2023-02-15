@@ -1,4 +1,4 @@
-import { INestApplication, LoggerService } from "@nestjs/common";
+import { INestApplication, LoggerService } from '@nestjs/common';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 
@@ -20,7 +20,9 @@ export async function bootstrapNestApp(
 
   setupNestApp(app, { globalPrefix });
   await app.listen(port);
-  logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
+  logger.log(
+    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
+  );
 }
 
 export function setupNestApp(

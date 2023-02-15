@@ -19,7 +19,7 @@ export function logWithFullValue(value: unknown): void {
 }
 
 export function logWithDepth(value: unknown, depth?: number): void {
-  console.log(inspectValue(value, depth))
+  console.log(inspectValue(value, depth));
 }
 
 function inspectValue(value: unknown, depth?: number): string {

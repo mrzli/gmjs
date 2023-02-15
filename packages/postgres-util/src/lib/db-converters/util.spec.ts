@@ -1,4 +1,4 @@
-import { quoteValue } from './util'
+import { quoteValue } from './util';
 
 describe('util', () => {
   describe('quoteValue()', () => {
@@ -6,7 +6,7 @@ describe('util', () => {
       readonly input: string;
       readonly expected: string;
     }
-  
+
     const EXAMPLES: readonly Example[] = [
       {
         input: '',
@@ -22,10 +22,11 @@ describe('util', () => {
       },
       {
         input: "multiple single quotes - here is one ' - here are two more ''",
-        expected: "'multiple single quotes - here is one '' - here are two more '''''",
+        expected:
+          "'multiple single quotes - here is one '' - here are two more '''''",
       },
     ];
-  
+
     EXAMPLES.forEach((example) => {
       it(JSON.stringify(example), () => {
         const actual = quoteValue(example.input);

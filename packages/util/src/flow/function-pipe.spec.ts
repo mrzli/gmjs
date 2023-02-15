@@ -1,22 +1,23 @@
 import { AnyValue } from '../types/generic';
 import { Fn1 } from '../types/function';
-import { applyFn, transformPipe, transformPipeMono } from './function-pipe'
+import { applyFn, transformPipe, transformPipeMono } from './function-pipe';
 
 describe('function-pipe', () => {
   describe('transformPipe()', () => {
     const MULTIPLY_BY_2 = (input: number): number => input * 2;
     const CONCAT_3 = (input: string): string => input + 3;
     const NUMBER_TO_STRING = (input: number): string => input.toString();
-    const STRING_TO_NUMBER = (input: string): number => Number.parseFloat(input);
+    const STRING_TO_NUMBER = (input: string): number =>
+      Number.parseFloat(input);
 
     interface Example {
       readonly input: {
         readonly value: AnyValue;
         readonly fns: readonly Fn1<AnyValue, AnyValue>[];
-      }
+      };
       readonly expected: AnyValue;
     }
-  
+
     const EXAMPLES: readonly Example[] = [
       {
         input: {
@@ -47,7 +48,7 @@ describe('function-pipe', () => {
         expected: '226',
       },
     ];
-  
+
     EXAMPLES.forEach((example) => {
       it(JSON.stringify(example), () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -66,10 +67,10 @@ describe('function-pipe', () => {
       readonly input: {
         readonly value: number;
         readonly fns: readonly Fn1<number, number>[];
-      }
+      };
       readonly expected: number;
     }
-  
+
     const EXAMPLES: readonly Example[] = [
       {
         input: {
@@ -93,10 +94,12 @@ describe('function-pipe', () => {
         expected: 50,
       },
     ];
-  
+
     EXAMPLES.forEach((example) => {
       it(JSON.stringify(example), () => {
-        const actual = transformPipeMono(...example.input.fns)(example.input.value);
+        const actual = transformPipeMono(...example.input.fns)(
+          example.input.value
+        );
         expect(actual).toEqual(example.expected);
       });
     });
@@ -109,14 +112,14 @@ describe('function-pipe', () => {
     }
 
     const FN: Fn1<number, number> = (value: number) => value * 2;
-  
+
     const EXAMPLES: readonly Example[] = [
       {
         input: 1,
         expected: 2,
       },
     ];
-  
+
     EXAMPLES.forEach((example) => {
       it(JSON.stringify(example), () => {
         const actual = applyFn(example.input, FN);

@@ -16,8 +16,6 @@
       }
     }
   },
-  "required": [
-    "arrayField"
-  ],
+  "required": ["arrayField"],
   "additionalProperties": false
 }

@@ -34,8 +34,8 @@ jobs:
     needs: install-deps
     strategy:
       matrix:
-        target: [ 'test', 'lint', 'build' ]
-        jobIndex: [ 1 ] # [ 1, 2, 3, 4 ]
+        target: ['test', 'lint', 'build']
+        jobIndex: [1] # [ 1, 2, 3, 4 ]
     env:
       JOB_COUNT: 1 # 4
       # I need more than last commit to execute 'nx affected' inside (only last commit would be fetched if 'fetch-depth' was omitted)
@@ -100,4 +100,3 @@ jobs:
         run: npx nx run-many --all --target=build
       - name: Publish All
         run: npx nx run-many --all --target=publish
-

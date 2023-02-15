@@ -1,4 +1,5 @@
 {
+  "name": "postgres-util",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/postgres-util/src",
   "projectType": "library",
@@ -22,7 +23,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/postgres-util"],
+      "outputs": ["{workspaceRoot}/coverage/packages/postgres-util"],
       "options": {
         "jestConfig": "packages/postgres-util/jest.config.ts",
         "passWithNoTests": true

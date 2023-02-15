@@ -1,4 +1,11 @@
-import { capitalize, isCharLowercase, isCharUppercase, trim, trimEnd, trimStart } from './string-utils';
+import {
+  capitalize,
+  isCharLowercase,
+  isCharUppercase,
+  trim,
+  trimEnd,
+  trimStart,
+} from './string-utils';
 
 describe('string-utils', () => {
   describe('capitalize()', () => {
@@ -290,7 +297,7 @@ describe('string-utils', () => {
       readonly input: string;
       readonly expected: boolean;
     }
-  
+
     const EXAMPLES: readonly Example[] = [
       {
         input: '',
@@ -313,7 +320,7 @@ describe('string-utils', () => {
         expected: true,
       },
     ];
-  
+
     EXAMPLES.forEach((example) => {
       it(JSON.stringify(example), () => {
         const actual = isCharUppercase(example.input);
@@ -327,7 +334,7 @@ describe('string-utils', () => {
       readonly input: string;
       readonly expected: boolean;
     }
-  
+
     const EXAMPLES: readonly Example[] = [
       {
         input: '',
@@ -350,7 +357,7 @@ describe('string-utils', () => {
         expected: true,
       },
     ];
-  
+
     EXAMPLES.forEach((example) => {
       it(JSON.stringify(example), () => {
         const actual = isCharLowercase(example.input);

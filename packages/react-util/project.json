@@ -1,11 +1,12 @@
 {
+  "name": "react-util",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/react-util/src",
   "projectType": "library",
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@nrwl/web:rollup",
+      "executor": "@nrwl/rollup:rollup",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/react-util",
@@ -33,7 +34,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/react-util"],
+      "outputs": ["{workspaceRoot}/coverage/packages/react-util"],
       "options": {
         "jestConfig": "packages/react-util/jest.config.ts",
         "passWithNoTests": true

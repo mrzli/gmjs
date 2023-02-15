@@ -1,4 +1,4 @@
-import { stringToNonRandomInteger } from "./generate-non-random-number";
+import { stringToNonRandomInteger } from './generate-non-random-number';
 
 describe('generate-non-random-number', () => {
   describe('stringToNonRandomInteger()', () => {
@@ -9,7 +9,7 @@ describe('generate-non-random-number', () => {
 
     const MIN = 0;
     const MAX = 9;
-  
+
     const EXAMPLES: readonly Example[] = [
       {
         input: 'value1',
@@ -20,7 +20,7 @@ describe('generate-non-random-number', () => {
         expected: 1,
       },
     ];
-  
+
     EXAMPLES.forEach((example) => {
       it(JSON.stringify(example), () => {
         const actual = stringToNonRandomInteger(example.input, MIN, MAX);

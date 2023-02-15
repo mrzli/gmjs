@@ -1,4 +1,4 @@
-import { invariant } from "../assert/assert";
+import { invariant } from '../assert/assert';
 
 export function arrayFindOrThrow<TItem>(
   array: readonly TItem[],

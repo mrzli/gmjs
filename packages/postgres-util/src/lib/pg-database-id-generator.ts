@@ -1,5 +1,5 @@
-import { DatabaseIdGenerator } from "@gmjs/db-util";
-import { mapGetOrThrow } from "@gmjs/util";
+import { DatabaseIdGenerator } from '@gmjs/db-util';
+import { mapGetOrThrow } from '@gmjs/util';
 
 export class PgDatabaseIdGenerator implements DatabaseIdGenerator {
   private readonly lastIdMap = new Map<string, number>();

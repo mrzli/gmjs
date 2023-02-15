@@ -21,26 +21,17 @@
               }
             }
           },
-          "required": [
-            "name",
-            "value"
-          ],
+          "required": ["name", "value"],
           "additionalProperties": false
         }
       },
-      "required": [
-        "stringField",
-        "arrayField"
-      ],
+      "required": ["stringField", "arrayField"],
       "additionalProperties": false
     },
     "numberField": {
       "type": "number"
     }
   },
-  "required": [
-    "objectField",
-    "numberField"
-  ],
+  "required": ["objectField", "numberField"],
   "additionalProperties": false
 }

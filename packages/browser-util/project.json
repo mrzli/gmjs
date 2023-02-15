@@ -1,4 +1,5 @@
 {
+  "name": "browser-util",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/browser-util/src",
   "projectType": "library",
@@ -22,7 +23,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/browser-util"],
+      "outputs": ["{workspaceRoot}/coverage/packages/browser-util"],
       "options": {
         "jestConfig": "packages/browser-util/jest.config.ts",
         "passWithNoTests": true

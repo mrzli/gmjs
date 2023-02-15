@@ -1,4 +1,5 @@
 {
+  "name": "fs-util",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/fs-util/src",
   "projectType": "library",
@@ -22,7 +23,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/fs-util"],
+      "outputs": ["{workspaceRoot}/coverage/packages/fs-util"],
       "options": {
         "jestConfig": "packages/fs-util/jest.config.ts",
         "passWithNoTests": true
