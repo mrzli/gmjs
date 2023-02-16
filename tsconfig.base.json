@@ -18,6 +18,7 @@
       "@gmjs/browser-util": ["packages/browser-util/src/index.ts"],
       "@gmjs/db-util": ["packages/db-util/src/index.ts"],
       "@gmjs/fs-util": ["packages/fs-util/src/index.ts"],
+      "@gmjs/lib-be-util": ["packages/lib-be-util/src/index.ts"],
       "@gmjs/lib-util": ["packages/lib-util/src/index.ts"],
       "@gmjs/mongo-util": ["packages/mongo-util/src/index.ts"],
       "@gmjs/nest-util": ["packages/nest-util/src/index.ts"],
