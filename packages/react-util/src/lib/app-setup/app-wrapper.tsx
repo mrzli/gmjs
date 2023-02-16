@@ -1,17 +1,13 @@
 import React, { StrictMode } from 'react';
 import { Action, Store } from 'redux';
-import {
-  AnyObject,
-  identityFn,
-  invariant,
-  transformPipeMono,
-} from '@gmjs/util';
+import { AnyObject, invariant, transformPipeMono } from '@gmjs/util';
 import { Provider } from 'react-redux';
 import {
   BrowserRouter,
   MemoryRouter,
   MemoryRouterProps,
 } from 'react-router-dom';
+import { Theme, ThemeProvider } from '@mui/material/styles';
 
 export type AppWrapperFn = (content: React.ReactElement) => React.ReactElement;
 
@@ -50,7 +46,7 @@ function configToWrapper<
     case 'memory-router':
       return wrapWithMemoryRouter(wrapperConfig.params);
     case 'mui-theme':
-      return identityFn;
+      return wrapWithMuiTheme(wrapperConfig.params);
     case 'store':
       return wrapWithStore<TAppState, TAppAction>(wrapperConfig.params);
     default:
@@ -85,6 +81,12 @@ function wrapWithStore<TAppState extends AnyObject, TAppAction extends Action>(
   params: StoreParams<TAppState, TAppAction>
 ): AppWrapperFn {
   return (content) => <Provider store={params.store}>{content}</Provider>;
+}
+
+function wrapWithMuiTheme(params: MuiThemeParams): AppWrapperFn {
+  return (content) => (
+    <ThemeProvider theme={params.theme}>{content}</ThemeProvider>
+  );
 }
 
 export type AppWrapperConfigKind =
@@ -129,6 +131,11 @@ export type MemoryRouterParams = Readonly<
 
 export interface AppWrapperConfigMuiTheme extends AppWrapperConfigBase {
   readonly kind: 'mui-theme';
+  readonly params: MuiThemeParams;
+}
+
+export interface MuiThemeParams {
+  readonly theme: Theme;
 }
 
 export interface AppWrapperConfigStore<

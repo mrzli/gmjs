@@ -8,6 +8,7 @@
   "private": true,
   "dependencies": {
     "@faker-js/faker": "7.5.0",
+    "@mui/material": "5.11.9",
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
     "ast-types": "0.15.2",
