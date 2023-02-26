@@ -18,6 +18,10 @@ export type DeepWriteable<T> = {
   -readonly [K in keyof T]: DeepWriteable<T[K]>;
 };
 
+export type MakeUndefinable<T extends AnyObject, K extends keyof T = keyof T> = {
+  [Key in K]: T[Key] | undefined;
+}
+
 export type AnyObject = Record<string, AnyValue>;
 
 export type Extends<T, U extends T> = U;
@@ -41,5 +45,4 @@ export type StringEnumLike = ReadonlyRecord<string, string>;
 
 export type KeyOf<T> = keyof T;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type NotIterable<T> = T extends Iterable<any> ? never : T;
+export type NotIterable<T> = T extends Iterable<AnyValue> ? never : T;
