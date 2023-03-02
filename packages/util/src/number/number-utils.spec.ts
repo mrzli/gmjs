@@ -1,4 +1,5 @@
 import {
+  clampNumber,
   padNonNegativeIntWithZeroes,
   parseFloatOrThrow,
   parseIntegerOrThrow,
@@ -307,6 +308,95 @@ describe('number-utils', () => {
             )
           ).toThrowError();
         });
+      });
+    });
+  });
+
+  describe('clampNumber()', () => {
+    interface Example {
+      readonly input: {
+        readonly value: number;
+        readonly min: number;
+        readonly max: number;
+      };
+      readonly expected: number;
+    }
+
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: {
+          value: 0,
+          min: 0,
+          max: 0,
+        },
+        expected: 0,
+      },
+      {
+        input: {
+          value: 0,
+          min: 0,
+          max: 10,
+        },
+        expected: 0,
+      },
+      {
+        input: {
+          value: 1,
+          min: 0,
+          max: 10,
+        },
+        expected: 1,
+      },
+      {
+        input: {
+          value: 10,
+          min: 0,
+          max: 10,
+        },
+        expected: 10,
+      },
+      {
+        input: {
+          value: 0,
+          min: 1,
+          max: 10,
+        },
+        expected: 1,
+      },
+      {
+        input: {
+          value: 0,
+          min: -1,
+          max: 10,
+        },
+        expected: 0,
+      },
+      {
+        input: {
+          value: -2,
+          min: -1,
+          max: 10,
+        },
+        expected: -1,
+      },
+      {
+        input: {
+          value: 20,
+          min: 0,
+          max: 10,
+        },
+        expected: 10,
+      },
+    ];
+
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        const actual = clampNumber(
+          example.input.value,
+          example.input.min,
+          example.input.max
+        );
+        expect(actual).toEqual(example.expected);
       });
     });
   });
