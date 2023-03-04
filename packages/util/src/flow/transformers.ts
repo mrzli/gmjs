@@ -54,6 +54,14 @@ export function filterOutNullish<T>(): Fn1<
   };
 }
 
+export function reverse<T>(): Fn1<Iterable<T>, Iterable<T>> {
+  return (input: Iterable<T>) => {
+    const array = [...input];
+    array.reverse();
+    return array;
+  };
+}
+
 export function tap<T>(
   action: (input: NotIterable<T>) => void
 ): Fn1<NotIterable<T>, NotIterable<T>> {
