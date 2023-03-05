@@ -1,4 +1,6 @@
 import { Fn1 } from '../../types/function';
+import { transformPipe } from '../function-pipe';
+import { map } from './iterable';
 
 export function sum(): Fn1<Iterable<number>, number> {
   return (input: Iterable<number>) => {
@@ -10,6 +12,12 @@ export function sum(): Fn1<Iterable<number>, number> {
   };
 }
 
+export function sumBy<T>(
+  valueSelector: (item: T) => number
+): Fn1<Iterable<T>, number> {
+  return transformPipe(map(valueSelector), sum());
+}
+
 export function cumSum(): Fn1<Iterable<number>, Iterable<number>> {
   return function* (input: Iterable<number>): Iterable<number> {
     let total = 0;
@@ -17,5 +25,11 @@ export function cumSum(): Fn1<Iterable<number>, Iterable<number>> {
       total += item;
       yield total;
     }
-  }
+  };
+}
+
+export function cumSumBy<T>(
+  valueSelector: (item: T) => number
+): Fn1<Iterable<T>, Iterable<number>> {
+  return transformPipe(map(valueSelector), cumSum());
 }

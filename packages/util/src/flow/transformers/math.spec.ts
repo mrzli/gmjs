@@ -1,5 +1,5 @@
 import { applyFn, transformPipe } from '../function-pipe';
-import { sum, cumSum } from './math';
+import { sum, cumSum, sumBy, cumSumBy } from './math';
 import { getArrayResult } from './test-util';
 
 describe('math', () => {
@@ -36,6 +36,48 @@ describe('math', () => {
     });
   });
 
+  describe('sumBy()', () => {
+    interface ExampleItem {
+      readonly value: number;
+    }
+
+    interface Example {
+      readonly input: readonly ExampleItem[];
+      readonly expected: number;
+    }
+
+    const VALUE_SELECTOR = (item: ExampleItem) => item.value;
+
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: [],
+        expected: 0,
+      },
+      {
+        input: [{ value: 0 }],
+        expected: 0,
+      },
+      {
+        input: [{ value: 1 }],
+        expected: 1,
+      },
+      {
+        input: [{ value: 1 }, { value: 2 }, { value: 3 }],
+        expected: 6,
+      },
+    ];
+
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        const actual = applyFn(
+          example.input,
+          transformPipe(sumBy(VALUE_SELECTOR))
+        );
+        expect(actual).toEqual(example.expected);
+      });
+    });
+  });
+
   describe('cumSum()', () => {
     interface Example {
       readonly input: readonly number[];
@@ -64,6 +106,45 @@ describe('math', () => {
     EXAMPLES.forEach((example) => {
       it(JSON.stringify(example), () => {
         const actual = getArrayResult(example.input, cumSum());
+        expect(actual).toEqual(example.expected);
+      });
+    });
+  });
+
+  describe('cumSumBy()', () => {
+    interface ExampleItem {
+      readonly value: number;
+    }
+
+    interface Example {
+      readonly input: readonly ExampleItem[];
+      readonly expected: readonly number[];
+    }
+
+    const VALUE_SELECTOR = (item: ExampleItem) => item.value;
+
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: [],
+        expected: [],
+      },
+      {
+        input: [{ value: 0 }],
+        expected: [0],
+      },
+      {
+        input: [{ value: 1 }],
+        expected: [1],
+      },
+      {
+        input: [{ value: 1 }, { value: 2 }, { value: 3 }],
+        expected: [1, 3, 6],
+      },
+    ];
+
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        const actual = getArrayResult(example.input, cumSumBy(VALUE_SELECTOR));
         expect(actual).toEqual(example.expected);
       });
     });
