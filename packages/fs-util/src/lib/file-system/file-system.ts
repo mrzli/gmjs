@@ -1,5 +1,4 @@
 import fs from 'fs-extra';
-import { promisify } from 'util';
 import { ENCODING_UTF8 } from './constants';
 import { AnyValue } from '@gmjs/util';
 import { FileSelectionPredicate, PathContentPair } from './types';
@@ -65,7 +64,11 @@ export function existsSync(filePath: string): boolean {
 }
 
 export async function existsAsync(filePath: string): Promise<boolean> {
-  return promisify(fs.exists)(filePath);
+  return new Promise<boolean>((resolve, _reject) => {
+    fs.access(filePath, (err) => {
+      resolve(!err);
+    });
+  });
 }
 
 export function ensureFileSync(filePath: string): void {
