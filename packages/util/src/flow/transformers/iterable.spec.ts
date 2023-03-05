@@ -2,6 +2,7 @@ import { Fn1 } from '../../types/function';
 import { transformPipe } from '../function-pipe';
 import {
   aggregate,
+  combineIterables,
   distinct,
   duplicates,
   filter,
@@ -550,6 +551,115 @@ describe('iterable', () => {
           mapCombineWithEachItem(example.input.array, COMBINE_FN)
         );
         expect(actual).toEqual(example.expected);
+      });
+    });
+  });
+
+  describe('combineIterables()', () => {
+    describe('valid', () => {
+      interface Example {
+        readonly input: {
+          readonly input: readonly string[];
+          readonly array: readonly string[];
+        };
+        readonly expected: readonly string[];
+      }
+
+      const COMBINE_FN = (i1: string, i2: string): string => i1 + i2;
+
+      const EXAMPLES: readonly Example[] = [
+        {
+          input: {
+            input: [],
+            array: [],
+          },
+          expected: [],
+        },
+        {
+          input: {
+            input: ['a'],
+            array: [''],
+          },
+          expected: ['a'],
+        },
+        {
+          input: {
+            input: [''],
+            array: ['1'],
+          },
+          expected: ['1'],
+        },
+        {
+          input: {
+            input: ['a'],
+            array: ['1'],
+          },
+          expected: ['a1'],
+        },
+        {
+          input: {
+            input: ['', ''],
+            array: ['', ''],
+          },
+          expected: ['', ''],
+        },
+        {
+          input: {
+            input: ['a', 'b'],
+            array: ['1', '2'],
+          },
+          expected: ['a1', 'b2'],
+        },
+      ];
+
+      EXAMPLES.forEach((example) => {
+        it(JSON.stringify(example), () => {
+          const actual = getArrayResult(
+            example.input.input,
+            combineIterables(example.input.array, COMBINE_FN)
+          );
+          expect(actual).toEqual(example.expected);
+        });
+      });
+    });
+
+    describe('throws', () => {
+      interface Example {
+        readonly input: {
+          readonly input: readonly string[];
+          readonly array: readonly string[];
+        };
+        readonly expected: readonly string[];
+      }
+
+      const COMBINE_FN = (i1: string, i2: string): string => i1 + i2;
+
+      const EXAMPLES: readonly Example[] = [
+        {
+          input: {
+            input: ['a'],
+            array: [],
+          },
+          expected: [],
+        },
+        {
+          input: {
+            input: [],
+            array: ['1'],
+          },
+          expected: [],
+        },
+      ];
+
+      EXAMPLES.forEach((example) => {
+        it(JSON.stringify(example), () => {
+          const call = () =>
+            getArrayResult(
+              example.input.input,
+              combineIterables(example.input.array, COMBINE_FN)
+            );
+          expect(call).toThrow();
+        });
       });
     });
   });

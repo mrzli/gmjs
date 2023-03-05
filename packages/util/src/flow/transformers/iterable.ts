@@ -117,6 +117,30 @@ export function mapCombineWithEachItem<T, U, V>(
   };
 }
 
+export function combineIterables<T, U, V>(
+  iterable: Iterable<U>,
+  combine: (input: T, item: U) => V
+): Fn1<Iterable<T>, Iterable<V>> {
+  return function* (input: Iterable<T>): Iterable<V> {
+    const iter1 = input[Symbol.iterator]();
+    const iter2 = iterable[Symbol.iterator]();
+
+    while (true) {
+      const item1 = iter1.next();
+      const item2 = iter2.next();
+
+      if (item1.done || item2.done) {
+        if (!item1.done || !item2.done) {
+          throw new Error(`Iterables must have the same number of elements.`);
+        }
+        break;
+      }
+
+      yield combine(item1.value, item2.value);
+    }
+  };
+}
+
 export function groupBySimpleKey<T, K extends SimpleValue>(
   keySelector: (item: T) => K
 ): Fn1<Iterable<T>, ReadonlyMap<K, readonly T[]>> {
