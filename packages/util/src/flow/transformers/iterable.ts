@@ -1,7 +1,7 @@
-import { isNotNullish } from '../generic/generic';
-import { Fn1 } from '../types/function';
-import { NotIterable } from '../types/generic';
-import { transformPipe } from './function-pipe';
+import { isNotNullish } from '../../generic/generic';
+import { Fn1 } from '../../types/function';
+import { NotIterable } from '../../types/generic';
+import { transformPipe } from '../function-pipe';
 
 export function map<T, U>(
   mapper: (item: T) => U

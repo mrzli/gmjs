@@ -1,5 +1,5 @@
-import { Fn1 } from '../types/function';
-import { applyFn, transformPipe } from './function-pipe';
+import { Fn1 } from '../../types/function';
+import { applyFn, transformPipe } from '../function-pipe';
 import {
   combineWithEachItem,
   conditionalConvert,
@@ -18,9 +18,9 @@ import {
   toArray,
   toMap,
   toSet,
-} from './transformers';
+} from './iterable';
 
-describe('transformers', () => {
+describe('iterable', () => {
   describe('map()', () => {
     interface Example {
       readonly input: readonly number[];
