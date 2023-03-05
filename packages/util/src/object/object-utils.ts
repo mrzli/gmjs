@@ -1,5 +1,5 @@
 import { ConditionalKeys, Except } from 'type-fest';
-import { AnyObject, ObjectEntry, ReadonlyRecord } from '../types/generic';
+import { AnyObject, ObjectEntry, ReadonlyRecord } from '../types';
 
 // https://stackoverflow.com/a/61765012/520229
 // dual declaration to allow both implementation and proper type checking

@@ -8,12 +8,7 @@ import {
   objectFromArray,
 } from './object-utils';
 import { ConditionalKeys } from 'type-fest';
-import {
-  AnyObject,
-  AnyValue,
-  ObjectEntry,
-  ReadonlyRecord,
-} from '../types/generic';
+import { AnyObject, AnyValue, ObjectEntry, ReadonlyRecord } from '../types';
 import { fillArrayOfLengthWithValueMapper } from '../array/array-creation-utils';
 import { padNonNegativeIntWithZeroes } from '../number/number-utils';
 

@@ -1,4 +1,4 @@
-import { AnyObject } from '../types/generic';
+import { AnyObject } from '../types';
 
 export function isBoolean(value: unknown): value is boolean {
   return value === false || value === true;
