@@ -10,6 +10,17 @@ export function tap<T>(
   };
 }
 
+export function combineWithEachItem<T, U, V>(
+  iterable: Iterable<U>,
+  combine: (input: T, item: U) => V
+): Fn1<T, Iterable<V>> {
+  return function* (input: T): Iterable<V> {
+    for (const item of iterable) {
+      yield combine(input, item);
+    }
+  };
+}
+
 export function conditionalConvert<T>(
   condition: ((input: T) => boolean) | boolean,
   convertFn: (input: T) => T

@@ -1,3 +1,4 @@
+import { SimpleValue } from './../../types/generic';
 import { isNotNullish } from '../../generic/generic';
 import { Fn1 } from '../../types/function';
 import { transformPipe } from '../function-pipe';
@@ -103,17 +104,6 @@ export function duplicates<T, THash = T>(
   };
 }
 
-export function combineWithEachItem<T, U, V>(
-  iterable: Iterable<U>,
-  combine: (input: T, item: U) => V
-): Fn1<T, Iterable<V>> {
-  return function* (input: T): Iterable<V> {
-    for (const item of iterable) {
-      yield combine(input, item);
-    }
-  };
-}
-
 export function mapCombineWithEachItem<T, U, V>(
   iterable: Iterable<U>,
   combine: (input: T, item: U) => V
@@ -127,7 +117,7 @@ export function mapCombineWithEachItem<T, U, V>(
   };
 }
 
-export function groupByKey<T, K extends string | number>(
+export function groupBySimpleKey<T, K extends SimpleValue>(
   keySelector: (item: T) => K
 ): Fn1<Iterable<T>, ReadonlyMap<K, readonly T[]>> {
   return (input: Iterable<T>): ReadonlyMap<K, readonly T[]> => {

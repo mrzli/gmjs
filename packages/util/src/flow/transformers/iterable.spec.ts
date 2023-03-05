@@ -1,22 +1,21 @@
 import { Fn1 } from '../../types/function';
-import { applyFn, transformPipe } from '../function-pipe';
+import { transformPipe } from '../function-pipe';
 import {
-  combineWithEachItem,
   distinct,
   duplicates,
   filter,
   filterOutNullish,
   flatMap,
   flatten,
-  groupByKey,
+  groupBySimpleKey,
   map,
   mapCombineWithEachItem,
   reverse,
   tapIterable,
-  toArray,
   toMap,
   toSet,
 } from './iterable';
+import { getArrayResult } from './test-util';
 
 describe('iterable', () => {
   describe('map()', () => {
@@ -392,73 +391,6 @@ describe('iterable', () => {
     });
   });
 
-  describe('combineWithEachItem()', () => {
-    interface Example {
-      readonly input: {
-        readonly input: string;
-        readonly array: readonly string[];
-      };
-      readonly expected: readonly string[];
-    }
-
-    const COMBINE_FN = (i1: string, i2: string): string => i1 + i2;
-
-    const EXAMPLES: readonly Example[] = [
-      {
-        input: {
-          input: '',
-          array: [],
-        },
-        expected: [],
-      },
-      {
-        input: {
-          input: '',
-          array: [],
-        },
-        expected: [],
-      },
-      {
-        input: {
-          input: 'a',
-          array: [],
-        },
-        expected: [],
-      },
-      {
-        input: {
-          input: '',
-          array: ['1', '2', '3'],
-        },
-        expected: ['1', '2', '3'],
-      },
-      {
-        input: {
-          input: 'a',
-          array: ['', '', ''],
-        },
-        expected: ['a', 'a', 'a'],
-      },
-      {
-        input: {
-          input: 'a',
-          array: ['1', '2', '3'],
-        },
-        expected: ['a1', 'a2', 'a3'],
-      },
-    ];
-
-    EXAMPLES.forEach((example) => {
-      it(JSON.stringify(example), () => {
-        const actual = getArrayResult(
-          example.input.input,
-          combineWithEachItem(example.input.array, COMBINE_FN)
-        );
-        expect(actual).toEqual(example.expected);
-      });
-    });
-  });
-
   describe('mapCombineWithEachItem()', () => {
     interface Example {
       readonly input: {
@@ -540,7 +472,7 @@ describe('iterable', () => {
     });
   });
 
-  describe('groupByKey()', () => {
+  describe('groupBySimpleKey()', () => {
     interface ExampleItem {
       readonly key: string;
       readonly value: readonly number[];
@@ -627,7 +559,10 @@ describe('iterable', () => {
 
     EXAMPLES.forEach((example) => {
       it(JSON.stringify(example), () => {
-        const actual = getArrayResult(example.input, groupByKey(KEY_SELECTOR));
+        const actual = getArrayResult(
+          example.input,
+          groupBySimpleKey(KEY_SELECTOR)
+        );
         expect(actual).toEqual(example.expected);
       });
     });
@@ -723,11 +658,4 @@ describe('iterable', () => {
       });
     });
   });
-
-  function getArrayResult<T, U>(
-    input: T,
-    transformer: Fn1<T, Iterable<U>>
-  ): readonly U[] {
-    return applyFn(input, transformPipe(transformer, toArray()));
-  }
 });

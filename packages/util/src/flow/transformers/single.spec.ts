@@ -1,5 +1,6 @@
 import { applyFn, transformPipe } from '../function-pipe';
-import { conditionalConvert, tap } from './single';
+import { combineWithEachItem, conditionalConvert, tap } from './single';
+import { getArrayResult } from './test-util';
 
 describe('single', () => {
   describe('tap()', () => {
@@ -106,6 +107,73 @@ describe('single', () => {
         const actual = applyFn(
           example.input.input,
           conditionalConvert(example.input.condition, CONVERT_FN)
+        );
+        expect(actual).toEqual(example.expected);
+      });
+    });
+  });
+
+  describe('combineWithEachItem()', () => {
+    interface Example {
+      readonly input: {
+        readonly input: string;
+        readonly array: readonly string[];
+      };
+      readonly expected: readonly string[];
+    }
+
+    const COMBINE_FN = (i1: string, i2: string): string => i1 + i2;
+
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: {
+          input: '',
+          array: [],
+        },
+        expected: [],
+      },
+      {
+        input: {
+          input: '',
+          array: [],
+        },
+        expected: [],
+      },
+      {
+        input: {
+          input: 'a',
+          array: [],
+        },
+        expected: [],
+      },
+      {
+        input: {
+          input: '',
+          array: ['1', '2', '3'],
+        },
+        expected: ['1', '2', '3'],
+      },
+      {
+        input: {
+          input: 'a',
+          array: ['', '', ''],
+        },
+        expected: ['a', 'a', 'a'],
+      },
+      {
+        input: {
+          input: 'a',
+          array: ['1', '2', '3'],
+        },
+        expected: ['a1', 'a2', 'a3'],
+      },
+    ];
+
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        const actual = getArrayResult(
+          example.input.input,
+          combineWithEachItem(example.input.array, COMBINE_FN)
         );
         expect(actual).toEqual(example.expected);
       });
