@@ -1,6 +1,7 @@
 import { Fn1 } from '../../types/function';
 import { transformPipe } from '../function-pipe';
 import {
+  aggregate,
   distinct,
   duplicates,
   filter,
@@ -466,6 +467,156 @@ describe('iterable', () => {
         const actual = getArrayResult(
           example.input.input,
           mapCombineWithEachItem(example.input.array, COMBINE_FN)
+        );
+        expect(actual).toEqual(example.expected);
+      });
+    });
+  });
+
+  describe('mapCombineWithEachItem()', () => {
+    interface Example {
+      readonly input: {
+        readonly input: readonly string[];
+        readonly array: readonly string[];
+      };
+      readonly expected: readonly string[];
+    }
+
+    const COMBINE_FN = (i1: string, i2: string): string => i1 + i2;
+
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: {
+          input: [],
+          array: [],
+        },
+        expected: [],
+      },
+      {
+        input: {
+          input: ['a'],
+          array: [],
+        },
+        expected: [],
+      },
+      {
+        input: {
+          input: [],
+          array: ['1'],
+        },
+        expected: [],
+      },
+      {
+        input: {
+          input: ['a'],
+          array: [''],
+        },
+        expected: ['a'],
+      },
+      {
+        input: {
+          input: [''],
+          array: ['1'],
+        },
+        expected: ['1'],
+      },
+      {
+        input: {
+          input: ['a'],
+          array: ['1'],
+        },
+        expected: ['a1'],
+      },
+      {
+        input: {
+          input: ['', ''],
+          array: ['', ''],
+        },
+        expected: ['', '', '', ''],
+      },
+      {
+        input: {
+          input: ['a', 'b'],
+          array: ['1', '2'],
+        },
+        expected: ['a1', 'a2', 'b1', 'b2'],
+      },
+    ];
+
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        const actual = getArrayResult(
+          example.input.input,
+          mapCombineWithEachItem(example.input.array, COMBINE_FN)
+        );
+        expect(actual).toEqual(example.expected);
+      });
+    });
+  });
+
+  describe('aggregate()', () => {
+    type ExampleInputItem = readonly [string, readonly number[]];
+    type ExampleOutputItem = readonly [string, number];
+
+    interface Example {
+      readonly input: readonly ExampleInputItem[];
+      readonly expected: readonly ExampleOutputItem[];
+    }
+
+    const AGGREGATE_FN = (input: Iterable<number>): number => {
+      let total = 0;
+      for (const item of input) {
+        total += item;
+      }
+      return total;
+    };
+
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: [],
+        expected: [],
+      },
+      {
+        input: [['k1', []]],
+        expected: [['k1', 0]],
+      },
+      {
+        input: [
+          ['k1', []],
+          ['k2', []],
+        ],
+        expected: [
+          ['k1', 0],
+          ['k2', 0],
+        ],
+      },
+      {
+        input: [
+          ['k1', [0]],
+          ['k2', [1]],
+        ],
+        expected: [
+          ['k1', 0],
+          ['k2', 1],
+        ],
+      },
+      {
+        input: [
+          ['k1', [1, 2]],
+          ['k2', [3, 4]],
+        ],
+        expected: [
+          ['k1', 3],
+          ['k2', 7],
+        ],
+      },
+    ];
+
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        const actual = getArrayResult(
+          new Map<string, readonly number[]>(example.input),
+          aggregate(AGGREGATE_FN)
         );
         expect(actual).toEqual(example.expected);
       });

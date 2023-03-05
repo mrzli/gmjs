@@ -132,6 +132,15 @@ export function groupBySimpleKey<T, K extends SimpleValue>(
   };
 }
 
+export function aggregate<T, U, K>(
+  aggregateFn: (input: Iterable<T>) => U
+): Fn1<ReadonlyMap<K, Iterable<T>>, ReadonlyMap<K, U>> {
+  return transformPipe(
+    map(([k, v]) => [k, aggregateFn(v)] as const),
+    toMap()
+  );
+}
+
 export function toArray<T>(): Fn1<Iterable<T>, readonly T[]> {
   return (input: Iterable<T>) => {
     return [...input];
