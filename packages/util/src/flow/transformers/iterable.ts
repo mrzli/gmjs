@@ -1,6 +1,5 @@
 import { isNotNullish } from '../../generic/generic';
 import { Fn1 } from '../../types/function';
-import { NotIterable } from '../../types/generic';
 import { transformPipe } from '../function-pipe';
 
 export function map<T, U>(
@@ -59,15 +58,6 @@ export function reverse<T>(): Fn1<Iterable<T>, Iterable<T>> {
     const array = [...input];
     array.reverse();
     return array;
-  };
-}
-
-export function tap<T>(
-  action: (input: NotIterable<T>) => void
-): Fn1<NotIterable<T>, NotIterable<T>> {
-  return (input: NotIterable<T>): NotIterable<T> => {
-    action(input);
-    return input;
   };
 }
 
@@ -133,21 +123,6 @@ export function mapCombineWithEachItem<T, U, V>(
       for (const item of iterable) {
         yield combine(inputItem, item);
       }
-    }
-  };
-}
-
-export function conditionalConvert<T>(
-  condition: ((input: T) => boolean) | boolean,
-  convertFn: (input: T) => T
-): Fn1<T, T> {
-  return (input: T): T => {
-    const conditionValue =
-      condition instanceof Function ? condition(input) : condition;
-    if (conditionValue) {
-      return convertFn(input);
-    } else {
-      return input;
     }
   };
 }
