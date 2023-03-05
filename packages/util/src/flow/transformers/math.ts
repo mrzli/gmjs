@@ -33,3 +33,19 @@ export function cumSumBy<T>(
 ): Fn1<Iterable<T>, Iterable<number>> {
   return transformPipe(map(valueSelector), cumSum());
 }
+
+export function mean(): Fn1<Iterable<number>, number> {
+  return (input: Iterable<number>) => {
+    const array = [...input];
+    if (array.length === 0) {
+      return 0;
+    }
+    return sum()(array) / array.length;
+  };
+}
+
+export function meanBy<T>(
+  valueSelector: (item: T) => number
+): Fn1<Iterable<T>, number> {
+  return transformPipe(map(valueSelector), mean());
+}
