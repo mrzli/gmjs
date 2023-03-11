@@ -6,7 +6,7 @@ import { findDirsShallowSync, readTextFilesInDirSync } from '@gmjs/fs-util';
 export interface TestFileSystemExample<TExampleInput> {
   readonly description: string;
   readonly input: TExampleInput;
-  readonly expected: string;
+  readonly expected: string | undefined;
 }
 
 export interface TestFileSystemExampleFileData {
@@ -57,7 +57,7 @@ async function doFileSystemExampleTest<TExampleInput, TActualResult>(
   testedFunctionCall: () => TActualResult,
   actualResultTransformer: (actual: TActualResult) => string
 ): Promise<void> {
-  if (example.expected) {
+  if (example.expected !== undefined) {
     const actual = actualResultTransformer(testedFunctionCall());
     expect(actual).toEqual(example.expected);
   } else {
