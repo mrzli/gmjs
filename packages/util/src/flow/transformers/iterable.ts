@@ -62,6 +62,16 @@ export function reverse<T>(): Fn1<Iterable<T>, Iterable<T>> {
   };
 }
 
+export function sort<T>(
+  compareFn: (item1: T, item2: T) => number
+): Fn1<Iterable<T>, Iterable<T>> {
+  return (input: Iterable<T>) => {
+    const array = [...input];
+    array.sort(compareFn);
+    return array;
+  };
+}
+
 export function tapIterable<T>(
   action: (item: T) => void
 ): Fn1<Iterable<T>, Iterable<T>> {
