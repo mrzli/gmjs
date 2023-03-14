@@ -166,6 +166,22 @@ export function groupBySimpleKey<T, K extends SimpleValue>(
   };
 }
 
+export function keys<K, V>(): Fn1<Iterable<readonly [K, V]>, Iterable<K>> {
+  return function* (input: Iterable<readonly [K, V]>): Iterable<K> {
+    for (const inputItem of input) {
+      yield inputItem[0];
+    }
+  };
+}
+
+export function values<K, V>(): Fn1<Iterable<readonly [K, V]>, Iterable<V>> {
+  return function* (input: Iterable<readonly [K, V]>): Iterable<V> {
+    for (const inputItem of input) {
+      yield inputItem[1];
+    }
+  };
+}
+
 export function aggregate<T, U, K>(
   aggregateFn: (input: Iterable<T>) => U
 ): Fn1<ReadonlyMap<K, Iterable<T>>, ReadonlyMap<K, U>> {

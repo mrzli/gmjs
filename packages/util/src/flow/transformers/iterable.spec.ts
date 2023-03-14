@@ -10,6 +10,7 @@ import {
   flatMap,
   flatten,
   groupBySimpleKey,
+  keys,
   map,
   mapCombineWithEachItem,
   reverse,
@@ -17,6 +18,7 @@ import {
   tapIterable,
   toMap,
   toSet,
+  values,
 } from './iterable';
 import { getArrayResult } from './test-util';
 
@@ -864,6 +866,98 @@ describe('iterable', () => {
           example.input,
           groupBySimpleKey(KEY_SELECTOR)
         );
+        expect(actual).toEqual(example.expected);
+      });
+    });
+  });
+
+  describe('keys()', () => {
+    interface Example {
+      readonly input: Iterable<readonly [number, string]>;
+      readonly expected: readonly number[];
+    }
+
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: [],
+        expected: [],
+      },
+      {
+        input: [[1, 'value-1']],
+        expected: [1],
+      },
+      {
+        input: [
+          [1, 'value-1'],
+          [1, 'value-1'],
+        ],
+        expected: [1, 1],
+      },
+      {
+        input: [
+          [1, 'value-1'],
+          [2, 'value-2'],
+        ],
+        expected: [1, 2],
+      },
+      {
+        input: new Map([
+          [1, 'value-1'],
+          [2, 'value-2'],
+        ]),
+        expected: [1, 2],
+      },
+    ];
+
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        const actual = getArrayResult(example.input, keys());
+        expect(actual).toEqual(example.expected);
+      });
+    });
+  });
+
+  describe('values()', () => {
+    interface Example {
+      readonly input: Iterable<readonly [number, string]>;
+      readonly expected: readonly string[];
+    }
+
+    const EXAMPLES: readonly Example[] = [
+      {
+        input: [],
+        expected: [],
+      },
+      {
+        input: [[1, 'value-1']],
+        expected: ['value-1'],
+      },
+      {
+        input: [
+          [1, 'value-1'],
+          [1, 'value-1'],
+        ],
+        expected: ['value-1', 'value-1'],
+      },
+      {
+        input: [
+          [1, 'value-1'],
+          [2, 'value-2'],
+        ],
+        expected: ['value-1', 'value-2'],
+      },
+      {
+        input: new Map([
+          [1, 'value-1'],
+          [2, 'value-2'],
+        ]),
+        expected: ['value-1', 'value-2'],
+      },
+    ];
+
+    EXAMPLES.forEach((example) => {
+      it(JSON.stringify(example), () => {
+        const actual = getArrayResult(example.input, values());
         expect(actual).toEqual(example.expected);
       });
     });
