@@ -1,5 +1,29 @@
 import { useRef, useEffect, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Observable, Observer, OperatorFunction, Subject } from 'rxjs';
+import { z } from 'zod';
+
+export function useQueryParams<T extends z.ZodTypeAny>(
+  schema: T
+): z.infer<typeof schema> {
+  const [searchParams] = useSearchParams();
+
+  // TODO GM: implement proper exception handling
+  return useMemo(() => {
+    return schema.parse(searchParamsToObject(searchParams));
+  }, [schema, searchParams]);
+}
+
+function searchParamsToObject(
+  searchParams: URLSearchParams
+): Record<string, string> {
+  const obj: Record<string, string> = {};
+  searchParams.forEach((value, key) => {
+    obj[key] = value;
+  });
+
+  return obj;
+}
 
 // https://blog.logrocket.com/how-to-get-previous-props-state-with-react-hooks/
 export function usePrevious<T>(value: T): T | undefined {
