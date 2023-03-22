@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { Observable, Observer, OperatorFunction, Subject } from 'rxjs';
 import { z } from 'zod';
 
-export function useQueryParams<T extends z.ZodTypeAny>(
+export function useValidatedQueryParams<T extends z.ZodTypeAny>(
   schema: T
 ): z.infer<typeof schema> {
   const [searchParams] = useSearchParams();
