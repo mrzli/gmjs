@@ -1,6 +1,7 @@
 export * from './array';
 export * from './assert';
 export * from './containers';
+export * from './date';
 export * from './enum';
 export * from './flow';
 export * from './function';
