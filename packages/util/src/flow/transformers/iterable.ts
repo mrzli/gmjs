@@ -54,6 +54,17 @@ export function filterOutNullish<T>(): Fn1<
   };
 }
 
+export function concat<T>(other: Iterable<T>): Fn1<Iterable<T>, Iterable<T>> {
+  return function* (input: Iterable<T>): Iterable<T> {
+    for (const inputItem of input) {
+      yield inputItem;
+    }
+    for (const inputItem of other) {
+      yield inputItem;
+    }
+  };
+}
+
 export function reverse<T>(): Fn1<Iterable<T>, Iterable<T>> {
   return (input: Iterable<T>) => {
     const array = [...input];
