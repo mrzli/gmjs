@@ -11,7 +11,7 @@ import {
   flatMap,
   flatten,
   groupBySimpleKey,
-  index,
+  indexes,
   keys,
   map,
   mapCombineWithEachItem,
@@ -56,7 +56,7 @@ describe('iterable', () => {
     });
   });
 
-  describe('index()', () => {
+  describe('indexes()', () => {
     interface Example {
       readonly input: readonly number[];
       readonly expected: readonly number[];
@@ -80,7 +80,7 @@ describe('iterable', () => {
 
     EXAMPLES.forEach((example) => {
       it(JSON.stringify(example), () => {
-        const actual = getArrayResult(example.input, index());
+        const actual = getArrayResult(example.input, indexes());
         expect(actual).toEqual(example.expected);
       });
     });

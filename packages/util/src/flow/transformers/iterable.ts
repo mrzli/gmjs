@@ -14,7 +14,7 @@ export function map<T, U>(
   };
 }
 
-export function index<T>(
+export function indexes<T>(
 ): Fn1<Iterable<T>, Iterable<number>> {
   return function* (input: Iterable<T>): Iterable<number> {
     let index = 0;
