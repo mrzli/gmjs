@@ -4,11 +4,23 @@ import { Fn1 } from '../../types/function';
 import { transformPipe } from '../function-pipe';
 
 export function map<T, U>(
-  mapper: (item: T) => U
+  mapper: (item: T, index: number) => U
 ): Fn1<Iterable<T>, Iterable<U>> {
   return function* (input: Iterable<T>): Iterable<U> {
+    let index = 0;
     for (const inputItem of input) {
-      yield mapper(inputItem);
+      yield mapper(inputItem, index++);
+    }
+  };
+}
+
+export function index<T>(
+): Fn1<Iterable<T>, Iterable<number>> {
+  return function* (input: Iterable<T>): Iterable<number> {
+    let index = 0;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    for (const _inputItem of input) {
+      yield index++;
     }
   };
 }
@@ -30,11 +42,12 @@ export function flatMap<T, U>(
 }
 
 export function filter<T>(
-  predicate: (item: T) => boolean
+  predicate: (item: T, index: number) => boolean
 ): Fn1<Iterable<T>, Iterable<T>> {
   return function* (input: Iterable<T>): Iterable<T> {
+    let index = 0;
     for (const inputItem of input) {
-      if (predicate(inputItem)) {
+      if (predicate(inputItem, index++)) {
         yield inputItem;
       }
     }
@@ -84,11 +97,12 @@ export function sort<T>(
 }
 
 export function tapIterable<T>(
-  action: (item: T) => void
+  action: (item: T, index: number) => void
 ): Fn1<Iterable<T>, Iterable<T>> {
   return function* (input: Iterable<T>): Iterable<T> {
+    let index = 0;
     for (const inputItem of input) {
-      action(inputItem);
+      action(inputItem, index++);
       yield inputItem;
     }
   };
@@ -140,9 +154,10 @@ export function mapCombineWithEachItem<T, U, V>(
 
 export function combineIterables<T, U, V>(
   iterable: Iterable<U>,
-  combine: (input: T, item: U) => V
+  combine: (input: T, item: U, index: number) => V
 ): Fn1<Iterable<T>, Iterable<V>> {
   return function* (input: Iterable<T>): Iterable<V> {
+    let index = 0;
     const iter1 = input[Symbol.iterator]();
     const iter2 = iterable[Symbol.iterator]();
 
@@ -157,7 +172,7 @@ export function combineIterables<T, U, V>(
         break;
       }
 
-      yield combine(item1.value, item2.value);
+      yield combine(item1.value, item2.value, index++);
     }
   };
 }
